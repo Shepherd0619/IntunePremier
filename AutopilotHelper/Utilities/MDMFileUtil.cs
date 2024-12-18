@@ -1,6 +1,7 @@
 ﻿using Microsoft.Deployment.Compression.Cab;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.IO.Packaging;
 using System.Linq;
@@ -53,19 +54,29 @@ namespace AutopilotHelper.Utilities
                 Directory.CreateDirectory(TmpWorkplacePath);
             }
 
-            var cabinet = new CabInfo(cabFilePath);
+            //var cabinet = new CabInfo(cabFilePath);
 
-            var files = cabinet.GetFiles();
+            //var files = cabinet.GetFiles();
 
-            for (int i = 0; i < files.Count; i++)
-            {
-                var stream = files[i].OpenRead();
+            //for (int i = 0; i < files.Count; i++)
+            //{
+            //    var stream = files[i].OpenRead();
 
-                using(var reader = new StreamReader(stream))
-                {
-                    File.WriteAllText(Path.Combine(TmpWorkplacePath, files[i].Name), reader.ReadToEnd());
-                }
-            }
+            //    using(var reader = new StreamReader(stream))
+            //    {
+            //        using (var writer = File.CreateText(Path.Combine(TmpWorkplacePath, files[i].Name)))
+            //        {
+            //            writer.Write(reader.ReadToEnd());
+            //        }
+            //    }
+            //}
+
+            var process = new Process();
+            process.StartInfo = new();
+            process.StartInfo.FileName = "expand.exe";
+            process.StartInfo.Arguments = $"{cabFilePath} -F:* {Path.Combine(TmpWorkplacePath)}";
+            process.Start();
+            process.WaitForExit();
         }
     }
 }
