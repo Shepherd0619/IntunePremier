@@ -14,7 +14,26 @@ namespace AutopilotHelper
 {
     public partial class MDMAnalysisWindow : Form
     {
-        public MDMFileUtil? CurrentDiagFile;
+        public MDMFileUtil? CurrentDiagFile
+        {
+            get
+            {
+                return _diagFile;
+            }
+
+            set
+            {
+                _diagFile = value;
+
+                if (value == null) return;
+
+                _autopilotUtil = new(value);
+            }
+        }
+        private MDMFileUtil? _diagFile;
+
+        public AutopilotUtil AutopilotUtil => _autopilotUtil;
+        private AutopilotUtil _autopilotUtil;
 
         public MDMAnalysisWindow()
         {
@@ -23,10 +42,9 @@ namespace AutopilotHelper
 
         private void MDMAnalysisWindow_Load(object sender, EventArgs e)
         {
-            if (CurrentDiagFile != null)
-            {
-                EventViewerFile file = new(Path.Combine(CurrentDiagFile.TmpWorkplacePath, "microsoft-windows-shell-core-operational.evtx"));
-            }
+            AutopilotProfileStatusTextBox.Text = _autopilotUtil.GetLocalAutopilotProfileStatus()?.ToString()
+                .Replace("\n", Environment.NewLine);
+            _autopilotUtil.GetCloudSessionHostRecords();
         }
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)

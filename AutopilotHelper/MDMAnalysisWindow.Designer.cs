@@ -35,9 +35,16 @@
             helpToolStripMenuItem = new ToolStripMenuItem();
             tabControl1 = new TabControl();
             GeneralTab = new TabPage();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            progressBar1 = new ProgressBar();
             OOBETab = new TabPage();
+            label4 = new Label();
+            AutopilotProfileStatusTextBox = new TextBox();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
+            GeneralTab.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -87,6 +94,12 @@
             // 
             // GeneralTab
             // 
+            GeneralTab.Controls.Add(AutopilotProfileStatusTextBox);
+            GeneralTab.Controls.Add(label4);
+            GeneralTab.Controls.Add(label3);
+            GeneralTab.Controls.Add(label2);
+            GeneralTab.Controls.Add(label1);
+            GeneralTab.Controls.Add(progressBar1);
             GeneralTab.Location = new Point(4, 24);
             GeneralTab.Name = "GeneralTab";
             GeneralTab.Padding = new Padding(3);
@@ -94,6 +107,43 @@
             GeneralTab.TabIndex = 0;
             GeneralTab.Text = "General";
             GeneralTab.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.Location = new Point(98, 62);
+            label3.Name = "label3";
+            label3.Size = new Size(59, 15);
+            label3.TabIndex = 3;
+            label3.Text = "Language";
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label2.AutoSize = true;
+            label2.Location = new Point(8, 62);
+            label2.Name = "label2";
+            label2.Size = new Size(38, 30);
+            label2.TabIndex = 2;
+            label2.Text = "OOBE\r\nBegin";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(8, 7);
+            label1.Name = "label1";
+            label1.Size = new Size(92, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Overall Progress";
+            // 
+            // progressBar1
+            // 
+            progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            progressBar1.Location = new Point(6, 25);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(776, 23);
+            progressBar1.TabIndex = 0;
             // 
             // OOBETab
             // 
@@ -104,6 +154,27 @@
             OOBETab.TabIndex = 1;
             OOBETab.Text = "OOBE";
             OOBETab.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 120);
+            label4.Name = "label4";
+            label4.Size = new Size(129, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Autopilot Profile Status";
+            // 
+            // AutopilotProfileStatusTextBox
+            // 
+            AutopilotProfileStatusTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            AutopilotProfileStatusTextBox.Location = new Point(8, 138);
+            AutopilotProfileStatusTextBox.Multiline = true;
+            AutopilotProfileStatusTextBox.Name = "AutopilotProfileStatusTextBox";
+            AutopilotProfileStatusTextBox.ReadOnly = true;
+            AutopilotProfileStatusTextBox.ScrollBars = ScrollBars.Vertical;
+            AutopilotProfileStatusTextBox.ShortcutsEnabled = false;
+            AutopilotProfileStatusTextBox.Size = new Size(774, 123);
+            AutopilotProfileStatusTextBox.TabIndex = 5;
             // 
             // MDMAnalysisWindow
             // 
@@ -122,6 +193,8 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
+            GeneralTab.ResumeLayout(false);
+            GeneralTab.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -136,5 +209,11 @@
         private TabPage OOBETab;
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
+        private ProgressBar progressBar1;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private TextBox AutopilotProfileStatusTextBox;
+        private Label label4;
     }
 }

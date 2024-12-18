@@ -29,7 +29,7 @@ namespace AutopilotHelper.Models
                             LevelDisplayName = record.LevelDisplayName,
                             FormatDescription = record.FormatDescription()
                         });
-                        Console.WriteLine("{0} {1}: {2}", record.TimeCreated, record.LevelDisplayName, record.FormatDescription());
+                        //Console.WriteLine("{0} {1}: {2}", record.TimeCreated, record.LevelDisplayName, record.FormatDescription());
                     }
                 }
             }
