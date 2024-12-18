@@ -31,7 +31,7 @@ namespace AutopilotHelper
                 return;
             }
 
-            MDMFileUtil? util = new(fileStream, Path.GetExtension(openFileDialog1.FileName) == ".cab" ? true : false);
+            MDMFileUtil? util = new(openFileDialog1.FileName);
         }
     }
 }

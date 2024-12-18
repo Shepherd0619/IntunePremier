@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Deployment.Compression.Cab;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.IO.Packaging;
@@ -15,58 +16,54 @@ namespace AutopilotHelper.Utilities
         /// </summary>
         public string TmpWorkplacePath = Path.Combine(Path.GetTempPath(), $"IntunePremier/TmpWorkplace/{Guid.NewGuid().ToString()}");
 
-        public MDMFileUtil(Stream fileStream, bool isCab)
+        public MDMFileUtil(Stream fileStream)
         {
             if(!Directory.Exists(TmpWorkplacePath))
             {
                 Directory.CreateDirectory(TmpWorkplacePath);
             }
 
-            if (!isCab)
+            using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read, true))
             {
-                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read, true))
+                foreach (var entry in archive.Entries)
                 {
-                    foreach (var entry in archive.Entries)
+                    // Get the full path of the entry
+                    var fullPath = Path.Combine(TmpWorkplacePath, entry.FullName);
+
+                    // Create the directory if it doesn't exist
+                    var dirPath = Path.GetDirectoryName(fullPath);
+                    if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
                     {
-                        // Get the full path of the entry
-                        var fullPath = Path.Combine(TmpWorkplacePath, entry.FullName);
-
-                        // Create the directory if it doesn't exist
-                        var dirPath = Path.GetDirectoryName(fullPath);
-                        if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
-                        {
-                            Directory.CreateDirectory(dirPath);
-                        }
-
-                        // Extract the entry to the target path
-                        entry.ExtractToFile(fullPath);
+                        Directory.CreateDirectory(dirPath);
                     }
+
+                    // Extract the entry to the target path
+                    entry.ExtractToFile(fullPath);
                 }
             }
-            else
+
+            fileStream.Close();
+            fileStream.Dispose();
+        }
+
+        public MDMFileUtil(string cabFilePath)
+        {
+            if (!Directory.Exists(TmpWorkplacePath))
             {
-                using (var package = Package.Open(fileStream))
+                Directory.CreateDirectory(TmpWorkplacePath);
+            }
+
+            var cabinet = new CabInfo(cabFilePath);
+
+            var files = cabinet.GetFiles();
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                var stream = files[i].OpenRead();
+
+                using(var reader = new StreamReader(stream))
                 {
-                    foreach (var resource in package.GetParts())
-                    {
-                        var stream = resource.GetStream();
-
-                        // Get the full path of the entry
-                        var fullPath = Path.Combine(TmpWorkplacePath, resource.Uri.ToString().Replace('/', '\\'));
-
-                        // Create the directory if it doesn't exist
-                        var dirPath = Path.GetDirectoryName(fullPath);
-                        if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
-                        {
-                            Directory.CreateDirectory(dirPath);
-                        }
-
-                        // Extract the entry to the target path
-                        using (var destStream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            stream.CopyTo(destStream);
-                        }
-                    }
+                    File.WriteAllText(Path.Combine(TmpWorkplacePath, files[i].Name), reader.ReadToEnd());
                 }
             }
         }

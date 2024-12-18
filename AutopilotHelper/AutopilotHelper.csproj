@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSFTCompression.Core.Cab" Version="1.0.1" />
+  </ItemGroup>
 
 </Project>
