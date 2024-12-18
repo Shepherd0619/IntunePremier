@@ -10,7 +10,7 @@ namespace AutopilotHelper.Models
 {
     public class EventViewerFile
     {
-        public readonly List<EventRecord> records = new();
+        public readonly List<Record> records = new();
 
         public EventViewerFile(string fileName)
         {
@@ -23,11 +23,23 @@ namespace AutopilotHelper.Models
                 {
                     using (record)
                     {
-                        records.Add(record);
+                        records.Add(new()
+                        {
+                            TimeCreated = record.TimeCreated,
+                            LevelDisplayName = record.LevelDisplayName,
+                            FormatDescription = record.FormatDescription()
+                        });
                         Console.WriteLine("{0} {1}: {2}", record.TimeCreated, record.LevelDisplayName, record.FormatDescription());
                     }
                 }
             }
+        }
+
+        public struct Record
+        {
+            public DateTime? TimeCreated;
+            public string LevelDisplayName;
+            public string FormatDescription;
         }
     }
 }
