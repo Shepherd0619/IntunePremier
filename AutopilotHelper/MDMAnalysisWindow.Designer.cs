@@ -30,6 +30,8 @@
         {
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            closeToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             tabControl1 = new TabControl();
             GeneralTab = new TabPage();
@@ -49,9 +51,22 @@
             // 
             // fileToolStripMenuItem
             // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, closeToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(103, 22);
+            openToolStripMenuItem.Text = "Open";
+            // 
+            // closeToolStripMenuItem
+            // 
+            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            closeToolStripMenuItem.Size = new Size(103, 22);
+            closeToolStripMenuItem.Text = "Close";
             // 
             // helpToolStripMenuItem
             // 
@@ -63,10 +78,11 @@
             // 
             tabControl1.Controls.Add(GeneralTab);
             tabControl1.Controls.Add(OOBETab);
-            tabControl1.Location = new Point(12, 27);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 24);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(776, 411);
+            tabControl1.Size = new Size(800, 426);
             tabControl1.TabIndex = 1;
             // 
             // GeneralTab
@@ -74,7 +90,7 @@
             GeneralTab.Location = new Point(4, 24);
             GeneralTab.Name = "GeneralTab";
             GeneralTab.Padding = new Padding(3);
-            GeneralTab.Size = new Size(768, 383);
+            GeneralTab.Size = new Size(792, 398);
             GeneralTab.TabIndex = 0;
             GeneralTab.Text = "General";
             GeneralTab.UseVisualStyleBackColor = true;
@@ -84,7 +100,7 @@
             OOBETab.Location = new Point(4, 24);
             OOBETab.Name = "OOBETab";
             OOBETab.Padding = new Padding(3);
-            OOBETab.Size = new Size(768, 383);
+            OOBETab.Size = new Size(792, 398);
             OOBETab.TabIndex = 1;
             OOBETab.Text = "OOBE";
             OOBETab.UseVisualStyleBackColor = true;
@@ -93,13 +109,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            AutoSize = true;
             ClientSize = new Size(800, 450);
             Controls.Add(tabControl1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MDMAnalysisWindow";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "MDMAnalysisWindow";
+            FormClosed += MDMAnalysisWindow_FormClosed;
             Load += MDMAnalysisWindow_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -116,5 +134,7 @@
         private TabControl tabControl1;
         private TabPage GeneralTab;
         private TabPage OOBETab;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem closeToolStripMenuItem;
     }
 }

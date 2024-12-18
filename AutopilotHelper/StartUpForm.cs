@@ -31,7 +31,23 @@ namespace AutopilotHelper
                 return;
             }
 
-            MDMFileUtil? util = new(openFileDialog1.FileName);
+            MDMFileUtil util;
+            try
+            {
+                util = new(openFileDialog1.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to extract the file!\n\n{ex}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var mainForm = new MDMAnalysisWindow();
+
+            mainForm.CurrentDiagFile = util;
+            mainForm.Show();
+
+            this.Hide();
         }
     }
 }
