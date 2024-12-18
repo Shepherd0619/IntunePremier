@@ -88,6 +88,7 @@
             OpenMDMDiagButton.TabIndex = 0;
             OpenMDMDiagButton.Text = "Open MDM Diag";
             OpenMDMDiagButton.UseVisualStyleBackColor = true;
+            OpenMDMDiagButton.Click += OpenMDMDiagButton_Click;
             // 
             // saveFileDialog1
             // 
