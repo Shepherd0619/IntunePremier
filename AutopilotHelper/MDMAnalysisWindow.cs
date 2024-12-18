@@ -42,13 +42,22 @@ namespace AutopilotHelper
 
         private void MDMAnalysisWindow_Load(object sender, EventArgs e)
         {
-            AutopilotProfileStatusTextBox.Text = _autopilotUtil.GetLocalAutopilotProfileStatus()?.ToString()
-                .Replace("\n", Environment.NewLine);
+            var autopilotProfile = _autopilotUtil.GetLocalAutopilotProfileStatus();
+            if (autopilotProfile == null)
+            {
+                AutopilotProfileStatusTextBox.Text = "ERROR: Autopilot Profile is missing!";
+            }
+            else
+            {
+                AutopilotProfileStatusTextBox.Text = _autopilotUtil.GetLocalAutopilotProfileStatus()?.ToString()
+                    .Replace("\n", Environment.NewLine);
+            }
             _autopilotUtil.GetCloudSessionHostRecords();
         }
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Directory.Delete(_diagFile?.TmpWorkplacePath, true);
             Application.Exit();
         }
     }
