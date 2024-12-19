@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutopilotHelper.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AutopilotHelper.Utilities
 {
@@ -57,6 +58,20 @@ namespace AutopilotHelper.Utilities
                 return sb.ToString();
             }
 
+            //// Profile Information
+            //sb.Append("Profile:                  ").AppendLine(autopilotLocalProfile.DeploymentProfileName);
+            //sb.Append("TenantDomain:             ").AppendLine(autopilotLocalProfile.CloudAssignedTenantDomain);
+            //sb.Append("TenantID:                 ").AppendLine(autopilotLocalProfile.CloudAssignedTenantId);
+
+            //// Correlation Information
+            //sb.Append("ZTDID:                    ").AppendLine(autopilotLocalProfile.ZtdRegistrationId);
+            ////sb.Append("EntDMID:                  ").AppendLine(autopilotLocalProfile.EntDMID);
+
+            sb.AppendLine(autopilotLocalProfile.ToString());
+
+            sb.AppendLine();
+
+            #region Read Registry file
             object ConvertValue(string value)
             {
                 try
@@ -69,7 +84,7 @@ namespace AutopilotHelper.Utilities
                 }
             }
 
-            #region Read Registry file
+            
             // 读取reg文件内容
             string regContent = File.ReadAllText(Path.Combine(MDMDiag.TmpWorkplacePath, "MdmDiagReport_RegistryDump.reg"));
 
