@@ -33,18 +33,23 @@
             openToolStripMenuItem = new ToolStripMenuItem();
             closeToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
             tabControl1 = new TabControl();
-            GeneralTab = new TabPage();
+            AutopilotDiagTab = new TabPage();
+            autopilotDiagTextBox1 = new RichTextBox();
+            ProfileTab = new TabPage();
+            label5 = new Label();
+            AutopilotProfileStatusTextBox = new TextBox();
+            label4 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             progressBar1 = new ProgressBar();
             OOBETab = new TabPage();
-            label4 = new Label();
-            AutopilotProfileStatusTextBox = new TextBox();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
-            GeneralTab.SuspendLayout();
+            AutopilotDiagTab.SuspendLayout();
+            ProfileTab.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -77,13 +82,21 @@
             // 
             // helpToolStripMenuItem
             // 
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
             // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(107, 22);
+            aboutToolStripMenuItem.Text = "About";
+            // 
             // tabControl1
             // 
-            tabControl1.Controls.Add(GeneralTab);
+            tabControl1.Controls.Add(AutopilotDiagTab);
+            tabControl1.Controls.Add(ProfileTab);
             tabControl1.Controls.Add(OOBETab);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 24);
@@ -92,27 +105,80 @@
             tabControl1.Size = new Size(800, 426);
             tabControl1.TabIndex = 1;
             // 
-            // GeneralTab
+            // AutopilotDiagTab
             // 
-            GeneralTab.Controls.Add(AutopilotProfileStatusTextBox);
-            GeneralTab.Controls.Add(label4);
-            GeneralTab.Controls.Add(label3);
-            GeneralTab.Controls.Add(label2);
-            GeneralTab.Controls.Add(label1);
-            GeneralTab.Controls.Add(progressBar1);
-            GeneralTab.Location = new Point(4, 24);
-            GeneralTab.Name = "GeneralTab";
-            GeneralTab.Padding = new Padding(3);
-            GeneralTab.Size = new Size(792, 398);
-            GeneralTab.TabIndex = 0;
-            GeneralTab.Text = "General";
-            GeneralTab.UseVisualStyleBackColor = true;
+            AutopilotDiagTab.Controls.Add(autopilotDiagTextBox1);
+            AutopilotDiagTab.Location = new Point(4, 24);
+            AutopilotDiagTab.Name = "AutopilotDiagTab";
+            AutopilotDiagTab.Size = new Size(792, 398);
+            AutopilotDiagTab.TabIndex = 2;
+            AutopilotDiagTab.Text = "Diagnostics";
+            AutopilotDiagTab.UseVisualStyleBackColor = true;
+            // 
+            // autopilotDiagTextBox1
+            // 
+            autopilotDiagTextBox1.Dock = DockStyle.Fill;
+            autopilotDiagTextBox1.Location = new Point(0, 0);
+            autopilotDiagTextBox1.Name = "autopilotDiagTextBox1";
+            autopilotDiagTextBox1.ReadOnly = true;
+            autopilotDiagTextBox1.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+            autopilotDiagTextBox1.Size = new Size(792, 398);
+            autopilotDiagTextBox1.TabIndex = 0;
+            autopilotDiagTextBox1.Text = "";
+            // 
+            // ProfileTab
+            // 
+            ProfileTab.Controls.Add(label5);
+            ProfileTab.Controls.Add(AutopilotProfileStatusTextBox);
+            ProfileTab.Controls.Add(label4);
+            ProfileTab.Controls.Add(label3);
+            ProfileTab.Controls.Add(label2);
+            ProfileTab.Controls.Add(label1);
+            ProfileTab.Controls.Add(progressBar1);
+            ProfileTab.Location = new Point(4, 24);
+            ProfileTab.Name = "ProfileTab";
+            ProfileTab.Padding = new Padding(3);
+            ProfileTab.Size = new Size(792, 398);
+            ProfileTab.TabIndex = 0;
+            ProfileTab.Text = "Profile";
+            ProfileTab.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Location = new Point(8, 12);
+            label5.Name = "label5";
+            label5.Size = new Size(191, 15);
+            label5.TabIndex = 6;
+            label5.Text = "* Based on end user's pespective.";
+            // 
+            // AutopilotProfileStatusTextBox
+            // 
+            AutopilotProfileStatusTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            AutopilotProfileStatusTextBox.Location = new Point(8, 169);
+            AutopilotProfileStatusTextBox.Multiline = true;
+            AutopilotProfileStatusTextBox.Name = "AutopilotProfileStatusTextBox";
+            AutopilotProfileStatusTextBox.ReadOnly = true;
+            AutopilotProfileStatusTextBox.ScrollBars = ScrollBars.Vertical;
+            AutopilotProfileStatusTextBox.ShortcutsEnabled = false;
+            AutopilotProfileStatusTextBox.Size = new Size(774, 123);
+            AutopilotProfileStatusTextBox.TabIndex = 5;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 151);
+            label4.Name = "label4";
+            label4.Size = new Size(129, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Autopilot Profile Status";
             // 
             // label3
             // 
             label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label3.AutoSize = true;
-            label3.Location = new Point(98, 62);
+            label3.Location = new Point(98, 93);
             label3.Name = "label3";
             label3.Size = new Size(59, 15);
             label3.TabIndex = 3;
@@ -122,7 +188,7 @@
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(8, 62);
+            label2.Location = new Point(8, 93);
             label2.Name = "label2";
             label2.Size = new Size(38, 30);
             label2.TabIndex = 2;
@@ -131,7 +197,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(8, 7);
+            label1.Location = new Point(8, 38);
             label1.Name = "label1";
             label1.Size = new Size(92, 15);
             label1.TabIndex = 1;
@@ -140,7 +206,7 @@
             // progressBar1
             // 
             progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar1.Location = new Point(6, 25);
+            progressBar1.Location = new Point(6, 56);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(776, 23);
             progressBar1.TabIndex = 0;
@@ -154,27 +220,6 @@
             OOBETab.TabIndex = 1;
             OOBETab.Text = "OOBE";
             OOBETab.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(6, 120);
-            label4.Name = "label4";
-            label4.Size = new Size(129, 15);
-            label4.TabIndex = 4;
-            label4.Text = "Autopilot Profile Status";
-            // 
-            // AutopilotProfileStatusTextBox
-            // 
-            AutopilotProfileStatusTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            AutopilotProfileStatusTextBox.Location = new Point(8, 138);
-            AutopilotProfileStatusTextBox.Multiline = true;
-            AutopilotProfileStatusTextBox.Name = "AutopilotProfileStatusTextBox";
-            AutopilotProfileStatusTextBox.ReadOnly = true;
-            AutopilotProfileStatusTextBox.ScrollBars = ScrollBars.Vertical;
-            AutopilotProfileStatusTextBox.ShortcutsEnabled = false;
-            AutopilotProfileStatusTextBox.Size = new Size(774, 123);
-            AutopilotProfileStatusTextBox.TabIndex = 5;
             // 
             // MDMAnalysisWindow
             // 
@@ -193,8 +238,9 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
-            GeneralTab.ResumeLayout(false);
-            GeneralTab.PerformLayout();
+            AutopilotDiagTab.ResumeLayout(false);
+            ProfileTab.ResumeLayout(false);
+            ProfileTab.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -205,7 +251,7 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private TabControl tabControl1;
-        private TabPage GeneralTab;
+        private TabPage ProfileTab;
         private TabPage OOBETab;
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
@@ -215,5 +261,9 @@
         private Label label1;
         private TextBox AutopilotProfileStatusTextBox;
         private Label label4;
+        private Label label5;
+        private TabPage AutopilotDiagTab;
+        private RichTextBox autopilotDiagTextBox1;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

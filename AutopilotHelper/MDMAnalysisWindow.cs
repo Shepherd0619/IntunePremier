@@ -53,6 +53,8 @@ namespace AutopilotHelper
                     .Replace("\n", Environment.NewLine);
             }
             _autopilotUtil.GetCloudSessionHostRecords();
+
+            autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
         }
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
