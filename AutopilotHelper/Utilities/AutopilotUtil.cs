@@ -54,7 +54,7 @@ namespace AutopilotHelper.Utilities
             var autopilotLocalProfile = GetLocalAutopilotProfileStatus();
             if (autopilotLocalProfile == null)
             {
-                sb.AppendLine("This is not an Autopilot device!");
+                sb.AppendLine("This is not an Autopilot device or autopilot profile download failed!");
                 return sb.ToString();
             }
 
@@ -83,33 +83,14 @@ namespace AutopilotHelper.Utilities
                     return value;
                 }
             }
-
-            
-            // 读取reg文件内容
-            string regContent = File.ReadAllText(Path.Combine(MDMDiag.TmpWorkplacePath, "MdmDiagReport_RegistryDump.reg"));
-
-            // 解析reg文件内容
-            int? configValue = null;
-            string[] lines = regContent.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var reg = new RegFileUtil(MDMDiag);
             #endregion
 
             #region OobeConfig
-            foreach (string line in lines)
-            {
-                if (line.StartsWith("["))
-                {
-                    continue;
-                }
-                string[] parts = line.Split(new char[] { '=' }, 2);
-                string key = parts[0].Trim();
-                if(key != "\"CloudAssignedOobeConfig\"")
-                {
-                    continue;
-                }
-
-                // eg: DWORD:0000051e
-                configValue = Convert.ToInt32(parts[1].Split(new char[] { ':' }, 2)[1].Trim(), 16);
-            }
+            
+            int? configValue = Convert.ToInt32
+                (reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\Diagnostics\\AutoPilot", 
+                "\"CloudAssignedOobeConfig\"").Split(new char[] { ':' }, 2)[1].Trim(), 16);
 
             if (configValue == null) return sb.ToString();
 
@@ -154,6 +135,18 @@ namespace AutopilotHelper.Utilities
             string[] disallowAdminMask = new string[] { "-1", "-0" };
             int disallowAdminBit = 1;
             sb.AppendLine(" Disallow admin:          " + ((configValue & (1 << disallowAdminBit)) != 0 ? "Yes   - - - - - - - - - " : "No    - - - - - - - - - ") + disallowAdminMask[0]);
+            #endregion
+
+            #region Autopilot Profile
+            if(autopilotLocalProfile.CloudAssignedDomainJoinMethod == 1)
+            {
+                sb.AppendLine("Scenario: Hybrid Entra Join");
+                sb.AppendLine("Skip Local AD Connectivity Check: " + (autopilotLocalProfile.HybridJoinSkipDCConnectivityCheck == 1 ? "YES":"NO"));
+            }
+            else
+            {
+                sb.AppendLine("Scenario: Entra Join");
+            }
             #endregion
 
             return sb.ToString();
