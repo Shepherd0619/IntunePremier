@@ -63,7 +63,7 @@ namespace AutopilotHelper.Utilities
                     continue;
                 }
 
-                return parts[1];
+                return parts[1].Replace("\"", string.Empty);
             }
 
             throw new KeyNotFoundException();

@@ -101,6 +101,47 @@ namespace AutopilotHelper.Utilities
             sb.AppendLine();
             #endregion
 
+            #region ESP
+            //[HKEY_LOCAL_MACHINE\software\microsoft\provisioning\OMADM\Logger]
+            //"CurrentEnrollmentId" = "4F823456-CCB7-4F35-9162-6860AEB328FC"
+            var espPath = 
+                $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
+            var firstSync = $"{espPath}\\FirstSync";
+            sb.AppendLine("Enrollment status page:");
+            var skipDeviceStatusPage = reg.GetValue(firstSync, "SkipDeviceStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            sb.AppendLine("Device ESP enabled: " + (Convert.ToInt32(skipDeviceStatusPage, 16) == 0 ? "True" : "False"));
+            var skipUserStatusPage = reg.GetValue(firstSync, "SkipUserStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            sb.AppendLine("User ESP enabled: " + (Convert.ToInt32(skipUserStatusPage, 16) == 0 ? "True" : "False"));
+            var timeout = reg.GetValue(firstSync, "SyncFailureTimeout").Split(new char[] { ':' }, 2)[1].Trim();
+            sb.AppendLine($"ESP Timeout: {Convert.ToInt32(timeout, 16)}");
+
+            var espBlockingValue = reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            var espBlockingFlag = Convert.ToInt32(espBlockingValue, 16);
+            var espBlocking = espBlockingFlag == 0;
+            
+            sb.AppendLine("ESP Blocking: " + (espBlocking ? "True" : "False"));
+
+            if (espBlocking)
+            {
+                if ((espBlockingFlag & 1) != 0)
+                {
+                    sb.AppendLine("ESP allow reset:         Yes");
+                }
+
+                if ((espBlockingFlag & 2) != 0)
+                {
+                    sb.AppendLine("ESP allow try again:     Yes");
+                }
+
+                if ((espBlockingFlag & 4) != 0)
+                {
+                    sb.AppendLine("ESP continue anyway:     Yes");
+                }
+            }
+
+            sb.AppendLine();
+            #endregion
+
             #region OobeConfig
 
             int? configValue = Convert.ToInt32
