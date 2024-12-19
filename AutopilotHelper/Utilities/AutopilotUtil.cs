@@ -51,26 +51,6 @@ namespace AutopilotHelper.Utilities
             sb.AppendLine("AUTOPILOT DIAGNOSTICS");
             sb.AppendLine();
 
-            var autopilotLocalProfile = GetLocalAutopilotProfileStatus();
-            if (autopilotLocalProfile == null)
-            {
-                sb.AppendLine("This is not an Autopilot device or autopilot profile download failed!");
-                return sb.ToString();
-            }
-
-            //// Profile Information
-            //sb.Append("Profile:                  ").AppendLine(autopilotLocalProfile.DeploymentProfileName);
-            //sb.Append("TenantDomain:             ").AppendLine(autopilotLocalProfile.CloudAssignedTenantDomain);
-            //sb.Append("TenantID:                 ").AppendLine(autopilotLocalProfile.CloudAssignedTenantId);
-
-            //// Correlation Information
-            //sb.Append("ZTDID:                    ").AppendLine(autopilotLocalProfile.ZtdRegistrationId);
-            ////sb.Append("EntDMID:                  ").AppendLine(autopilotLocalProfile.EntDMID);
-
-            sb.AppendLine(autopilotLocalProfile.ToString());
-
-            sb.AppendLine();
-
             #region Read Registry file
             object ConvertValue(string value)
             {
@@ -83,14 +63,49 @@ namespace AutopilotHelper.Utilities
                     return value;
                 }
             }
-            var reg = new RegFileUtil(MDMDiag);
+
+            RegFileUtil reg;
+            try
+            {
+                reg = new RegFileUtil(MDMDiag);
+            }
+            catch
+            {
+                sb.AppendLine("ERROR: Autopilot registry is missing!");
+                return sb.ToString();
+            }
+
+            var autopilotRegPath = "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\Diagnostics\\AutoPilot";
+            var correlationsPath = "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\Diagnostics\\AutoPilot\\EstablishedCorrelations";
+            #endregion
+
+            var autopilotLocalProfile = GetLocalAutopilotProfileStatus();
+            if (autopilotLocalProfile == null)
+            {
+                sb.AppendLine("WARNING: Possibly Autopilot profile download failed!");
+                sb.AppendLine();
+            }
+
+            #region Autopilot Registry
+            // Profile Information
+            sb.Append("Profile:                  ").AppendLine(reg.GetValue(autopilotRegPath, "DeploymentProfileName"));
+            sb.Append("TenantDomain:             ").AppendLine(reg.GetValue(autopilotRegPath, "CloudAssignedTenantDomain"));
+            sb.Append("TenantID:                 ").AppendLine(reg.GetValue(autopilotRegPath, "CloudAssignedTenantId"));
+
+            // Correlation Information
+            sb.Append("ZTDID:                    ").AppendLine(reg.GetValue(correlationsPath, "ZtdRegistrationId"));
+            sb.Append("EntDMID:                  ").AppendLine(reg.GetValue(correlationsPath, "EntDMID"));
+
+            //sb.AppendLine(autopilotLocalProfile.ToString());
+
+            sb.AppendLine();
             #endregion
 
             #region OobeConfig
-            
+
             int? configValue = Convert.ToInt32
-                (reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\Diagnostics\\AutoPilot", 
-                "\"CloudAssignedOobeConfig\"").Split(new char[] { ':' }, 2)[1].Trim(), 16);
+                (reg.GetValue(autopilotRegPath, 
+                "CloudAssignedOobeConfig").Split(new char[] { ':' }, 2)[1].Trim(), 16);
 
             if (configValue == null) return sb.ToString();
 

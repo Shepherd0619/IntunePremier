@@ -26,20 +26,21 @@ namespace AutopilotHelper.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Read registry key value pair.
         /// </summary>
-        /// <param name="key">eg: "CloudAssignedOobeConfig"</param>
+        /// <param name="key"></param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         public string GetValue(string path, string key)
         {
             bool pathLocated = false;
+            key = "\"" + key + "\"";
 
             foreach (string line in lines)
             {
                 if (!pathLocated)
                 {
-                    if (!line.StartsWith($"[{path}"))
+                    if (!line.StartsWith($"[{path}", StringComparison.CurrentCultureIgnoreCase))
                     {
                         continue;
                     }
