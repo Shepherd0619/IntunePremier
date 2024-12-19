@@ -36,6 +36,7 @@
             OpenMDMDiagButton = new Button();
             saveFileDialog1 = new SaveFileDialog();
             RecentMDMDiagList = new ListBox();
+            label2 = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -46,9 +47,10 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(193, 30);
+            label1.Size = new Size(280, 42);
             label1.TabIndex = 0;
             label1.Text = "Welcome to Autopilot Helper.\nMade by Shepherd Zhu (v-ziruizhu)";
             // 
@@ -70,6 +72,7 @@
             AboutMeButton.TabIndex = 2;
             AboutMeButton.Text = "About";
             AboutMeButton.UseVisualStyleBackColor = true;
+            AboutMeButton.Click += AboutMeButton_Click;
             // 
             // CollectMDMDiagButton
             // 
@@ -100,16 +103,26 @@
             RecentMDMDiagList.FormattingEnabled = true;
             RecentMDMDiagList.ItemHeight = 15;
             RecentMDMDiagList.Items.AddRange(new object[] { "ExampleFile.cab", "ExmapleFile.zip" });
-            RecentMDMDiagList.Location = new Point(232, 59);
+            RecentMDMDiagList.Location = new Point(232, 89);
             RecentMDMDiagList.Name = "RecentMDMDiagList";
-            RecentMDMDiagList.Size = new Size(556, 379);
+            RecentMDMDiagList.Size = new Size(556, 349);
             RecentMDMDiagList.TabIndex = 2;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(232, 59);
+            label2.Name = "label2";
+            label2.Size = new Size(128, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Recent diagnostic files:";
             // 
             // StartUpForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label2);
             Controls.Add(RecentMDMDiagList);
             Controls.Add(panel1);
             Controls.Add(label1);
@@ -133,5 +146,6 @@
         private Button OpenMDMDiagButton;
         private SaveFileDialog saveFileDialog1;
         private ListBox RecentMDMDiagList;
+        private Label label2;
     }
 }

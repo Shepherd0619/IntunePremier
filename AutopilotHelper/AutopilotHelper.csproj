@@ -8,11 +8,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Platforms>AnyCPU</Platforms>
+    <Copyright>© 2024 Shepherd Zhu</Copyright>
+    <PackageProjectUrl>https://shepherd0619.github.io/</PackageProjectUrl>
+	  <Authors>Shepherd Zhu (v-ziruizhu)</Authors>
+	  <Description>This program is provided as open source project. For licensing, please check BSD 3 Clause.</Description>
+	  <PackageIcon>appicon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MSFTCompression.Core.Cab" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appicon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
