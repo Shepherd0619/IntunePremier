@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using AutopilotHelper.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -203,9 +206,126 @@ namespace AutopilotHelper.Utilities
             {
                 sb.AppendLine("Scenario: Entra Join");
             }
+
+            sb.AppendLine();
+            #endregion
+
+            #region Hardware Hash
+            try
+            {
+                sb.AppendLine(DecodeHardwareHash());
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine("Failed to decode hardware hash. Please check whether ADK is installed and AutopilotHash CSV file exist.");
+                sb.AppendLine("To install ADK, please visit https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install");
+                sb.AppendLine();
+                sb.AppendLine(ex.ToString());
+            }
             #endregion
 
             return sb.ToString();
+        }
+
+        public string DecodeHardwareHash()
+        {
+            // Check if ADK is installed and OA3 Tool exists
+            string adkPath = AdkUtil.GetAdkPath();
+            string oa3ToolPath = AdkUtil.GetOA3ToolPath(adkPath);
+            var hash = string.Empty;
+
+            if (oa3ToolPath != null && !string.IsNullOrEmpty(oa3ToolPath))
+            {
+                // Grab hash from csv
+                var fileList = Directory.GetFiles(_MDMDiag.TmpWorkplacePath);
+                for(int i = 0; i < fileList.Length; i++)
+                {
+                    var fileName = Path.GetFileName(fileList[i]);
+                    var extension = Path.GetExtension(fileList[i]);
+                    if (fileName.StartsWith("DeviceHash_") && extension == ".csv")
+                    {
+                        using (StreamReader sr = new StreamReader(fileName))
+                        {
+                            // 跳过标题行
+                            sr.ReadLine();
+
+                            while (!sr.EndOfStream)
+                            {
+                                string line = sr.ReadLine();
+                                string[] columns = line.Split(',');
+
+                                hash = columns[2];
+                            }
+                        }
+                    }
+
+
+                    break;
+                }
+
+                // Decode hardware hash
+                string commandLineArgs = $"/DecodeHwHash:{hash}";
+                Process process = new Process();
+                process.StartInfo.FileName = oa3ToolPath;
+                process.StartInfo.Arguments = commandLineArgs;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+
+                // Read output
+                string output = "";
+                while (!process.StandardOutput.EndOfStream)
+                {
+                    output += process.StandardOutput.ReadLine();
+                }
+
+                // Close the process
+                process.WaitForExit();
+
+                // 处理掉刚开始的工具版本信息。
+                int startIndex = output.IndexOf("Decoded Hardware Hash:") + "Decoded Hardware Hash:".Length;
+                output = output.Substring(startIndex);
+
+                // Parse XML output
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(output);
+
+                // Display hardware information
+                StringBuilder sb = new StringBuilder("Hardware Information:\n");
+
+                XmlNodeList nodeList = xmlDoc.GetElementsByTagName("p");
+                foreach (XmlNode node in nodeList)
+                {
+                    if (node.Attributes["n"] != null && node.Attributes["v"] != null)
+                    {
+                        string key = node.Attributes["n"].Value;
+                        string value = node.Attributes["v"].Value;
+
+                        switch (key)
+                        {
+                            case "OsBuild":
+                                sb.Append($"Operating System Build: {value}\n");
+                                break;
+                            case "SmbiosSystemManufacturer":
+                                sb.Append($"Manufacturer: {value}\n");
+                                break;
+                            case "SmbiosSystemProductName":
+                                sb.Append($"Model: {value}\n");
+                                break;
+                            case "SmbiosSystemSerialNumber":
+                                sb.Append($"Serial Number: {value}\n");
+                                break;
+                            case "TPMVersion":
+                                sb.Append($"TPM Version: {value}\n");
+                                break;
+                        }
+                    }
+                }
+
+                return sb.ToString();
+            }
+
+            throw new VersionNotFoundException();
         }
     }
 }
