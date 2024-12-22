@@ -244,7 +244,7 @@ namespace AutopilotHelper.Utilities
                     var extension = Path.GetExtension(fileList[i]);
                     if (fileName.StartsWith("DeviceHash_") && extension == ".csv")
                     {
-                        using (StreamReader sr = new StreamReader(fileName))
+                        using (StreamReader sr = new StreamReader(fileList[i]))
                         {
                             // 跳过标题行
                             sr.ReadLine();
@@ -256,11 +256,10 @@ namespace AutopilotHelper.Utilities
 
                                 hash = columns[2];
                             }
+
+                            break;
                         }
                     }
-
-
-                    break;
                 }
 
                 // Decode hardware hash
@@ -285,6 +284,10 @@ namespace AutopilotHelper.Utilities
                 // 处理掉刚开始的工具版本信息。
                 int startIndex = output.IndexOf("Decoded Hardware Hash:") + "Decoded Hardware Hash:".Length;
                 output = output.Substring(startIndex);
+
+                // 处理掉结尾的信息
+                startIndex = output.IndexOf("</HardwareInventory></HardwareReport>") + "</HardwareInventory></HardwareReport>".Length;
+                output = output.Remove(startIndex);
 
                 // Parse XML output
                 XmlDocument xmlDoc = new XmlDocument();
