@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutopilotHelper.Utilities
+﻿namespace AutopilotHelper.Utilities
 {
     public static class AdkUtil
     {
@@ -27,7 +21,7 @@ namespace AutopilotHelper.Utilities
         {
             if (!string.IsNullOrEmpty(adkPath))
             {
-                string oa3ToolPath = Path.Combine(adkPath, 
+                string oa3ToolPath = Path.Combine(adkPath,
                     $"Assessment and Deployment Kit\\Deployment Tools\\{Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE").ToLower()}\\Licensing\\OA30\\oa3tool.exe");
 
                 return oa3ToolPath;

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutopilotHelper.Models;
+using Newtonsoft.Json;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
-using AutopilotHelper.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AutopilotHelper.Utilities
 {
@@ -52,11 +45,11 @@ namespace AutopilotHelper.Utilities
 
         public List<EventViewerFile.Record> GetCloudSessionHostRecords()
         {
-            EventViewerFile file = new(Path.Combine(MDMDiag.TmpWorkplacePath, 
+            EventViewerFile file = new(Path.Combine(MDMDiag.TmpWorkplacePath,
                 "microsoft-windows-shell-core-operational.evtx"));
 
             return file.records
-                .Where(search => !string.IsNullOrEmpty(search.FormatDescription) 
+                .Where(search => !string.IsNullOrEmpty(search.FormatDescription)
                 && search.FormatDescription.StartsWith("CloudExperienceHost"))
                 .OrderByDescending(search => search.TimeCreated)
                 .ToList();
@@ -121,7 +114,7 @@ namespace AutopilotHelper.Utilities
             #region ESP
             //[HKEY_LOCAL_MACHINE\software\microsoft\provisioning\OMADM\Logger]
             //"CurrentEnrollmentId" = "4F823456-CCB7-4F35-9162-6860AEB328FC"
-            var espPath = 
+            var espPath =
                 $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{_Reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
             var firstSync = $"{espPath}\\FirstSync";
             sb.AppendLine("Enrollment status page:");
@@ -135,7 +128,7 @@ namespace AutopilotHelper.Utilities
             var espBlockingValue = _Reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
             var espBlockingFlag = Convert.ToInt32(espBlockingValue, 16);
             var espBlocking = espBlockingFlag == 0;
-            
+
             sb.AppendLine("ESP Blocking: " + (espBlocking ? "True" : "False"));
 
             if (espBlocking)
@@ -162,7 +155,7 @@ namespace AutopilotHelper.Utilities
             #region OobeConfig
 
             int? configValue = Convert.ToInt32
-                (_Reg.GetValue(autopilotRegPath, 
+                (_Reg.GetValue(autopilotRegPath,
                 "CloudAssignedOobeConfig").Split(new char[] { ':' }, 2)[1].Trim(), 16);
 
             if (configValue == null) return sb.ToString();
@@ -211,10 +204,10 @@ namespace AutopilotHelper.Utilities
             #endregion
 
             #region Autopilot Profile
-            if(autopilotLocalProfile.CloudAssignedDomainJoinMethod == 1)
+            if (autopilotLocalProfile.CloudAssignedDomainJoinMethod == 1)
             {
                 sb.AppendLine("Scenario: Hybrid Entra Join");
-                sb.AppendLine("Skip Local AD Connectivity Check: " + (autopilotLocalProfile.HybridJoinSkipDCConnectivityCheck == 1 ? "YES":"NO"));
+                sb.AppendLine("Skip Local AD Connectivity Check: " + (autopilotLocalProfile.HybridJoinSkipDCConnectivityCheck == 1 ? "YES" : "NO"));
             }
             else
             {
@@ -255,7 +248,7 @@ namespace AutopilotHelper.Utilities
             {
                 // Grab hash from csv
                 var fileList = Directory.GetFiles(_MDMDiag.TmpWorkplacePath);
-                for(int i = 0; i < fileList.Length; i++)
+                for (int i = 0; i < fileList.Length; i++)
                 {
                     var fileName = Path.GetFileName(fileList[i]);
                     var extension = Path.GetExtension(fileList[i]);
@@ -352,7 +345,7 @@ namespace AutopilotHelper.Utilities
         {
             StringBuilder sb = new StringBuilder();
 
-            if(_Reg == null)
+            if (_Reg == null)
             {
                 sb.AppendLine("Due to unable to load the MDM registry file, we will skip the ProcessedPolicies list.");
             }
@@ -369,9 +362,9 @@ namespace AutopilotHelper.Utilities
                 var path = _Reg.Lines[i];
                 path = path.Substring(1, path.Length - 2);
                 node.id = int.Parse(
-                    path.Substring("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length, 
+                    path.Substring("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length,
                     path.Length - "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length));
-                
+
                 try
                 {
                     node.NodeUri = _Reg.GetValue(path, "NodeUri");
@@ -398,7 +391,7 @@ namespace AutopilotHelper.Utilities
             for (int i = 0; i < nodes.Count; i++)
             {
                 sb.AppendLine($"CSP [{nodes[i].id}]:\nURI: {nodes[i].NodeUri}\nExpected Value: {nodes[i].ExpectedValue}");
-                if(i < nodes.Count - 1)
+                if (i < nodes.Count - 1)
                     sb.AppendLine();
             }
 

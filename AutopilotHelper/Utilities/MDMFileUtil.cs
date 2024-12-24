@@ -1,12 +1,5 @@
-﻿using Microsoft.Deployment.Compression.Cab;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO.Compression;
-using System.IO.Packaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutopilotHelper.Utilities
 {
@@ -19,7 +12,7 @@ namespace AutopilotHelper.Utilities
 
         public MDMFileUtil(Stream fileStream)
         {
-            if(!Directory.Exists(TmpWorkplacePath))
+            if (!Directory.Exists(TmpWorkplacePath))
             {
                 Directory.CreateDirectory(TmpWorkplacePath);
             }

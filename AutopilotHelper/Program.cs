@@ -20,7 +20,7 @@ namespace AutopilotHelper
                     "If you wish to decode hardware hash, ADK is required.\n\n" +
                     "Head to Microsoft Learn for download?", "Windows ADK is missing", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-                if(result == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.FileName = "https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install"; // Õ¯“≥µÿ÷∑
