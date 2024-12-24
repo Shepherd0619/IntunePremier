@@ -412,11 +412,17 @@ namespace AutopilotHelper.Utilities
                 return string.Empty;
 
             var sb = new StringBuilder();
+
+            sb.AppendLine("<h1>Processed Policies</h1");
+            sb.AppendLine("<p>*Based on <i>MdmDiagReport_RegistryDump.reg</i> .</p>");
+
             sb.AppendLine("<style>");
 
             // grid 布局
             sb.AppendLine("table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }");
             sb.AppendLine("th, td { padding: 10px; border: 0.5px solid #ddd; text-align: left; }");
+            sb.AppendLine("th { background-color: #04AA6D; color: white;}");
+            sb.AppendLine("tr:hover {background-color: coral;}");
 
             // 添加媒体查询
             sb.AppendLine("@media (max-width: 768px) { table { grid-template-columns: repeat(2, 1fr); } }");
