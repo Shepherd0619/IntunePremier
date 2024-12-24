@@ -4,8 +4,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using AutopilotHelper.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,12 +16,29 @@ namespace AutopilotHelper.Utilities
 {
     public class AutopilotUtil
     {
-        public MDMFileUtil MDMDiag => _MDMDiag;
+        public MDMFileUtil MDMDiag
+        {
+            get => _MDMDiag;
+
+            set
+            {
+                _MDMDiag = value;
+                try
+                {
+                    _Reg = new RegFileUtil(MDMDiag);
+                }
+                catch
+                {
+                    Console.WriteLine("ERROR: Autopilot registry is missing!");
+                }
+            }
+        }
         private MDMFileUtil _MDMDiag;
+        private RegFileUtil _Reg;
 
         public AutopilotUtil(MDMFileUtil file)
         {
-            _MDMDiag = file;
+            MDMDiag = file;
 
             GetLocalAutopilotProfileStatus();
         }
@@ -67,12 +86,7 @@ namespace AutopilotHelper.Utilities
                 }
             }
 
-            RegFileUtil reg;
-            try
-            {
-                reg = new RegFileUtil(MDMDiag);
-            }
-            catch
+            if (_Reg == null)
             {
                 sb.AppendLine("ERROR: Autopilot registry is missing!");
                 return sb.ToString();
@@ -91,13 +105,13 @@ namespace AutopilotHelper.Utilities
 
             #region Autopilot Registry
             // Profile Information
-            sb.Append("Profile:                  ").AppendLine(reg.GetValue(autopilotRegPath, "DeploymentProfileName"));
-            sb.Append("TenantDomain:             ").AppendLine(reg.GetValue(autopilotRegPath, "CloudAssignedTenantDomain"));
-            sb.Append("TenantID:                 ").AppendLine(reg.GetValue(autopilotRegPath, "CloudAssignedTenantId"));
+            sb.Append("Profile:                  ").AppendLine(_Reg.GetValue(autopilotRegPath, "DeploymentProfileName"));
+            sb.Append("TenantDomain:             ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantDomain"));
+            sb.Append("TenantID:                 ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantId"));
 
             // Correlation Information
-            sb.Append("ZTDID:                    ").AppendLine(reg.GetValue(correlationsPath, "ZtdRegistrationId"));
-            sb.Append("EntDMID:                  ").AppendLine(reg.GetValue(correlationsPath, "EntDMID"));
+            sb.Append("ZTDID:                    ").AppendLine(_Reg.GetValue(correlationsPath, "ZtdRegistrationId"));
+            sb.Append("EntDMID:                  ").AppendLine(_Reg.GetValue(correlationsPath, "EntDMID"));
 
             //sb.AppendLine(autopilotLocalProfile.ToString());
 
@@ -108,17 +122,17 @@ namespace AutopilotHelper.Utilities
             //[HKEY_LOCAL_MACHINE\software\microsoft\provisioning\OMADM\Logger]
             //"CurrentEnrollmentId" = "4F823456-CCB7-4F35-9162-6860AEB328FC"
             var espPath = 
-                $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
+                $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{_Reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
             var firstSync = $"{espPath}\\FirstSync";
             sb.AppendLine("Enrollment status page:");
-            var skipDeviceStatusPage = reg.GetValue(firstSync, "SkipDeviceStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            var skipDeviceStatusPage = _Reg.GetValue(firstSync, "SkipDeviceStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
             sb.AppendLine("Device ESP enabled: " + (Convert.ToInt32(skipDeviceStatusPage, 16) == 0 ? "True" : "False"));
-            var skipUserStatusPage = reg.GetValue(firstSync, "SkipUserStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            var skipUserStatusPage = _Reg.GetValue(firstSync, "SkipUserStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
             sb.AppendLine("User ESP enabled: " + (Convert.ToInt32(skipUserStatusPage, 16) == 0 ? "True" : "False"));
-            var timeout = reg.GetValue(firstSync, "SyncFailureTimeout").Split(new char[] { ':' }, 2)[1].Trim();
+            var timeout = _Reg.GetValue(firstSync, "SyncFailureTimeout").Split(new char[] { ':' }, 2)[1].Trim();
             sb.AppendLine($"ESP Timeout: {Convert.ToInt32(timeout, 16)}");
 
-            var espBlockingValue = reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+            var espBlockingValue = _Reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
             var espBlockingFlag = Convert.ToInt32(espBlockingValue, 16);
             var espBlocking = espBlockingFlag == 0;
             
@@ -148,7 +162,7 @@ namespace AutopilotHelper.Utilities
             #region OobeConfig
 
             int? configValue = Convert.ToInt32
-                (reg.GetValue(autopilotRegPath, 
+                (_Reg.GetValue(autopilotRegPath, 
                 "CloudAssignedOobeConfig").Split(new char[] { ':' }, 2)[1].Trim(), 16);
 
             if (configValue == null) return sb.ToString();
@@ -223,6 +237,9 @@ namespace AutopilotHelper.Utilities
                 sb.AppendLine(ex.ToString());
             }
             #endregion
+
+            sb.AppendLine(GetProcessedPolicies());
+            sb.AppendLine();
 
             return sb.ToString();
         }
@@ -329,6 +346,63 @@ namespace AutopilotHelper.Utilities
             }
 
             throw new VersionNotFoundException();
+        }
+
+        public string GetProcessedPolicies()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if(_Reg == null)
+            {
+                sb.AppendLine("Due to unable to load the MDM registry file, we will skip the ProcessedPolicies list.");
+            }
+
+            var nodes = new List<NodeCache>();
+
+            for (int i = 0; i < _Reg.Lines.Length; i++)
+            {
+                if (!_Reg.Lines[i].StartsWith
+                    ("[HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\"))
+                    continue;
+
+                var node = new NodeCache();
+                var path = _Reg.Lines[i];
+                path = path.Substring(1, path.Length - 2);
+                node.id = int.Parse(
+                    path.Substring("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length, 
+                    path.Length - "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length));
+                
+                try
+                {
+                    node.NodeUri = _Reg.GetValue(path, "NodeUri");
+                }
+                catch
+                {
+                    // Do nothing
+                }
+
+                try
+                {
+                    node.ExpectedValue = _Reg.GetValue(path, "ExpectedValue");
+                }
+                catch
+                {
+                    // Do nothing
+                }
+
+                nodes.Add(node);
+            }
+
+            sb.AppendLine("POLICIES PROCESSED");
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                sb.AppendLine($"CSP [{nodes[i].id}]:\nURI: {nodes[i].NodeUri}\nExpected Value: {nodes[i].ExpectedValue}");
+                if(i < nodes.Count - 1)
+                    sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
     }
 }
