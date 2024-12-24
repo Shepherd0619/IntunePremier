@@ -74,9 +74,14 @@ namespace AutopilotHelper.Utilities
             var process = new Process();
             process.StartInfo = new();
             process.StartInfo.FileName = "expand.exe";
-            process.StartInfo.Arguments = $"{cabFilePath} -F:* {Path.Combine(TmpWorkplacePath)}";
+            process.StartInfo.Arguments = $"\"{cabFilePath}\" -F:* \"{Path.Combine(TmpWorkplacePath)}\"";
             process.Start();
             process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                throw new Exception($"expand exit code is {process.ExitCode}");
+            }
         }
     }
 }
