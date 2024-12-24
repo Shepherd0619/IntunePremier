@@ -30,7 +30,7 @@ namespace AutopilotHelper
             InitializeComponent();
         }
 
-        private void MDMAnalysisWindow_Load(object sender, EventArgs e)
+        private async void MDMAnalysisWindow_Load(object sender, EventArgs e)
         {
             var autopilotProfile = _autopilotUtil.GetLocalAutopilotProfileStatus();
             if (autopilotProfile == null)
@@ -45,6 +45,10 @@ namespace AutopilotHelper
             _autopilotUtil.GetCloudSessionHostRecords();
 
             autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
+
+            await ProcessedPoliciesWebView.EnsureCoreWebView2Async();
+            
+            ProcessedPoliciesWebView.NavigateToString(_autopilotUtil.GetHtmlFormattedProcessedPolicies());
         }
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)

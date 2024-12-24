@@ -46,10 +46,14 @@
             label1 = new Label();
             progressBar1 = new ProgressBar();
             OOBETab = new TabPage();
+            ProcessedPoliciesTab = new TabPage();
+            ProcessedPoliciesWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
             ProfileTab.SuspendLayout();
+            ProcessedPoliciesTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ProcessedPoliciesWebView).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -98,6 +102,7 @@
             tabControl1.Controls.Add(AutopilotDiagTab);
             tabControl1.Controls.Add(ProfileTab);
             tabControl1.Controls.Add(OOBETab);
+            tabControl1.Controls.Add(ProcessedPoliciesTab);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 24);
             tabControl1.Name = "tabControl1";
@@ -221,6 +226,28 @@
             OOBETab.Text = "OOBE";
             OOBETab.UseVisualStyleBackColor = true;
             // 
+            // ProcessedPoliciesTab
+            // 
+            ProcessedPoliciesTab.Controls.Add(ProcessedPoliciesWebView);
+            ProcessedPoliciesTab.Location = new Point(4, 24);
+            ProcessedPoliciesTab.Name = "ProcessedPoliciesTab";
+            ProcessedPoliciesTab.Size = new Size(792, 398);
+            ProcessedPoliciesTab.TabIndex = 3;
+            ProcessedPoliciesTab.Text = "Processed Policies";
+            ProcessedPoliciesTab.UseVisualStyleBackColor = true;
+            // 
+            // ProcessedPoliciesWebView
+            // 
+            ProcessedPoliciesWebView.AllowExternalDrop = true;
+            ProcessedPoliciesWebView.CreationProperties = null;
+            ProcessedPoliciesWebView.DefaultBackgroundColor = Color.White;
+            ProcessedPoliciesWebView.Dock = DockStyle.Fill;
+            ProcessedPoliciesWebView.Location = new Point(0, 0);
+            ProcessedPoliciesWebView.Name = "ProcessedPoliciesWebView";
+            ProcessedPoliciesWebView.Size = new Size(792, 398);
+            ProcessedPoliciesWebView.TabIndex = 0;
+            ProcessedPoliciesWebView.ZoomFactor = 1D;
+            // 
             // MDMAnalysisWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -241,6 +268,8 @@
             AutopilotDiagTab.ResumeLayout(false);
             ProfileTab.ResumeLayout(false);
             ProfileTab.PerformLayout();
+            ProcessedPoliciesTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ProcessedPoliciesWebView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -265,5 +294,7 @@
         private TabPage AutopilotDiagTab;
         private RichTextBox autopilotDiagTextBox1;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private TabPage ProcessedPoliciesTab;
+        private Microsoft.Web.WebView2.WinForms.WebView2 ProcessedPoliciesWebView;
     }
 }

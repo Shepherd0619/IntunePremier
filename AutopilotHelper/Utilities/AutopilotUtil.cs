@@ -29,6 +29,9 @@ namespace AutopilotHelper.Utilities
         private MDMFileUtil _MDMDiag;
         private RegFileUtil _Reg;
 
+        public List<NodeCache> NodeCaches => _NodeCaches;
+        private List<NodeCache> _NodeCaches;
+
         public AutopilotUtil(MDMFileUtil file)
         {
             MDMDiag = file;
@@ -231,8 +234,8 @@ namespace AutopilotHelper.Utilities
             }
             #endregion
 
-            sb.AppendLine(GetProcessedPolicies());
-            sb.AppendLine();
+            //sb.AppendLine(GetProcessedPolicies());
+            sb.AppendLine("For processed policies, please check the \"Processed Policies\" tab for further details.");
 
             return sb.ToString();
         }
@@ -394,6 +397,45 @@ namespace AutopilotHelper.Utilities
                 if (i < nodes.Count - 1)
                     sb.AppendLine();
             }
+
+            _NodeCaches = nodes;
+
+            return sb.ToString();
+        }
+
+        public string GetHtmlFormattedProcessedPolicies()
+        {
+            if( _NodeCaches == null )
+                GetProcessedPolicies();
+
+            if (_NodeCaches == null)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<style>");
+
+            // grid 布局
+            sb.AppendLine("table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }");
+            sb.AppendLine("th, td { padding: 10px; border: 0.5px solid #ddd; text-align: left; }");
+
+            // 添加媒体查询
+            sb.AppendLine("@media (max-width: 768px) { table { grid-template-columns: repeat(2, 1fr); } }");
+            sb.AppendLine("@media (max-width: 480px) { table { grid-template-columns: repeat(1, 1fr); } }");
+
+            sb.AppendLine("</style>");
+
+            for (int i = 0; i < _NodeCaches.Count; i++)
+            {
+                if (i == 0)
+                {
+                    sb.AppendLine("<table>");
+                    sb.AppendLine("<tr><th>ID</th><th>Node Uri</th><th>Expected Value</th></tr>");
+                }
+                sb.AppendLine($"<tr><td>{_NodeCaches[i].id}</td><td>{_NodeCaches[i].NodeUri}</td><td>{_NodeCaches[i].ExpectedValue}</td></tr>");
+                if (i < _NodeCaches.Count - 1)
+                    sb.AppendLine();
+            }
+            sb.AppendLine("</table>");
 
             return sb.ToString();
         }
