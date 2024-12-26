@@ -474,7 +474,8 @@ namespace AutopilotHelper.Utilities
 
             if (_NodeCaches == null) return string.Empty;
 
-            var possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri.StartsWith("./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/"));
+            var possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri != null 
+                && search.NodeUri.StartsWith("./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/"));
 
             var msiList = new List<string>();
             for (int i = 0; i < possibleMsiList.Count; i++)
