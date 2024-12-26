@@ -28,4 +28,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HtmlTemplates\" />
+  </ItemGroup>
+
 </Project>
