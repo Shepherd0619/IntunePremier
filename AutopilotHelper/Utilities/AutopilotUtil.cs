@@ -100,56 +100,76 @@ namespace AutopilotHelper.Utilities
             }
 
             #region Autopilot Registry
-            // Profile Information
-            sb.Append("Profile:                  ").AppendLine(_Reg.GetValue(autopilotRegPath, "DeploymentProfileName"));
-            sb.Append("TenantDomain:             ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantDomain"));
-            sb.Append("TenantID:                 ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantId"));
+            try
+            {
+                // Profile Information
+                sb.Append("Profile:                  ").AppendLine(_Reg.GetValue(autopilotRegPath, "DeploymentProfileName"));
+                sb.Append("TenantDomain:             ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantDomain"));
+                sb.Append("TenantID:                 ").AppendLine(_Reg.GetValue(autopilotRegPath, "CloudAssignedTenantId"));
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine($"Unable to fetch profile info from registry!\n\n{ex}");
+            }
 
-            // Correlation Information
-            sb.Append("ZTDID:                    ").AppendLine(_Reg.GetValue(correlationsPath, "ZtdRegistrationId"));
-            sb.Append("EntDMID:                  ").AppendLine(_Reg.GetValue(correlationsPath, "EntDMID"));
-
+            try
+            {
+                // Correlation Information
+                sb.Append("ZTDID:                    ").AppendLine(_Reg.GetValue(correlationsPath, "ZtdRegistrationId"));
+                sb.Append("EntDMID:                  ").AppendLine(_Reg.GetValue(correlationsPath, "EntDMID"));
+            }
+            catch(Exception ex)
+            {
+                sb.AppendLine($"Unable to fetch correlation info from registry!\n\n{ex}");
+            }
             //sb.AppendLine(autopilotLocalProfile.ToString());
 
             sb.AppendLine();
             #endregion
 
             #region ESP
-            //[HKEY_LOCAL_MACHINE\software\microsoft\provisioning\OMADM\Logger]
-            //"CurrentEnrollmentId" = "4F823456-CCB7-4F35-9162-6860AEB328FC"
-            var espPath =
-                $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{_Reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
-            var firstSync = $"{espPath}\\FirstSync";
-            sb.AppendLine("Enrollment status page:");
-            var skipDeviceStatusPage = _Reg.GetValue(firstSync, "SkipDeviceStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
-            sb.AppendLine("Device ESP enabled: " + (Convert.ToInt32(skipDeviceStatusPage, 16) == 0 ? "True" : "False"));
-            var skipUserStatusPage = _Reg.GetValue(firstSync, "SkipUserStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
-            sb.AppendLine("User ESP enabled: " + (Convert.ToInt32(skipUserStatusPage, 16) == 0 ? "True" : "False"));
-            var timeout = _Reg.GetValue(firstSync, "SyncFailureTimeout").Split(new char[] { ':' }, 2)[1].Trim();
-            sb.AppendLine($"ESP Timeout: {Convert.ToInt32(timeout, 16)}");
-
-            var espBlockingValue = _Reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
-            var espBlockingFlag = Convert.ToInt32(espBlockingValue, 16);
-            var espBlocking = espBlockingFlag == 0;
-
-            sb.AppendLine("ESP Blocking: " + (espBlocking ? "True" : "False"));
-
-            if (espBlocking)
+            try
             {
-                if ((espBlockingFlag & 1) != 0)
-                {
-                    sb.AppendLine("ESP allow reset:         Yes");
-                }
+                //[HKEY_LOCAL_MACHINE\software\microsoft\provisioning\OMADM\Logger]
+                //"CurrentEnrollmentId" = "4F823456-CCB7-4F35-9162-6860AEB328FC"
+                var espPath =
+                    $"HKEY_LOCAL_MACHINE\\software\\microsoft\\enrollments\\{_Reg.GetValue("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\OMADM\\Logger", "CurrentEnrollmentId")}";
+                var firstSync = $"{espPath}\\FirstSync";
+                sb.AppendLine("Enrollment status page:");
+                var skipDeviceStatusPage = _Reg.GetValue(firstSync, "SkipDeviceStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+                sb.AppendLine("Device ESP enabled: " + (Convert.ToInt32(skipDeviceStatusPage, 16) == 0 ? "True" : "False"));
+                var skipUserStatusPage = _Reg.GetValue(firstSync, "SkipUserStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+                sb.AppendLine("User ESP enabled: " + (Convert.ToInt32(skipUserStatusPage, 16) == 0 ? "True" : "False"));
+                var timeout = _Reg.GetValue(firstSync, "SyncFailureTimeout").Split(new char[] { ':' }, 2)[1].Trim();
+                sb.AppendLine($"ESP Timeout: {Convert.ToInt32(timeout, 16)}");
 
-                if ((espBlockingFlag & 2) != 0)
-                {
-                    sb.AppendLine("ESP allow try again:     Yes");
-                }
+                var espBlockingValue = _Reg.GetValue(firstSync, "BlockInStatusPage").Split(new char[] { ':' }, 2)[1].Trim();
+                var espBlockingFlag = Convert.ToInt32(espBlockingValue, 16);
+                var espBlocking = espBlockingFlag == 0;
 
-                if ((espBlockingFlag & 4) != 0)
+                sb.AppendLine("ESP Blocking: " + (espBlocking ? "True" : "False"));
+
+                if (espBlocking)
                 {
-                    sb.AppendLine("ESP continue anyway:     Yes");
+                    if ((espBlockingFlag & 1) != 0)
+                    {
+                        sb.AppendLine("ESP allow reset:         Yes");
+                    }
+
+                    if ((espBlockingFlag & 2) != 0)
+                    {
+                        sb.AppendLine("ESP allow try again:     Yes");
+                    }
+
+                    if ((espBlockingFlag & 4) != 0)
+                    {
+                        sb.AppendLine("ESP continue anyway:     Yes");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine($"ESP Diagnostics is unavailable this time!\n\n{ex}");
             }
 
             sb.AppendLine();
@@ -442,6 +462,31 @@ namespace AutopilotHelper.Utilities
                     sb.AppendLine();
             }
             sb.AppendLine("</table>");
+
+            return sb.ToString();
+        }
+
+        public string GetProcessedApps()
+        {
+            var sb = new StringBuilder();
+
+            #region MSI
+            // Get the MSI ID from ./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/
+            // Current user should be S-0-0-00-0000000000-0000000000-000000000-000
+            // eg: HKEY_LOCAL_MACHINE\software\microsoft\enterprisedesktopappmanagement\S-0-0-00-0000000000-0000000000-000000000-000\MSI\{fd14a52a-dced-4e7c-a682-fd1f442fe059}
+
+            #endregion
+
+            return sb.ToString();
+        }
+
+        public string GetLegacyObservedTimeline()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("OBSERVED TIMELINE:");
+            sb.AppendLine();
+
+
 
             return sb.ToString();
         }

@@ -47,7 +47,7 @@ namespace AutopilotHelper
             autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
 
             await ProcessedPoliciesWebView.EnsureCoreWebView2Async();
-            
+
             ProcessedPoliciesWebView.NavigateToString(_autopilotUtil.GetHtmlFormattedProcessedPolicies());
         }
 
@@ -55,6 +55,12 @@ namespace AutopilotHelper
         {
             Directory.Delete(_diagFile?.TmpWorkplacePath, true);
             Application.Exit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var about = new AboutBox();
+            about.ShowDialog();
         }
     }
 }

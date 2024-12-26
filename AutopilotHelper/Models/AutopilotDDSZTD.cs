@@ -31,9 +31,16 @@ namespace AutopilotHelper.Models
 
             foreach (var property in properties)
             {
-                if (!string.IsNullOrEmpty(property.GetValue(this).ToString()))
+                try
                 {
-                    sb.Append($"{property.Name}: {property.GetValue(this)}\n");
+                    if (!string.IsNullOrEmpty(property.GetValue(this).ToString()))
+                    {
+                        sb.Append($"{property.Name}: {property.GetValue(this)}\n");
+                    }
+                }
+                catch
+                {
+                    sb.Append($"{property.Name}: -- EMPTY --\n");
                 }
             }
 
