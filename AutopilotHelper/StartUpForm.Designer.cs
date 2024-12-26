@@ -130,6 +130,7 @@
             Name = "StartUpForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Autopilot Helper";
+            FormClosed += StartUpForm_FormClosed;
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);

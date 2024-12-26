@@ -54,13 +54,28 @@ namespace AutopilotHelper
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             Directory.Delete(_diagFile?.TmpWorkplacePath, true);
-            Application.Exit();
+            StartUpForm.Instance.analysisWindows.Remove(this);
+
+            if (StartUpForm.Instance.analysisWindows.Count <= 0)
+                Application.Exit();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var about = new AboutBox();
             about.ShowDialog();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!StartUpForm.Instance.ShowOpenMDMFileDiag()) return;
+
+            this.Close();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
