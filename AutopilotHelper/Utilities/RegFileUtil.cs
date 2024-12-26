@@ -62,5 +62,27 @@
 
             throw new KeyNotFoundException();
         }
+
+        public bool PathExist(string path)
+        {
+            bool pathLocated = false;
+            foreach (string line in lines)
+            {
+                if (!pathLocated)
+                {
+                    if (!line.StartsWith($"[{path}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        pathLocated = true;
+                        continue;
+                    }
+                }
+            }
+
+            return pathLocated;
+        }
     }
 }

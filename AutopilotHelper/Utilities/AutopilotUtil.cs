@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -70,18 +71,6 @@ namespace AutopilotHelper.Utilities
             sb.AppendLine();
 
             #region Read Registry file
-            object ConvertValue(string value)
-            {
-                try
-                {
-                    return int.Parse(value);
-                }
-                catch (FormatException)
-                {
-                    return value;
-                }
-            }
-
             if (_Reg == null)
             {
                 sb.AppendLine("ERROR: Autopilot registry is missing!");
@@ -256,6 +245,9 @@ namespace AutopilotHelper.Utilities
 
             //sb.AppendLine(GetProcessedPolicies());
             sb.AppendLine("For processed policies, please check the \"Processed Policies\" tab for further details.");
+            sb.AppendLine();
+
+            sb.AppendLine(GetProcessedApps());
 
             return sb.ToString();
         }
@@ -474,6 +466,77 @@ namespace AutopilotHelper.Utilities
             // Get the MSI ID from ./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/
             // Current user should be S-0-0-00-0000000000-0000000000-000000000-000
             // eg: HKEY_LOCAL_MACHINE\software\microsoft\enterprisedesktopappmanagement\S-0-0-00-0000000000-0000000000-000000000-000\MSI\{fd14a52a-dced-4e7c-a682-fd1f442fe059}
+            
+            if(_NodeCaches == null)
+            {
+                GetProcessedPolicies();
+            }
+
+            if (_NodeCaches == null) return string.Empty;
+
+            var possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri.StartsWith("./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/"));
+
+            var msiList = new List<string>();
+            for (int i = 0; i < possibleMsiList.Count; i++)
+            {
+                var splitString = possibleMsiList[i].NodeUri.Split('/');
+                if (splitString.Length > 7) continue;
+                // remove %7B and %7D
+                if (possibleMsiList[i].NodeUri.Contains("/MSI/") && splitString[6].Contains("%7B") && splitString[6].Contains("%7D"))
+                {
+                    msiList.Add(splitString[6].Replace("%7B", string.Empty).Replace("%7D", string.Empty));
+                }
+            }
+
+            var user = "S-0-0-00-0000000000-0000000000-000000000-000";
+            var path = "HKEY_LOCAL_MACHINE\\software\\microsoft\\enterprisedesktopappmanagement\\S-0-0-00-0000000000-0000000000-000000000-000\\MSI\\";
+            for (int i = 0; i < msiList.Count; i++)
+            {
+                var msiPath = path + "{" + msiList[i] + "}";
+
+                if (!_Reg.PathExist(msiPath)) continue;
+
+                var downloadUrl = _Reg.GetValue(msiPath, "CurrentDownloadUrl");
+                string msiKey;
+                if (downloadUrl.Contains("IntuneWindowsAgent.msi"))
+                {
+                    msiKey = $"Intune Management Extensions ({msiList[i]})";
+                }
+                else
+                {
+                    msiKey = msiList[i];
+                }
+
+                string statusText = string.Empty;
+                try
+                {
+                    var status = Convert.ToInt32(_Reg.GetValue(msiPath, "Status").Split(new char[] { ':' }, 2)[1].Trim(), 10);
+                    switch (status)
+                    {
+                        case 0:
+                            statusText = "SUCCESS";
+                            break;
+
+                        case 60:
+                            statusText = "FAILED";
+                            break;
+
+                        case 70:
+                            statusText = "INSTALLED";
+                            break;
+
+                        default:
+                            statusText = "PROCESSING";
+                            break;
+                    }
+                }
+                catch
+                {
+                    statusText = "UNKNOWN";
+                }
+
+                sb.AppendLine($"MSI: {msiKey}\nStatus: {statusText} ({_Reg.GetValue(msiPath, "DownloadInstall")})");
+            }
 
             #endregion
 
