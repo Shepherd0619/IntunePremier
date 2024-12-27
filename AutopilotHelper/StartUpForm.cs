@@ -7,7 +7,7 @@ namespace AutopilotHelper
         public static StartUpForm Instance => instance;
         private static StartUpForm instance;
 
-        public readonly Dictionary<MDMAnalysisWindow, string> analysisWindows = new ();
+        public readonly Dictionary<MDMAnalysisWindow, string> analysisWindows = new();
 
         public StartUpForm()
         {
