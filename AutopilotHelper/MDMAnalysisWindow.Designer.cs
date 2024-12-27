@@ -41,8 +41,6 @@
             label5 = new Label();
             AutopilotProfileStatusTextBox = new TextBox();
             label4 = new Label();
-            label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
             progressBar1 = new ProgressBar();
             OOBETab = new TabPage();
@@ -139,8 +137,6 @@
             ProfileTab.Controls.Add(label5);
             ProfileTab.Controls.Add(AutopilotProfileStatusTextBox);
             ProfileTab.Controls.Add(label4);
-            ProfileTab.Controls.Add(label3);
-            ProfileTab.Controls.Add(label2);
             ProfileTab.Controls.Add(label1);
             ProfileTab.Controls.Add(progressBar1);
             ProfileTab.Location = new Point(4, 24);
@@ -170,7 +166,7 @@
             AutopilotProfileStatusTextBox.ReadOnly = true;
             AutopilotProfileStatusTextBox.ScrollBars = ScrollBars.Vertical;
             AutopilotProfileStatusTextBox.ShortcutsEnabled = false;
-            AutopilotProfileStatusTextBox.Size = new Size(774, 123);
+            AutopilotProfileStatusTextBox.Size = new Size(774, 221);
             AutopilotProfileStatusTextBox.TabIndex = 5;
             // 
             // label4
@@ -181,26 +177,6 @@
             label4.Size = new Size(129, 15);
             label4.TabIndex = 4;
             label4.Text = "Autopilot Profile Status";
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label3.AutoSize = true;
-            label3.Location = new Point(98, 93);
-            label3.Name = "label3";
-            label3.Size = new Size(59, 15);
-            label3.TabIndex = 3;
-            label3.Text = "Language";
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Location = new Point(8, 93);
-            label2.Name = "label2";
-            label2.Size = new Size(38, 30);
-            label2.TabIndex = 2;
-            label2.Text = "OOBE\r\nBegin";
             // 
             // label1
             // 
@@ -288,8 +264,6 @@
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
         private ProgressBar progressBar1;
-        private Label label3;
-        private Label label2;
         private Label label1;
         private TextBox AutopilotProfileStatusTextBox;
         private Label label4;
