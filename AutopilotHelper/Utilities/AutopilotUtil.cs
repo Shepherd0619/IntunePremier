@@ -107,7 +107,7 @@ namespace AutopilotHelper.Utilities
                 sb.Append("ZTDID:                    ").AppendLine(_Reg.GetValue(correlationsPath, "ZtdRegistrationId"));
                 sb.Append("EntDMID:                  ").AppendLine(_Reg.GetValue(correlationsPath, "EntDMID"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 sb.AppendLine($"Unable to fetch correlation info from registry!\n\n{ex}");
             }
@@ -417,14 +417,15 @@ namespace AutopilotHelper.Utilities
 
         public string GetHtmlFormattedProcessedPolicies()
         {
-            if( _NodeCaches == null )
+            if (_NodeCaches == null)
                 GetProcessedPolicies();
 
             if (_NodeCaches == null)
                 return string.Empty;
 
+            /*
             var sb = new StringBuilder();
-
+            
             sb.AppendLine("<h1>Processed Policies</h1");
             sb.AppendLine("<p>*Based on <i>MdmDiagReport_RegistryDump.reg</i> .</p>");
 
@@ -454,8 +455,18 @@ namespace AutopilotHelper.Utilities
                     sb.AppendLine();
             }
             sb.AppendLine("</table>");
+            */
 
-            return sb.ToString();
+            var value = new List<string>();
+            for (int i = 0; i < _NodeCaches.Count; i++)
+            {
+                value.Add(_NodeCaches[i].id.ToString());
+                value.Add(_NodeCaches[i].NodeUri);
+                value.Add(_NodeCaches[i].ExpectedValue);
+            }
+
+            return HtmlReportUtil.GenerateHtmlReport("Processed Policies", "*Based on MdmDiagReport_RegistryDump.reg",
+                new string[] { "ID", "NodeUri", "ExpectedValue" }, value.ToArray(), 1);
         }
 
         public string GetProcessedApps()
@@ -466,15 +477,15 @@ namespace AutopilotHelper.Utilities
             // Get the MSI ID from ./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/
             // Current user should be S-0-0-00-0000000000-0000000000-000000000-000
             // eg: HKEY_LOCAL_MACHINE\software\microsoft\enterprisedesktopappmanagement\S-0-0-00-0000000000-0000000000-000000000-000\MSI\{fd14a52a-dced-4e7c-a682-fd1f442fe059}
-            
-            if(_NodeCaches == null)
+
+            if (_NodeCaches == null)
             {
                 GetProcessedPolicies();
             }
 
             if (_NodeCaches == null) return string.Empty;
 
-            var possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri != null 
+            var possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri != null
                 && search.NodeUri.StartsWith("./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/"));
 
             var msiList = new List<string>();
