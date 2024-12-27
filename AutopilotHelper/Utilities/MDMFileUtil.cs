@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 
 namespace AutopilotHelper.Utilities
@@ -40,7 +41,7 @@ namespace AutopilotHelper.Utilities
             fileStream.Dispose();
         }
 
-        public MDMFileUtil(string cabFilePath)
+        public MDMFileUtil(string filePath)
         {
             if (!Directory.Exists(TmpWorkplacePath))
             {
@@ -64,16 +65,46 @@ namespace AutopilotHelper.Utilities
             //    }
             //}
 
-            var process = new Process();
-            process.StartInfo = new();
-            process.StartInfo.FileName = "expand.exe";
-            process.StartInfo.Arguments = $"\"{cabFilePath}\" -F:* \"{Path.Combine(TmpWorkplacePath)}\"";
-            process.Start();
-            process.WaitForExit();
-
-            if (process.ExitCode != 0)
+            var fileNameSplit = Path.GetFileName(filePath).Split('.');
+            if (fileNameSplit[fileNameSplit.Length - 1].Equals("cab", StringComparison.OrdinalIgnoreCase))
             {
-                throw new Exception($"expand exit code is {process.ExitCode}");
+
+                var process = new Process();
+                process.StartInfo = new();
+                process.StartInfo.FileName = "expand.exe";
+                process.StartInfo.Arguments = $"\"{filePath}\" -F:* \"{Path.Combine(TmpWorkplacePath)}\"";
+                process.Start();
+                process.WaitForExit();
+
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"expand exit code is {process.ExitCode}");
+                }
+            }
+            else
+            {
+                var fileStream = File.OpenRead(filePath);
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read, true))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        // Get the full path of the entry
+                        var fullPath = Path.Combine(TmpWorkplacePath, entry.FullName);
+
+                        // Create the directory if it doesn't exist
+                        var dirPath = Path.GetDirectoryName(fullPath);
+                        if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
+                        {
+                            Directory.CreateDirectory(dirPath);
+                        }
+
+                        // Extract the entry to the target path
+                        entry.ExtractToFile(fullPath);
+                    }
+                }
+
+                fileStream.Close();
+                fileStream.Dispose();
             }
         }
     }
