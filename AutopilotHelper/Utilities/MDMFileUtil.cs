@@ -8,13 +8,13 @@ namespace AutopilotHelper.Utilities
         /// <summary>
         /// This path represents the zip file extract destination.
         /// </summary>
-        public string TmpWorkplacePath = Path.Combine(Path.GetTempPath(), $"IntunePremier/TmpWorkplace/{Guid.NewGuid().ToString()}");
+        public string TmpWorkspacePath = Path.Combine(Path.GetTempPath(), $"IntunePremier/TmpWorkspace/{Guid.NewGuid().ToString()}");
 
         public MDMFileUtil(string filePath)
         {
-            if (!Directory.Exists(TmpWorkplacePath))
+            if (!Directory.Exists(TmpWorkspacePath))
             {
-                Directory.CreateDirectory(TmpWorkplacePath);
+                Directory.CreateDirectory(TmpWorkspacePath);
             }
 
             //var cabinet = new CabInfo(cabFilePath);
@@ -41,7 +41,7 @@ namespace AutopilotHelper.Utilities
                 var process = new Process();
                 process.StartInfo = new();
                 process.StartInfo.FileName = "expand.exe";
-                process.StartInfo.Arguments = $"\"{filePath}\" -F:* \"{Path.Combine(TmpWorkplacePath)}\"";
+                process.StartInfo.Arguments = $"\"{filePath}\" -F:* \"{Path.Combine(TmpWorkspacePath)}\"";
                 process.Start();
                 process.WaitForExit();
 
@@ -58,7 +58,7 @@ namespace AutopilotHelper.Utilities
                     foreach (var entry in archive.Entries)
                     {
                         // Get the full path of the entry
-                        var fullPath = Path.Combine(TmpWorkplacePath, entry.FullName);
+                        var fullPath = Path.Combine(TmpWorkspacePath, entry.FullName);
 
                         // Create the directory if it doesn't exist
                         var dirPath = Path.GetDirectoryName(fullPath);

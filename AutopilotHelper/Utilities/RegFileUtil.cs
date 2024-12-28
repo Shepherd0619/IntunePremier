@@ -15,7 +15,7 @@
         {
             _MDMDiag = file;
 
-            regContent = File.ReadAllText(Path.Combine(MDMDiag.TmpWorkplacePath, "MdmDiagReport_RegistryDump.reg"));
+            regContent = File.ReadAllText(Path.Combine(MDMDiag.TmpWorkspacePath, "MdmDiagReport_RegistryDump.reg"));
             lines = regContent.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         }
 

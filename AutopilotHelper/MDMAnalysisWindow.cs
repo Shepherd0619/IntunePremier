@@ -1,4 +1,5 @@
 ﻿using AutopilotHelper.Utilities;
+using System.Diagnostics;
 
 namespace AutopilotHelper
 {
@@ -53,7 +54,7 @@ namespace AutopilotHelper
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Directory.Delete(_diagFile?.TmpWorkplacePath, true);
+            Directory.Delete(_diagFile?.TmpWorkspacePath, true);
             StartUpForm.Instance.analysisWindows.Remove(this);
 
             if (StartUpForm.Instance.analysisWindows.Count <= 0)
@@ -76,6 +77,15 @@ namespace AutopilotHelper
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void openWorkspaceFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = _diagFile.TmpWorkspacePath;
+            startInfo.UseShellExecute = true;
+
+            Process process = Process.Start(startInfo);
         }
     }
 }

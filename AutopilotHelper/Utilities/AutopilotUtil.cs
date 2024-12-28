@@ -41,14 +41,14 @@ namespace AutopilotHelper.Utilities
 
         public AutopilotDDSZTD? GetLocalAutopilotProfileStatus()
         {
-            var path = Path.Combine(MDMDiag.TmpWorkplacePath, "AutopilotDDSZTDFile.json");
+            var path = Path.Combine(MDMDiag.TmpWorkspacePath, "AutopilotDDSZTDFile.json");
             if (!File.Exists(path)) return null;
             return JsonConvert.DeserializeObject<AutopilotDDSZTD>(File.ReadAllText(path));
         }
 
         public List<EventViewerFile.Record> GetCloudSessionHostRecords()
         {
-            EventViewerFile file = new(Path.Combine(MDMDiag.TmpWorkplacePath,
+            EventViewerFile file = new(Path.Combine(MDMDiag.TmpWorkspacePath,
                 "microsoft-windows-shell-core-operational.evtx"));
 
             return file.records
@@ -261,7 +261,7 @@ namespace AutopilotHelper.Utilities
             if (oa3ToolPath != null && !string.IsNullOrEmpty(oa3ToolPath))
             {
                 // Grab hash from csv
-                var fileList = Directory.GetFiles(_MDMDiag.TmpWorkplacePath);
+                var fileList = Directory.GetFiles(_MDMDiag.TmpWorkspacePath);
                 for (int i = 0; i < fileList.Length; i++)
                 {
                     var fileName = Path.GetFileName(fileList[i]);
