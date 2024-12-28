@@ -37,6 +37,7 @@
             saveFileDialog1 = new SaveFileDialog();
             RecentMDMDiagList = new ListBox();
             label2 = new Label();
+            ClearRecentDiagListBtn = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -107,6 +108,7 @@
             RecentMDMDiagList.Name = "RecentMDMDiagList";
             RecentMDMDiagList.Size = new Size(556, 349);
             RecentMDMDiagList.TabIndex = 2;
+            RecentMDMDiagList.MouseDoubleClick += RecentMDMDiagList_MouseDoubleClick;
             // 
             // label2
             // 
@@ -117,11 +119,22 @@
             label2.TabIndex = 3;
             label2.Text = "Recent diagnostic files:";
             // 
+            // ClearRecentDiagListBtn
+            // 
+            ClearRecentDiagListBtn.Location = new Point(713, 59);
+            ClearRecentDiagListBtn.Name = "ClearRecentDiagListBtn";
+            ClearRecentDiagListBtn.Size = new Size(75, 23);
+            ClearRecentDiagListBtn.TabIndex = 4;
+            ClearRecentDiagListBtn.Text = "Clear";
+            ClearRecentDiagListBtn.UseVisualStyleBackColor = true;
+            ClearRecentDiagListBtn.Click += ClearRecentDiagListBtn_Click;
+            // 
             // StartUpForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ClearRecentDiagListBtn);
             Controls.Add(label2);
             Controls.Add(RecentMDMDiagList);
             Controls.Add(panel1);
@@ -148,5 +161,6 @@
         private SaveFileDialog saveFileDialog1;
         private ListBox RecentMDMDiagList;
         private Label label2;
+        private Button ClearRecentDiagListBtn;
     }
 }
