@@ -57,6 +57,11 @@ namespace AutopilotHelper
 
             if (!Program.Settings.RecentDiagFiles.Contains(openFileDialog1.FileName))
                 Program.Settings.RecentDiagFiles.Add(openFileDialog1.FileName);
+            else
+            {
+                Program.Settings.RecentDiagFiles.Remove(openFileDialog1.FileName);
+                Program.Settings.RecentDiagFiles.Insert(0, openFileDialog1.FileName);
+            }
 
             this.Hide();
             openFileDialog1.FileName = string.Empty;
@@ -89,6 +94,11 @@ namespace AutopilotHelper
 
             if(!Program.Settings.RecentDiagFiles.Contains(path))
                 Program.Settings.RecentDiagFiles.Add(path);
+            else
+            {
+                Program.Settings.RecentDiagFiles.Remove(path);
+                Program.Settings.RecentDiagFiles.Insert(0, path);
+            }
 
             this.Hide();
 
