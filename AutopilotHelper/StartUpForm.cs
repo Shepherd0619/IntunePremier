@@ -1,5 +1,5 @@
 using AutopilotHelper.Utilities;
-using System.IO;
+using System.Diagnostics;
 
 namespace AutopilotHelper
 {
@@ -92,7 +92,7 @@ namespace AutopilotHelper
             mainForm.Show();
             analysisWindows.Add(mainForm, path);
 
-            if(!Program.Settings.RecentDiagFiles.Contains(path))
+            if (!Program.Settings.RecentDiagFiles.Contains(path))
                 Program.Settings.RecentDiagFiles.Add(path);
             else
             {
@@ -133,6 +133,29 @@ namespace AutopilotHelper
                 MessageBox.Show($"File no longer exists.\n\n{path}", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 RecentMDMDiagList.Items.RemoveAt(RecentMDMDiagList.SelectedIndex);
                 Program.Settings.RecentDiagFiles.Remove(path);
+            }
+        }
+
+        private void CollectMDMDiagButton_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "mdmdiagnosticstool.exe";
+            startInfo.Arguments = "-area \"DeviceEnrollment;DeviceProvisioning;Autopilot\" -zip \"c:\\users\\public\\documents\\MDMDiagReport.zip\"";
+            startInfo.UseShellExecute = true;
+
+            Process process = Process.Start(startInfo);
+            process.WaitForExit();
+
+            if (File.Exists("c:\\users\\public\\documents\\MDMDiagReport.zip"))
+            {
+                startInfo = new ProcessStartInfo();
+                startInfo.FileName = "c:\\users\\public\\documents\\";
+                startInfo.UseShellExecute = true;
+                process = Process.Start(startInfo);
+            }
+            else
+            {
+                MessageBox.Show("MDMDiagReport collect failed!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

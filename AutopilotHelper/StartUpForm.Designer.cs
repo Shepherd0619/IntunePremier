@@ -83,6 +83,7 @@
             CollectMDMDiagButton.TabIndex = 1;
             CollectMDMDiagButton.Text = "Collect MDM Diag";
             CollectMDMDiagButton.UseVisualStyleBackColor = true;
+            CollectMDMDiagButton.Click += CollectMDMDiagButton_Click;
             // 
             // OpenMDMDiagButton
             // 
@@ -139,6 +140,7 @@
             Controls.Add(RecentMDMDiagList);
             Controls.Add(panel1);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "StartUpForm";
             StartPosition = FormStartPosition.CenterScreen;
