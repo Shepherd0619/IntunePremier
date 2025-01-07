@@ -115,6 +115,7 @@ namespace AutopilotHelper.Utilities
             sb.AppendLine();
             #endregion
 
+            // TODO: HKEY_LOCAL_MACHINE\software\microsoft\provisioning\AutopilotSettings
             #region ESP
             try
             {
@@ -247,6 +248,26 @@ namespace AutopilotHelper.Utilities
             sb.AppendLine();
 
             sb.AppendLine(GetProcessedApps());
+
+            sb.AppendLine();
+
+            sb.AppendLine("New ESP report:");
+            try
+            {
+                var esp = GetAutopilotSettingsFromRegistry();
+                var accountSetup = JsonConvert.DeserializeObject<AccountSetupCategory>(esp.AccountSetup.Status);
+                var deviceSetup = JsonConvert.DeserializeObject<DevicePreparationCategory>(esp.DevicePreparation.Status);
+                sb.AppendLine();
+                sb.AppendLine("Device Setup:");
+                sb.AppendLine(deviceSetup.ToString());
+                sb.AppendLine();
+                sb.AppendLine("Account Setup:");
+                sb.AppendLine(accountSetup.ToString());
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine($"Not available this time.\n\n{ex}");
+            }
 
             return sb.ToString();
         }
@@ -551,6 +572,9 @@ namespace AutopilotHelper.Utilities
 
             #endregion
 
+            possibleMsiList = _NodeCaches.FindAll(search => search.NodeUri != null
+                && search.NodeUri.StartsWith("./Device/Vendor/MSFT/Office/Installation"));
+
             return sb.ToString();
         }
 
@@ -563,6 +587,24 @@ namespace AutopilotHelper.Utilities
 
 
             return sb.ToString();
+        }
+
+        public AutopilotSettings GetAutopilotSettingsFromRegistry()
+        {
+            var settings = new AutopilotSettings();
+            var regPath = "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\AutopilotSettings";
+            settings.AgilityProductName = _Reg.GetValue(regPath, "AgilityProductName");
+            settings.AccountSetup = new()
+            {
+                Status = _Reg.GetValue(regPath, "AccountSetupCategory.Status")
+            };
+
+            settings.DevicePreparation = new()
+            {
+                Status = _Reg.GetValue(regPath, "DevicePreparationCategory.Status")
+            };
+
+            return settings;
         }
     }
 }
