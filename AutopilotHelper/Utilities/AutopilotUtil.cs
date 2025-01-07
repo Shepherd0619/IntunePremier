@@ -251,27 +251,56 @@ namespace AutopilotHelper.Utilities
 
             sb.AppendLine();
 
+            #region New ESP
             sb.AppendLine("New ESP report:");
+            sb.AppendLine();
+
             try
             {
                 var esp = GetAutopilotSettingsFromRegistry();
-                var accountSetup = JsonConvert.DeserializeObject<AccountSetupCategory>(esp.AccountSetup.Status);
-                var devicePreparation = JsonConvert.DeserializeObject<DevicePreparationCategory>(esp.DevicePreparation.Status);
-                var deviceSetup = JsonConvert.DeserializeObject<DeviceSetupCategory>(esp.DeviceSetup.Status);
+
+                try
+                {
+                    var devicePreparation = JsonConvert.DeserializeObject<DevicePreparationCategory>(esp.DevicePreparation.Status);
+                    sb.AppendLine("Device Preparation:");
+                    sb.AppendLine(devicePreparation.ToString());
+                }
+                catch (Exception ex)
+                {
+                    sb.AppendLine($"Device Preparation not available this time.\n\n{ex}");
+                }
+
                 sb.AppendLine();
-                sb.AppendLine("Device Preparation:");
-                sb.AppendLine(devicePreparation.ToString());
+                
+                try
+                {
+                    var deviceSetup = JsonConvert.DeserializeObject<DeviceSetupCategory>(esp.DeviceSetup.Status);
+                    sb.AppendLine("Device Setup:");
+                    sb.AppendLine(deviceSetup.ToString());
+                }
+                catch (Exception ex)
+                {
+                    sb.AppendLine($"Device Setup not available this time.\n\n{ex}");
+                }
+
                 sb.AppendLine();
-                sb.AppendLine("Device Setup:");
-                sb.AppendLine(deviceSetup.ToString());
-                sb.AppendLine();
-                sb.AppendLine("Account Setup:");
-                sb.AppendLine(accountSetup.ToString());
+
+                try
+                {
+                    var accountSetup = JsonConvert.DeserializeObject<AccountSetupCategory>(esp.AccountSetup.Status);
+                    sb.AppendLine("Account Setup:");
+                    sb.AppendLine(accountSetup.ToString());
+                }
+                catch (Exception ex)
+                {
+                    sb.AppendLine($"Account Setup not available this time.\n\n{ex}");
+                }
             }
             catch (Exception ex)
             {
                 sb.AppendLine($"Not available this time.\n\n{ex}");
             }
+            #endregion
 
             return sb.ToString();
         }
