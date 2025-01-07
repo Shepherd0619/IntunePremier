@@ -57,7 +57,17 @@
                     continue;
                 }
 
-                return parts[1].Replace("\"", string.Empty);
+                string part = parts[1];
+                if (part.StartsWith("\""))
+                {
+                    part = part.Substring(1); // 去掉开始的第一个引号
+                }
+                if (part.EndsWith("\""))
+                {
+                    part = part.Substring(0, part.Length - 1); // 去掉结尾的最后一个引号
+                }
+                parts[1] = part;
+                return parts[1];
             }
 
             throw new KeyNotFoundException();
