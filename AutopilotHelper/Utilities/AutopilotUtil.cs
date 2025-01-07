@@ -256,7 +256,11 @@ namespace AutopilotHelper.Utilities
             {
                 var esp = GetAutopilotSettingsFromRegistry();
                 var accountSetup = JsonConvert.DeserializeObject<AccountSetupCategory>(esp.AccountSetup.Status);
-                var deviceSetup = JsonConvert.DeserializeObject<DevicePreparationCategory>(esp.DevicePreparation.Status);
+                var devicePreparation = JsonConvert.DeserializeObject<DevicePreparationCategory>(esp.DevicePreparation.Status);
+                var deviceSetup = JsonConvert.DeserializeObject<DeviceSetupCategory>(esp.DeviceSetup.Status);
+                sb.AppendLine();
+                sb.AppendLine("Device Preparation:");
+                sb.AppendLine(devicePreparation.ToString());
                 sb.AppendLine();
                 sb.AppendLine("Device Setup:");
                 sb.AppendLine(deviceSetup.ToString());
@@ -602,6 +606,11 @@ namespace AutopilotHelper.Utilities
             settings.DevicePreparation = new()
             {
                 Status = _Reg.GetValue(regPath, "DevicePreparationCategory.Status")
+            };
+
+            settings.DeviceSetup = new()
+            {
+                Status = _Reg.GetValue(regPath, "DeviceSetupCategory.Status")
             };
 
             return settings;

@@ -21,6 +21,8 @@ namespace AutopilotHelper.Models
         public string GlobalMdmEnrollmentStatus { get; set; }
         public DevicePreparationCategory DevicePreparation { get; set; }
         public AccountSetupCategory AccountSetup { get; set; }
+
+        public DeviceSetupCategory DeviceSetup { get; set; }
         public bool ShowContinueAnywayButton { get; set; }
         public int DppHeartbeatMaxFailures { get; set; }
         public int DppHeartbeatMilliseconds { get; set; }
@@ -31,6 +33,11 @@ namespace AutopilotHelper.Models
         }
 
         public class AccountSetupCategory
+        {
+            public string Status { get; set; }
+        }
+
+        public class DeviceSetupCategory
         {
             public string Status { get; set; }
         }
@@ -115,6 +122,47 @@ namespace AutopilotHelper.Models
                    $"AppsSubcategory: State={AppsSubcategory?.SubcategoryState}, StatusText={AppsSubcategory?.SubcategoryStatusText}\n" +
                    $"SendResultsToMdmServer: State={SendResultsToMdmServer?.SubcategoryState}, StatusText={SendResultsToMdmServer?.SubcategoryStatusText}\n" +
                    $"CategoryStatusText: {CategoryStatusText}";
+        }
+    }
+
+    public class DeviceSetupCategory
+    {
+        [JsonProperty("categoryState")]
+        public string CategoryState { get; set; }
+
+        [JsonProperty("DeviceSetup.SecurityPoliciesSubcategory")]
+        public Subcategory SecurityPoliciesSubcategory { get; set; }
+
+        [JsonProperty("DeviceSetup.CertificatesSubcategory")]
+        public Subcategory CertificatesSubcategory { get; set; }
+
+        [JsonProperty("DeviceSetup.NetworkConnectionsSubcategory")]
+        public Subcategory NetworkConnectionsSubcategory { get; set; }
+
+        [JsonProperty("DeviceSetup.AppsSubcategory")]
+        public Subcategory AppsSubcategory { get; set; }
+
+        [JsonProperty("DeviceSetup.RebootCoalescing")]
+        public Subcategory RebootCoalescing { get; set; }
+
+        [JsonProperty("DeviceSetup.SendResultsToMdmServer")]
+        public Subcategory SendResultsToMdmServer { get; set; }
+
+        [JsonProperty("DeviceSetup.SaveWhiteGloveSuccessResult")]
+        public Subcategory SaveWhiteGloveSuccessResult { get; set; }
+
+        [JsonProperty("categoryStatusText")]
+        public string CategoryStatusText { get; set; }
+
+        public override string ToString()
+        {
+            return $"SecurityPoliciesSubcategory: {SecurityPoliciesSubcategory}\n" +
+                   $"CertificatesSubcategory: {CertificatesSubcategory}\n" +
+                   $"NetworkConnectionsSubcategory: {NetworkConnectionsSubcategory}\n" +
+                   $"AppsSubcategory: {AppsSubcategory}\n" +
+                   $"RebootCoalescing: {RebootCoalescing}\n" +
+                   $"SendResultsToMdmServer: {SendResultsToMdmServer}\n" +
+                   $"SaveWhiteGloveSuccessResult: {SaveWhiteGloveSuccessResult}";
         }
     }
 
