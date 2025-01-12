@@ -1,0 +1,275 @@
+﻿namespace AutopilotHelper
+{
+    partial class EventViewerForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            splitContainer1 = new SplitContainer();
+            EvtxListBox = new ListBox();
+            label1 = new Label();
+            splitContainer2 = new SplitContainer();
+            LogListView = new ListView();
+            IdColumn = new ColumnHeader();
+            LevelColumn = new ColumnHeader();
+            DescriptionColumn = new ColumnHeader();
+            DateTimeColumn = new ColumnHeader();
+            label2 = new Label();
+            tabControl1 = new TabControl();
+            tabPage1 = new TabPage();
+            tabPage2 = new TabPage();
+            menuStrip1 = new MenuStrip();
+            searchToolStripMenuItem = new ToolStripMenuItem();
+            filtersToolStripMenuItem = new ToolStripMenuItem();
+            setFilterToolStripMenuItem = new ToolStripMenuItem();
+            clearFilterToolStripMenuItem = new ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            tabControl1.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 24);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(EvtxListBox);
+            splitContainer1.Panel1.Controls.Add(label1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(splitContainer2);
+            splitContainer1.Size = new Size(800, 426);
+            splitContainer1.SplitterDistance = 194;
+            splitContainer1.TabIndex = 0;
+            // 
+            // EvtxListBox
+            // 
+            EvtxListBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            EvtxListBox.FormattingEnabled = true;
+            EvtxListBox.HorizontalScrollbar = true;
+            EvtxListBox.ItemHeight = 15;
+            EvtxListBox.Location = new Point(14, 29);
+            EvtxListBox.Name = "EvtxListBox";
+            EvtxListBox.Size = new Size(165, 379);
+            EvtxListBox.TabIndex = 1;
+            EvtxListBox.DoubleClick += EvtxListBox_DoubleClick;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(14, 11);
+            label1.Name = "label1";
+            label1.Size = new Size(55, 15);
+            label1.TabIndex = 0;
+            label1.Text = "EVTX list:";
+            // 
+            // splitContainer2
+            // 
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(LogListView);
+            splitContainer2.Panel1.Controls.Add(label2);
+            splitContainer2.Panel1.RightToLeft = RightToLeft.No;
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(tabControl1);
+            splitContainer2.Panel2.RightToLeft = RightToLeft.No;
+            splitContainer2.Size = new Size(602, 426);
+            splitContainer2.SplitterDistance = 213;
+            splitContainer2.TabIndex = 0;
+            // 
+            // LogListView
+            // 
+            LogListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LogListView.Columns.AddRange(new ColumnHeader[] { IdColumn, LevelColumn, DescriptionColumn, DateTimeColumn });
+            LogListView.Location = new Point(13, 29);
+            LogListView.Name = "LogListView";
+            LogListView.Size = new Size(577, 173);
+            LogListView.TabIndex = 1;
+            LogListView.UseCompatibleStateImageBehavior = false;
+            LogListView.View = View.Details;
+            LogListView.ColumnClick += LogListView_ColumnClick;
+            // 
+            // IdColumn
+            // 
+            IdColumn.Text = "ID";
+            // 
+            // LevelColumn
+            // 
+            LevelColumn.Text = "Level";
+            // 
+            // DescriptionColumn
+            // 
+            DescriptionColumn.Text = "Description";
+            DescriptionColumn.Width = 330;
+            // 
+            // DateTimeColumn
+            // 
+            DateTimeColumn.Text = "DateTime";
+            DateTimeColumn.Width = 120;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(13, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(44, 15);
+            label2.TabIndex = 0;
+            label2.Text = "Events:";
+            // 
+            // tabControl1
+            // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Location = new Point(13, 16);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(577, 181);
+            tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(569, 153);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(569, 153);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { searchToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // searchToolStripMenuItem
+            // 
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { filtersToolStripMenuItem });
+            searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            searchToolStripMenuItem.Size = new Size(54, 20);
+            searchToolStripMenuItem.Text = "Search";
+            // 
+            // filtersToolStripMenuItem
+            // 
+            filtersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setFilterToolStripMenuItem, clearFilterToolStripMenuItem });
+            filtersToolStripMenuItem.Name = "filtersToolStripMenuItem";
+            filtersToolStripMenuItem.Size = new Size(105, 22);
+            filtersToolStripMenuItem.Text = "Filters";
+            // 
+            // setFilterToolStripMenuItem
+            // 
+            setFilterToolStripMenuItem.Name = "setFilterToolStripMenuItem";
+            setFilterToolStripMenuItem.Size = new Size(101, 22);
+            setFilterToolStripMenuItem.Text = "Set";
+            // 
+            // clearFilterToolStripMenuItem
+            // 
+            clearFilterToolStripMenuItem.Name = "clearFilterToolStripMenuItem";
+            clearFilterToolStripMenuItem.Size = new Size(101, 22);
+            clearFilterToolStripMenuItem.Text = "Clear";
+            // 
+            // EventViewerForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(splitContainer1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
+            Name = "EventViewerForm";
+            Text = "EventViewerForm";
+            Load += EventViewerForm_Load;
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel1.PerformLayout();
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private SplitContainer splitContainer1;
+        private ListBox EvtxListBox;
+        private Label label1;
+        private SplitContainer splitContainer2;
+        private Label label2;
+        private ListView LogListView;
+        private TabControl tabControl1;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
+        private ColumnHeader IdColumn;
+        private ColumnHeader LevelColumn;
+        private ColumnHeader DescriptionColumn;
+        private ColumnHeader DateTimeColumn;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem searchToolStripMenuItem;
+        private ToolStripMenuItem filtersToolStripMenuItem;
+        private ToolStripMenuItem setFilterToolStripMenuItem;
+        private ToolStripMenuItem clearFilterToolStripMenuItem;
+    }
+}

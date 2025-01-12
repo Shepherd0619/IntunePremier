@@ -62,6 +62,8 @@
             ProcessedPoliciesWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
             ProcessedAppsTab = new TabPage();
             ProcessedAppsWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
+            toolsToolStripMenuItem = new ToolStripMenuItem();
+            eventViewerToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
@@ -78,7 +80,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -405,6 +407,20 @@
             ProcessedAppsWebView.TabIndex = 0;
             ProcessedAppsWebView.ZoomFactor = 1D;
             // 
+            // toolsToolStripMenuItem
+            // 
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eventViewerToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(47, 20);
+            toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // eventViewerToolStripMenuItem
+            // 
+            eventViewerToolStripMenuItem.Name = "eventViewerToolStripMenuItem";
+            eventViewerToolStripMenuItem.Size = new Size(180, 22);
+            eventViewerToolStripMenuItem.Text = "Event Viewer";
+            eventViewerToolStripMenuItem.Click += eventViewerToolStripMenuItem_Click;
+            // 
             // MDMAnalysisWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -477,5 +493,7 @@
         private Panel panel1;
         private Panel panel3;
         private Panel panel2;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem eventViewerToolStripMenuItem;
     }
 }

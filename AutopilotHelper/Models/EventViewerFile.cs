@@ -20,6 +20,7 @@ namespace AutopilotHelper.Models
                     {
                         records.Add(new()
                         {
+                            Id = record.Id,
                             TimeCreated = record.TimeCreated,
                             LevelDisplayName = record.LevelDisplayName,
                             FormatDescription = record.FormatDescription()
@@ -32,6 +33,7 @@ namespace AutopilotHelper.Models
 
         public struct Record
         {
+            public int Id;
             public DateTime? TimeCreated;
             public string LevelDisplayName;
             public string FormatDescription;

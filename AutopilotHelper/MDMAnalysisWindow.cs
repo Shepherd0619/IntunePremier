@@ -51,7 +51,7 @@ namespace AutopilotHelper
             {
                 InitializeESPTabPage(_autopilotUtil.GetAutopilotSettingsFromRegistry());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Do nothing
             }
@@ -84,7 +84,7 @@ namespace AutopilotHelper
 
                         var category = item.GetValue(devicePreparation) as Subcategory;
 
-                        devicePreparationCheckedListBox.Items.Add(item.Name, 
+                        devicePreparationCheckedListBox.Items.Add(item.Name,
                             category.SubcategoryState == "succeeded");
                     }
                 }
@@ -189,6 +189,12 @@ namespace AutopilotHelper
                 e.NewValue = CheckState.Checked;
                 return;
             }
+        }
+
+        private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new EventViewerForm(_diagFile);
+            form.ShowDialog();
         }
     }
 }
