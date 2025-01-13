@@ -40,12 +40,16 @@
             label2 = new Label();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            LogLineDetailsTextBox = new RichTextBox();
             tabPage2 = new TabPage();
             menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
             setFilterToolStripMenuItem = new ToolStripMenuItem();
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
+            XmlTextBox = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -55,6 +59,8 @@
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
             tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -129,6 +135,7 @@
             LogListView.UseCompatibleStateImageBehavior = false;
             LogListView.View = View.Details;
             LogListView.ColumnClick += LogListView_ColumnClick;
+            LogListView.Click += LogListView_Click;
             // 
             // IdColumn
             // 
@@ -170,32 +177,59 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(LogLineDetailsTextBox);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(569, 153);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
+            tabPage1.Text = "Details";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // LogLineDetailsTextBox
+            // 
+            LogLineDetailsTextBox.Dock = DockStyle.Fill;
+            LogLineDetailsTextBox.Location = new Point(3, 3);
+            LogLineDetailsTextBox.Name = "LogLineDetailsTextBox";
+            LogLineDetailsTextBox.ReadOnly = true;
+            LogLineDetailsTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
+            LogLineDetailsTextBox.Size = new Size(563, 147);
+            LogLineDetailsTextBox.TabIndex = 0;
+            LogLineDetailsTextBox.Text = "";
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(XmlTextBox);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(569, 153);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
+            tabPage2.Text = "XML View";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { searchToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, searchToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // openInSystemEventViewerToolStripMenuItem
+            // 
+            openInSystemEventViewerToolStripMenuItem.Name = "openInSystemEventViewerToolStripMenuItem";
+            openInSystemEventViewerToolStripMenuItem.Size = new Size(290, 22);
+            openInSystemEventViewerToolStripMenuItem.Text = "Open current evtx in system event viewer";
+            openInSystemEventViewerToolStripMenuItem.Click += openInSystemEventViewerToolStripMenuItem_Click;
             // 
             // searchToolStripMenuItem
             // 
@@ -223,6 +257,17 @@
             clearFilterToolStripMenuItem.Size = new Size(101, 22);
             clearFilterToolStripMenuItem.Text = "Clear";
             // 
+            // XmlTextBox
+            // 
+            XmlTextBox.Dock = DockStyle.Fill;
+            XmlTextBox.Location = new Point(3, 3);
+            XmlTextBox.Name = "XmlTextBox";
+            XmlTextBox.ReadOnly = true;
+            XmlTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
+            XmlTextBox.Size = new Size(563, 147);
+            XmlTextBox.TabIndex = 1;
+            XmlTextBox.Text = "";
+            // 
             // EventViewerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -245,6 +290,8 @@
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -271,5 +318,9 @@
         private ToolStripMenuItem filtersToolStripMenuItem;
         private ToolStripMenuItem setFilterToolStripMenuItem;
         private ToolStripMenuItem clearFilterToolStripMenuItem;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem openInSystemEventViewerToolStripMenuItem;
+        private RichTextBox LogLineDetailsTextBox;
+        private RichTextBox XmlTextBox;
     }
 }

@@ -4,12 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace AutopilotHelper
 {
@@ -25,6 +29,8 @@ namespace AutopilotHelper
         /// </summary>
         public int[,] ColumnSortStatus;
         private int[,] _ColumnSortStatus;
+
+        public List<EventViewerFile.Record> CurrentLogList;
 
         public EventViewerForm()
         {
@@ -104,15 +110,17 @@ namespace AutopilotHelper
 
                 LogListView.Items.Add(item);
             }
+
+            CurrentLogList = list;
         }
 
         private void LogListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             var colIndex = e.Column;
-            
+
             int status = _ColumnSortStatus[1, colIndex];
 
-            switch(status)
+            switch (status)
             {
                 case 0:
                     _ColumnSortStatus[1, colIndex] = status = 1;
@@ -123,6 +131,31 @@ namespace AutopilotHelper
                     break;
             }
 
+        }
+
+        private void openInSystemEventViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentFile == null) return;
+
+            Process process = new();
+            var startInfo = new ProcessStartInfo();
+            startInfo.UseShellExecute = true;
+            startInfo.FileName = CurrentFile.FileName;
+            process.StartInfo = startInfo;
+            process.Start();
+        }
+
+        private void LogListView_Click(object sender, EventArgs e)
+        {
+            var item = CurrentLogList[LogListView.SelectedIndices[0]];
+
+            LogLineDetailsTextBox.Text = item.ToString();
+
+            // 将XML字符串加载到XDocument中
+            XDocument xdoc = XDocument.Parse(item.XmlContent);
+
+            // 使用XDocument.ToString方法进行格式化输出
+            XmlTextBox.Text = xdoc.ToString();
         }
     }
 }
