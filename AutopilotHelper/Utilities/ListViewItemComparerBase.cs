@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace AutopilotHelper.Utilities
 {
@@ -69,7 +64,7 @@ namespace AutopilotHelper.Utilities
                 if (value1 > value2)
                     result = 1;
 
-                return ascending? result : -result;
+                return ascending ? result : -result;
             }
             catch (FormatException)
             {

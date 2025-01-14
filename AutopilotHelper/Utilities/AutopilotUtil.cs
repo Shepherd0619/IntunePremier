@@ -271,7 +271,7 @@ namespace AutopilotHelper.Utilities
                 }
 
                 sb.AppendLine();
-                
+
                 try
                 {
                     var deviceSetup = JsonConvert.DeserializeObject<DeviceSetupCategory>(esp.DeviceSetup.Status);
