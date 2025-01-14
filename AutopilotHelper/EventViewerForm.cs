@@ -69,9 +69,8 @@ namespace AutopilotHelper
 
         private void RenderLogList()
         {
-            LogListView.Items.Clear();
             LogListView.ListViewItemSorter = null;
-            LogListView.Sorting = SortOrder.Ascending;
+            LogListView.Items.Clear();
 
             var list = CurrentFile.records;
 
@@ -85,6 +84,13 @@ namespace AutopilotHelper
 
                 LogListView.Items.Add(item);
             }
+
+            LogListView.Sorting = SortOrder.Ascending;
+            var comparer = new ListViewItemIntComparer(0);
+            comparer.SetSortDirection(LogListView.Sorting == SortOrder.Ascending);
+            LogListView.ListViewItemSorter = comparer;
+
+            LogListView.Sort();
         }
 
         private void LogListView_ColumnClick(object sender, ColumnClickEventArgs e)
