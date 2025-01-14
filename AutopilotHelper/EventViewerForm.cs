@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml;
+using AutopilotHelper.EventViewer;
 
 namespace AutopilotHelper
 {
@@ -22,15 +23,7 @@ namespace AutopilotHelper
         public readonly List<string> EvtxFiles = new List<string>();
         public EventViewerFile CurrentFile => _CurrentFile;
         private EventViewerFile _CurrentFile;
-
-        /// <summary>
-        /// 每列对应LogListView中的列index。
-        /// 0和1分别代表正序和倒序排列标识符。
-        /// </summary>
-        public int[,] ColumnSortStatus;
-        private int[,] _ColumnSortStatus;
-
-        public List<EventViewerFile.Record> CurrentLogList;
+        private int sortColumn;
 
         public EventViewerForm()
         {
@@ -42,14 +35,6 @@ namespace AutopilotHelper
             InitializeComponent();
 
             SearchEvtx(diag.TmpWorkspacePath);
-
-            // 初始化排序标识符
-            _ColumnSortStatus = new int[2, LogListView.Columns.Count];
-            for (int i = 0; i < _ColumnSortStatus.GetLength(1); i++)
-            {
-                _ColumnSortStatus[0, i] = i;
-                _ColumnSortStatus[1, i] = 0;
-            }
         }
 
         private void EventViewerForm_Load(object sender, EventArgs e)
@@ -97,40 +82,67 @@ namespace AutopilotHelper
         private void RenderLogList()
         {
             LogListView.Items.Clear();
+            LogListView.ListViewItemSorter = null;
+            LogListView.Sorting = SortOrder.Ascending;
 
-            // 排序
-            var list = CurrentFile.records.OrderByDescending(obj => obj.TimeCreated).ToList();
+            var list = CurrentFile.records;
 
             for (int i = 0; i < list.Count; i++)
             {
-                ListViewItem item = new(list[i].Id.ToString());
+                ListViewItem item = new(list[i].Index.ToString());
+                item.SubItems.Add(list[i].Id.ToString());
                 item.SubItems.Add(list[i].LevelDisplayName);
                 item.SubItems.Add(list[i].FormatDescription);
                 item.SubItems.Add(list[i].TimeCreated.ToString());
 
                 LogListView.Items.Add(item);
             }
-
-            CurrentLogList = list;
         }
 
         private void LogListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            var colIndex = e.Column;
-
-            int status = _ColumnSortStatus[1, colIndex];
-
-            switch (status)
+            // Determine whether the column is the same as the last column clicked.
+            if (e.Column != sortColumn)
             {
-                case 0:
-                    _ColumnSortStatus[1, colIndex] = status = 1;
+                // Set the sort column to the new column.
+                sortColumn = e.Column;
+            }
+
+            // Determine what the last sort order was and change it.
+            if (LogListView.Sorting == SortOrder.Ascending)
+                LogListView.Sorting = SortOrder.Descending;
+            else
+                LogListView.Sorting = SortOrder.Ascending;
+
+            // Set the ListViewItemSorter property to a new ListViewItemComparer
+            // object.
+            ListViewItemComparerBase comparer;
+            switch (e.Column)
+            {
+                case 4:
+                    comparer = new ListViewItemDateTimeComparer(e.Column);
+                    comparer.SetSortDirection(LogListView.Sorting == SortOrder.Ascending);
+
+                    LogListView.ListViewItemSorter = comparer;
                     break;
 
-                case 1:
-                    _ColumnSortStatus[1, colIndex] = status = 0;
+                case 0:
+                    comparer = new ListViewItemIntComparer(e.Column);
+                    comparer.SetSortDirection(LogListView.Sorting == SortOrder.Ascending);
+
+                    LogListView.ListViewItemSorter = comparer;
+                    break;
+
+                default:
+                    comparer = new ListViewItemStringComparer(e.Column);
+                    comparer.SetSortDirection(LogListView.Sorting == SortOrder.Ascending);
+
+                    LogListView.ListViewItemSorter = comparer;
                     break;
             }
 
+            // Call the sort method to manually sort.
+            LogListView.Sort();
         }
 
         private void openInSystemEventViewerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -147,7 +159,7 @@ namespace AutopilotHelper
 
         private void LogListView_Click(object sender, EventArgs e)
         {
-            var item = CurrentLogList[LogListView.SelectedIndices[0]];
+            var item = CurrentFile.records.Find(search => search.Index == int.Parse(LogListView.Items[LogListView.SelectedIndices[0]].Text));
 
             LogLineDetailsTextBox.Text = item.ToString();
 
@@ -156,6 +168,18 @@ namespace AutopilotHelper
 
             // 使用XDocument.ToString方法进行格式化输出
             XmlTextBox.Text = xdoc.ToString();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void searchDescriptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new SimpleSearchForm();
+
+            form.ShowDialog();
         }
     }
 }

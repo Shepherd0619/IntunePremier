@@ -16,12 +16,14 @@ namespace AutopilotHelper.Models
             using (var reader = new EventLogReader(fileName, PathType.FilePath))
             {
                 EventRecord record;
+                var index = 0;
                 while ((record = reader.ReadEvent()) != null)
                 {
                     using (record)
                     {
                         records.Add(new()
                         {
+                            Index = index++,
                             Id = record.Id,
                             TimeCreated = record.TimeCreated,
                             LevelDisplayName = record.LevelDisplayName,
@@ -42,6 +44,7 @@ namespace AutopilotHelper.Models
 
         public struct Record
         {
+            public int Index;
             public int Id;
             public DateTime? TimeCreated;
             public string LevelDisplayName;

@@ -42,14 +42,17 @@
             tabPage1 = new TabPage();
             LogLineDetailsTextBox = new RichTextBox();
             tabPage2 = new TabPage();
+            XmlTextBox = new RichTextBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
             setFilterToolStripMenuItem = new ToolStripMenuItem();
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
-            XmlTextBox = new RichTextBox();
+            searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
+            IndexColumn = new ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -127,7 +130,7 @@
             // LogListView
             // 
             LogListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            LogListView.Columns.AddRange(new ColumnHeader[] { IdColumn, LevelColumn, DescriptionColumn, DateTimeColumn });
+            LogListView.Columns.AddRange(new ColumnHeader[] { IndexColumn, IdColumn, LevelColumn, DescriptionColumn, DateTimeColumn });
             LogListView.Location = new Point(13, 29);
             LogListView.Name = "LogListView";
             LogListView.Size = new Size(577, 173);
@@ -208,6 +211,17 @@
             tabPage2.Text = "XML View";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // XmlTextBox
+            // 
+            XmlTextBox.Dock = DockStyle.Fill;
+            XmlTextBox.Location = new Point(3, 3);
+            XmlTextBox.Name = "XmlTextBox";
+            XmlTextBox.ReadOnly = true;
+            XmlTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
+            XmlTextBox.Size = new Size(563, 147);
+            XmlTextBox.TabIndex = 1;
+            XmlTextBox.Text = "";
+            // 
             // menuStrip1
             // 
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, searchToolStripMenuItem });
@@ -219,7 +233,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -231,9 +245,16 @@
             openInSystemEventViewerToolStripMenuItem.Text = "Open current evtx in system event viewer";
             openInSystemEventViewerToolStripMenuItem.Click += openInSystemEventViewerToolStripMenuItem_Click;
             // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(290, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
             // searchToolStripMenuItem
             // 
-            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { filtersToolStripMenuItem });
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { filtersToolStripMenuItem, searchDescriptionToolStripMenuItem });
             searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             searchToolStripMenuItem.Size = new Size(54, 20);
             searchToolStripMenuItem.Text = "Search";
@@ -242,7 +263,7 @@
             // 
             filtersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setFilterToolStripMenuItem, clearFilterToolStripMenuItem });
             filtersToolStripMenuItem.Name = "filtersToolStripMenuItem";
-            filtersToolStripMenuItem.Size = new Size(105, 22);
+            filtersToolStripMenuItem.Size = new Size(172, 22);
             filtersToolStripMenuItem.Text = "Filters";
             // 
             // setFilterToolStripMenuItem
@@ -257,16 +278,16 @@
             clearFilterToolStripMenuItem.Size = new Size(101, 22);
             clearFilterToolStripMenuItem.Text = "Clear";
             // 
-            // XmlTextBox
+            // searchDescriptionToolStripMenuItem
             // 
-            XmlTextBox.Dock = DockStyle.Fill;
-            XmlTextBox.Location = new Point(3, 3);
-            XmlTextBox.Name = "XmlTextBox";
-            XmlTextBox.ReadOnly = true;
-            XmlTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
-            XmlTextBox.Size = new Size(563, 147);
-            XmlTextBox.TabIndex = 1;
-            XmlTextBox.Text = "";
+            searchDescriptionToolStripMenuItem.Name = "searchDescriptionToolStripMenuItem";
+            searchDescriptionToolStripMenuItem.Size = new Size(172, 22);
+            searchDescriptionToolStripMenuItem.Text = "Search Description";
+            searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
+            // 
+            // IndexColumn
+            // 
+            IndexColumn.Text = "Index";
             // 
             // EventViewerForm
             // 
@@ -322,5 +343,8 @@
         private ToolStripMenuItem openInSystemEventViewerToolStripMenuItem;
         private RichTextBox LogLineDetailsTextBox;
         private RichTextBox XmlTextBox;
+        private ToolStripMenuItem searchDescriptionToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ColumnHeader IndexColumn;
     }
 }
