@@ -33,6 +33,7 @@
             label1 = new Label();
             splitContainer2 = new SplitContainer();
             LogListView = new ListView();
+            IndexColumn = new ColumnHeader();
             IdColumn = new ColumnHeader();
             LevelColumn = new ColumnHeader();
             DescriptionColumn = new ColumnHeader();
@@ -46,13 +47,14 @@
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
+            saveAllEventsIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
             setFilterToolStripMenuItem = new ToolStripMenuItem();
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
-            IndexColumn = new ColumnHeader();
+            saveFileDialog1 = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -139,6 +141,10 @@
             LogListView.View = View.Details;
             LogListView.ColumnClick += LogListView_ColumnClick;
             LogListView.Click += LogListView_Click;
+            // 
+            // IndexColumn
+            // 
+            IndexColumn.Text = "Index";
             // 
             // IdColumn
             // 
@@ -233,7 +239,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -244,6 +250,13 @@
             openInSystemEventViewerToolStripMenuItem.Size = new Size(290, 22);
             openInSystemEventViewerToolStripMenuItem.Text = "Open current evtx in system event viewer";
             openInSystemEventViewerToolStripMenuItem.Click += openInSystemEventViewerToolStripMenuItem_Click;
+            // 
+            // saveAllEventsIntoCSVToolStripMenuItem
+            // 
+            saveAllEventsIntoCSVToolStripMenuItem.Name = "saveAllEventsIntoCSVToolStripMenuItem";
+            saveAllEventsIntoCSVToolStripMenuItem.Size = new Size(290, 22);
+            saveAllEventsIntoCSVToolStripMenuItem.Text = "Save all events into CSV";
+            saveAllEventsIntoCSVToolStripMenuItem.Click += saveAllEventsIntoCSVToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
@@ -285,9 +298,9 @@
             searchDescriptionToolStripMenuItem.Text = "Search Description";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
             // 
-            // IndexColumn
+            // saveFileDialog1
             // 
-            IndexColumn.Text = "Index";
+            saveFileDialog1.Filter = "CSV file|*.csv";
             // 
             // EventViewerForm
             // 
@@ -346,5 +359,7 @@
         private ToolStripMenuItem searchDescriptionToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ColumnHeader IndexColumn;
+        private ToolStripMenuItem saveAllEventsIntoCSVToolStripMenuItem;
+        private SaveFileDialog saveFileDialog1;
     }
 }

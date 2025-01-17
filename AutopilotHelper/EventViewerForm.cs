@@ -1,6 +1,7 @@
 ﻿using AutopilotHelper.EventViewer;
 using AutopilotHelper.Models;
 using AutopilotHelper.Utilities;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Xml.Linq;
 
@@ -174,6 +175,28 @@ namespace AutopilotHelper
             var form = new SimpleSearchForm();
 
             form.ShowDialog();
+        }
+
+        private void saveAllEventsIntoCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(CurrentFile == null) return;
+
+            saveFileDialog1.ShowDialog();
+            var fileName = saveFileDialog1.FileName;
+
+            if (string.IsNullOrEmpty(fileName)) return;
+
+            JsonToCsv.jsonToCSV(JsonConvert.SerializeObject(CurrentFile.records), fileName);
+
+            MessageBox.Show("Save successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            if(MessageBox.Show("Open the csv now?", "QUESTION", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                var process = new Process();
+                process.StartInfo.FileName = fileName;
+                process.StartInfo.UseShellExecute = true;
+                process.Start();
+            }
         }
     }
 }
