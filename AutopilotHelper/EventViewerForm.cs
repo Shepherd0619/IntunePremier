@@ -115,7 +115,7 @@ namespace AutopilotHelper
             switch (e.Column)
             {
                 case 4:
-                    comparer = new ListViewItemDateTimeComparer(e.Column);
+                    comparer = new ListViewItemDateTimeComparer(e.Column, 0);
                     comparer.SetSortDirection(LogListView.Sorting == SortOrder.Ascending);
 
                     LogListView.ListViewItemSorter = comparer;

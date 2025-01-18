@@ -88,13 +88,48 @@ namespace AutopilotHelper.Utilities
 
     public class ListViewItemDateTimeComparer : ListViewItemComparerBase
     {
+        protected int indexCol = -1;
+
         public ListViewItemDateTimeComparer(int column) : base(column)
         {
         }
 
+        /// <summary>
+        /// 比较日期。如果日期相同，再比较索引列
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="indexCol">索引列</param>
+        public ListViewItemDateTimeComparer(int column, int indexCol)
+        {
+            this.column = column;
+            this.indexCol = indexCol;
+        }
+
         public override int Compare(object x, object y)
         {
-            return base.CompareDateTime(x, y);
+            if (indexCol == -1)
+            {
+                return base.CompareDateTime(x, y);
+            }
+            else
+            {
+                var result = base.CompareDateTime(x, y);
+
+                if(result == 0)
+                {
+                    var item1 = (ListViewItem)x;
+                    var item2 = (ListViewItem)y;
+
+                    int index1 = int.Parse(item1.SubItems[indexCol].Text);
+                    int index2 = int.Parse(item2.SubItems[indexCol].Text);
+
+                    return ascending ? index1.CompareTo(index2) : -index1.CompareTo(index2);
+                }
+                else
+                {
+                    return result;
+                }
+            }
         }
     }
 
