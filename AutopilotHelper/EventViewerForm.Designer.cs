@@ -55,6 +55,7 @@
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
+            saveCurrentViewIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -239,7 +240,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, saveCurrentViewIntoCSVToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -302,6 +303,13 @@
             // 
             saveFileDialog1.Filter = "CSV file|*.csv";
             // 
+            // saveCurrentViewIntoCSVToolStripMenuItem
+            // 
+            saveCurrentViewIntoCSVToolStripMenuItem.Name = "saveCurrentViewIntoCSVToolStripMenuItem";
+            saveCurrentViewIntoCSVToolStripMenuItem.Size = new Size(290, 22);
+            saveCurrentViewIntoCSVToolStripMenuItem.Text = "Save current view into CSV";
+            saveCurrentViewIntoCSVToolStripMenuItem.Click += saveCurrentViewIntoCSVToolStripMenuItem_Click;
+            // 
             // EventViewerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -361,5 +369,6 @@
         private ColumnHeader IndexColumn;
         private ToolStripMenuItem saveAllEventsIntoCSVToolStripMenuItem;
         private SaveFileDialog saveFileDialog1;
+        private ToolStripMenuItem saveCurrentViewIntoCSVToolStripMenuItem;
     }
 }

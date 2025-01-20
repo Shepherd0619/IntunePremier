@@ -179,7 +179,7 @@ namespace AutopilotHelper
 
         private void saveAllEventsIntoCSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(CurrentFile == null) return;
+            if (CurrentFile == null) return;
 
             saveFileDialog1.ShowDialog();
             var fileName = saveFileDialog1.FileName;
@@ -189,8 +189,43 @@ namespace AutopilotHelper
             JsonToCsv.jsonToCSV(JsonConvert.SerializeObject(CurrentFile.records), fileName);
 
             MessageBox.Show("Save successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
-            if(MessageBox.Show("Open the csv now?", "QUESTION", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+            if (MessageBox.Show("Open the csv now?", "QUESTION", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                var process = new Process();
+                process.StartInfo.FileName = fileName;
+                process.StartInfo.UseShellExecute = true;
+                process.Start();
+            }
+        }
+
+        private void saveCurrentViewIntoCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentFile == null) return;
+
+            var filteredRecords = new List<EventViewerFile.Record>();
+
+            for (int i = 0; i < LogListView.Items.Count; i++)
+            {
+                var item = LogListView.Items[i];
+
+                var index = int.Parse(item.Text);
+
+                var record = CurrentFile.records.Find(search => search.Index == index);
+
+                filteredRecords.Add(record);
+            }
+
+            saveFileDialog1.ShowDialog();
+            var fileName = saveFileDialog1.FileName;
+
+            if (string.IsNullOrEmpty(fileName)) return;
+
+            JsonToCsv.jsonToCSV(JsonConvert.SerializeObject(filteredRecords), fileName);
+
+            MessageBox.Show("Save successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (MessageBox.Show("Open the csv now?", "QUESTION", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 var process = new Process();
                 process.StartInfo.FileName = fileName;
