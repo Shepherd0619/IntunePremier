@@ -172,9 +172,9 @@ namespace AutopilotHelper
 
         private void searchDescriptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new SimpleSearchForm();
+            var form = new SimpleSearchForm(LogListView);
 
-            form.ShowDialog();
+            form.Show(this);
         }
 
         private void saveAllEventsIntoCSVToolStripMenuItem_Click(object sender, EventArgs e)

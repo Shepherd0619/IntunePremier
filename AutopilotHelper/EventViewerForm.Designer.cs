@@ -47,6 +47,7 @@
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
+            saveCurrentViewIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             saveAllEventsIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
@@ -55,7 +56,6 @@
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
-            saveCurrentViewIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -135,6 +135,7 @@
             LogListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LogListView.Columns.AddRange(new ColumnHeader[] { IndexColumn, IdColumn, LevelColumn, DescriptionColumn, DateTimeColumn });
             LogListView.Location = new Point(13, 29);
+            LogListView.MultiSelect = false;
             LogListView.Name = "LogListView";
             LogListView.Size = new Size(577, 173);
             LogListView.TabIndex = 1;
@@ -252,6 +253,13 @@
             openInSystemEventViewerToolStripMenuItem.Text = "Open current evtx in system event viewer";
             openInSystemEventViewerToolStripMenuItem.Click += openInSystemEventViewerToolStripMenuItem_Click;
             // 
+            // saveCurrentViewIntoCSVToolStripMenuItem
+            // 
+            saveCurrentViewIntoCSVToolStripMenuItem.Name = "saveCurrentViewIntoCSVToolStripMenuItem";
+            saveCurrentViewIntoCSVToolStripMenuItem.Size = new Size(290, 22);
+            saveCurrentViewIntoCSVToolStripMenuItem.Text = "Save current view into CSV";
+            saveCurrentViewIntoCSVToolStripMenuItem.Click += saveCurrentViewIntoCSVToolStripMenuItem_Click;
+            // 
             // saveAllEventsIntoCSVToolStripMenuItem
             // 
             saveAllEventsIntoCSVToolStripMenuItem.Name = "saveAllEventsIntoCSVToolStripMenuItem";
@@ -277,7 +285,7 @@
             // 
             filtersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setFilterToolStripMenuItem, clearFilterToolStripMenuItem });
             filtersToolStripMenuItem.Name = "filtersToolStripMenuItem";
-            filtersToolStripMenuItem.Size = new Size(172, 22);
+            filtersToolStripMenuItem.Size = new Size(180, 22);
             filtersToolStripMenuItem.Text = "Filters";
             // 
             // setFilterToolStripMenuItem
@@ -295,20 +303,13 @@
             // searchDescriptionToolStripMenuItem
             // 
             searchDescriptionToolStripMenuItem.Name = "searchDescriptionToolStripMenuItem";
-            searchDescriptionToolStripMenuItem.Size = new Size(172, 22);
-            searchDescriptionToolStripMenuItem.Text = "Search Description";
+            searchDescriptionToolStripMenuItem.Size = new Size(180, 22);
+            searchDescriptionToolStripMenuItem.Text = "Find next";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
             // 
             // saveFileDialog1
             // 
             saveFileDialog1.Filter = "CSV file|*.csv";
-            // 
-            // saveCurrentViewIntoCSVToolStripMenuItem
-            // 
-            saveCurrentViewIntoCSVToolStripMenuItem.Name = "saveCurrentViewIntoCSVToolStripMenuItem";
-            saveCurrentViewIntoCSVToolStripMenuItem.Size = new Size(290, 22);
-            saveCurrentViewIntoCSVToolStripMenuItem.Text = "Save current view into CSV";
-            saveCurrentViewIntoCSVToolStripMenuItem.Click += saveCurrentViewIntoCSVToolStripMenuItem_Click;
             // 
             // EventViewerForm
             // 
