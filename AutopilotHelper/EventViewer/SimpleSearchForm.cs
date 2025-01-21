@@ -1,24 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
-namespace AutopilotHelper.EventViewer
+﻿namespace AutopilotHelper.EventViewer
 {
     public partial class SimpleSearchForm : Form
     {
         private ListView listView;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams baseParams = base.CreateParams;
-
-                const int WS_EX_NOACTIVATE = 0x08000000;
-                const int WS_EX_TOOLWINDOW = 0x00000080;
-                baseParams.ExStyle |= (int)(WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW);
-
-                return baseParams;
-            }
-        }
 
         public SimpleSearchForm()
         {
@@ -64,7 +48,7 @@ namespace AutopilotHelper.EventViewer
                     startIndex = 0; // 从顶部开始
                 else if (selectedItems.Count > 0)
                 {
-                    startIndex = Math.Max(0, selectedItems[selectedItems.Count - 1].Index - 1);
+                    startIndex = selectedItems[selectedItems.Count - 1].Index - 1;
                 }
                 else
                 {
@@ -97,15 +81,9 @@ namespace AutopilotHelper.EventViewer
             }
             else
             {
-                for (int i = startIndex; i > 0; i--)
+                for (int i = startIndex; i > -1; i--)
                 {
-                    int indexToCheck;
-                    if (searchDown && i >= listView.Items.Count)
-                        indexToCheck = 0; // 循环到底部后回到顶部
-                    else if (!searchDown && i < 0)
-                        indexToCheck = listView.Items.Count - 1; // 循环到顶部后回到底部
-                    else
-                        indexToCheck = i;
+                    int indexToCheck = i;
 
                     if (listView.Items[indexToCheck].SubItems[3].Text.Contains(keyword))
                     {
