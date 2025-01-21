@@ -303,6 +303,7 @@
             // searchDescriptionToolStripMenuItem
             // 
             searchDescriptionToolStripMenuItem.Name = "searchDescriptionToolStripMenuItem";
+            searchDescriptionToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
             searchDescriptionToolStripMenuItem.Size = new Size(180, 22);
             searchDescriptionToolStripMenuItem.Text = "Find next";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
