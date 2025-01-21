@@ -39,7 +39,9 @@ namespace AutopilotHelper.EventViewer
         private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text)) return;
-            listView.FindForm().Activate();
+            var form = listView.FindForm();
+            form.Activate();
+            listView.Select();
             FindNextKeyword(textBox1.Text, radioButton2.Checked);
         }
 
