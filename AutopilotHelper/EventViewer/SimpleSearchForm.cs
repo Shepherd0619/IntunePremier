@@ -31,6 +31,18 @@
 
         private void FindNextKeyword(string keyword, bool searchDown)
         {
+            var caseSensitive = checkBox1.Checked;
+            StringComparison comparison;
+
+            if (caseSensitive)
+            {
+                comparison = StringComparison.Ordinal;
+            }
+            else
+            {
+                comparison = StringComparison.OrdinalIgnoreCase;
+            }
+
             // 获取当前已选中的项（如果存在）
             ListView.SelectedListViewItemCollection selectedItems = listView.SelectedItems;
 
@@ -68,7 +80,7 @@
                     else
                         indexToCheck = i;
 
-                    if (listView.Items[indexToCheck].SubItems[3].Text.Contains(keyword))
+                    if (listView.Items[indexToCheck].SubItems[3].Text.Contains(keyword, comparison))
                     {
                         // 找到了匹配的项，选择它并退出循环
                         var item = listView.Items[indexToCheck];
@@ -85,7 +97,7 @@
                 {
                     int indexToCheck = i;
 
-                    if (listView.Items[indexToCheck].SubItems[3].Text.Contains(keyword))
+                    if (listView.Items[indexToCheck].SubItems[3].Text.Contains(keyword, comparison))
                     {
                         // 找到了匹配的项，选择它并退出循环
                         var item = listView.Items[indexToCheck];

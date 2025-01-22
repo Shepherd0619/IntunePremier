@@ -107,7 +107,6 @@
             checkBox1.TabIndex = 4;
             checkBox1.Text = "Case sensitive";
             checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.Visible = false;
             // 
             // SimpleSearchForm
             // 
