@@ -1,4 +1,6 @@
-﻿namespace AutopilotHelper.EventViewer
+﻿using DarkModeForms;
+
+namespace AutopilotHelper.EventViewer
 {
     public partial class SimpleSearchForm : Form
     {
@@ -7,12 +9,22 @@
         public SimpleSearchForm()
         {
             InitializeComponent();
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         public SimpleSearchForm(ListView parent)
         {
             listView = parent;
             InitializeComponent();
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         private void button2_Click(object sender, EventArgs e)

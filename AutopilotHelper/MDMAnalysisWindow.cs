@@ -1,5 +1,6 @@
 ﻿using AutopilotHelper.Models;
 using AutopilotHelper.Utilities;
+using DarkModeForms;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -31,6 +32,11 @@ namespace AutopilotHelper
         public MDMAnalysisWindow()
         {
             InitializeComponent();
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         private async void MDMAnalysisWindow_Load(object sender, EventArgs e)

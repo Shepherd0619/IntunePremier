@@ -1,4 +1,5 @@
 using AutopilotHelper.Utilities;
+using DarkModeForms;
 using System.Diagnostics;
 
 namespace AutopilotHelper
@@ -13,6 +14,10 @@ namespace AutopilotHelper
         public StartUpForm()
         {
             InitializeComponent();
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)

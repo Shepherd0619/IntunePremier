@@ -1,6 +1,7 @@
 ﻿using AutopilotHelper.EventViewer;
 using AutopilotHelper.Models;
 using AutopilotHelper.Utilities;
+using DarkModeForms;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Xml.Linq;
@@ -17,6 +18,11 @@ namespace AutopilotHelper
         public EventViewerForm()
         {
             InitializeComponent();
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         public EventViewerForm(MDMFileUtil diag)
@@ -24,6 +30,11 @@ namespace AutopilotHelper
             InitializeComponent();
 
             SearchEvtx(diag.TmpWorkspacePath);
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         private void EventViewerForm_Load(object sender, EventArgs e)

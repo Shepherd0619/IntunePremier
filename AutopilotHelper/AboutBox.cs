@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using DarkModeForms;
+using System.Reflection;
 
 namespace AutopilotHelper
 {
@@ -13,6 +14,11 @@ namespace AutopilotHelper
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
         }
 
         #region Assembly Attribute Accessors
