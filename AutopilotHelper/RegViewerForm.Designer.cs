@@ -36,17 +36,22 @@
             listView1 = new ListView();
             KeyCol = new ColumnHeader();
             ValueCol = new ColumnHeader();
-            TypeCol = new ColumnHeader();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            closeToolStripMenuItem = new ToolStripMenuItem();
+            searchToolStripMenuItem = new ToolStripMenuItem();
+            findNextToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Location = new Point(0, 24);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -56,7 +61,7 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(listView1);
-            splitContainer1.Size = new Size(800, 450);
+            splitContainer1.Size = new Size(800, 426);
             splitContainer1.SplitterDistance = 266;
             splitContainer1.TabIndex = 0;
             // 
@@ -72,16 +77,18 @@
             treeNode3.Name = "Node0";
             treeNode3.Text = "Registry";
             treeView1.Nodes.AddRange(new TreeNode[] { treeNode3 });
-            treeView1.Size = new Size(266, 450);
+            treeView1.Size = new Size(266, 426);
             treeView1.TabIndex = 0;
+            treeView1.NodeMouseClick += treeView1_NodeMouseClick;
             // 
             // listView1
             // 
-            listView1.Columns.AddRange(new ColumnHeader[] { KeyCol, TypeCol, ValueCol });
+            listView1.Columns.AddRange(new ColumnHeader[] { KeyCol, ValueCol });
             listView1.Dock = DockStyle.Fill;
             listView1.Location = new Point(0, 0);
+            listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(530, 450);
+            listView1.Size = new Size(530, 426);
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -89,16 +96,47 @@
             // KeyCol
             // 
             KeyCol.Text = "Key";
+            KeyCol.Width = 120;
             // 
             // ValueCol
             // 
-            ValueCol.DisplayIndex = 1;
             ValueCol.Text = "Value";
+            ValueCol.Width = 400;
             // 
-            // TypeCol
+            // menuStrip1
             // 
-            TypeCol.DisplayIndex = 2;
-            TypeCol.Text = "Type";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, searchToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { closeToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // closeToolStripMenuItem
+            // 
+            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            closeToolStripMenuItem.Size = new Size(103, 22);
+            closeToolStripMenuItem.Text = "Close";
+            // 
+            // searchToolStripMenuItem
+            // 
+            searchToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { findNextToolStripMenuItem });
+            searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            searchToolStripMenuItem.Size = new Size(54, 20);
+            searchToolStripMenuItem.Text = "Search";
+            // 
+            // findNextToolStripMenuItem
+            // 
+            findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
+            findNextToolStripMenuItem.Size = new Size(122, 22);
+            findNextToolStripMenuItem.Text = "Find next";
             // 
             // RegViewerForm
             // 
@@ -106,13 +144,18 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(splitContainer1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "RegViewerForm";
             Text = "RegViewerForm";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -121,7 +164,11 @@
         private TreeView treeView1;
         private ListView listView1;
         private ColumnHeader KeyCol;
-        private ColumnHeader TypeCol;
         private ColumnHeader ValueCol;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem closeToolStripMenuItem;
+        private ToolStripMenuItem searchToolStripMenuItem;
+        private ToolStripMenuItem findNextToolStripMenuItem;
     }
 }

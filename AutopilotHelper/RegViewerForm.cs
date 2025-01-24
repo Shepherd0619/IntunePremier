@@ -66,7 +66,7 @@ namespace AutopilotHelper
                 bool isLastPart = (part == parts[^1]);
                 if (isLastPart && !string.IsNullOrEmpty(part))
                 {
-                    if(currentNode.Nodes.ContainsKey(part))
+                    if (currentNode.Nodes.ContainsKey(part))
                     {
                         // If the node already exists, skip it.
                         continue;
@@ -84,6 +84,32 @@ namespace AutopilotHelper
                     }
                     currentNode = currentNode.Nodes[part];
                 }
+            }
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            var selectedNode = e.Node;
+
+            if (selectedNode == null || selectedNode == treeView1.TopNode)
+            {
+                return;
+            }
+
+            var path = selectedNode.FullPath.Substring(("Registry\\").Length);
+
+            var keys = _reg.GetAllKeys(path);
+
+            listView1.Items.Clear();
+            foreach (var item in keys)
+            {
+                var listViewItem = new ListViewItem();
+                listViewItem.Text = item.Key;
+                // TODO: Type
+                //listViewItem.SubItems.Add(string.Empty);
+                listViewItem.SubItems.Add(item.Value);
+
+                listView1.Items.Add(listViewItem);
             }
         }
     }

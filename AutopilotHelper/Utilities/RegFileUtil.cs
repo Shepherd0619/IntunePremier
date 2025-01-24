@@ -40,7 +40,10 @@
                     }
                     else
                     {
-                        pathLocated = true;
+                        if (line.Substring(1, line.Length - 2) == path)
+                        {
+                            pathLocated = true;
+                        }
                         continue;
                     }
                 }
@@ -86,7 +89,10 @@
                     }
                     else
                     {
-                        pathLocated = true;
+                        if (line.Substring(1, line.Length - 2) == path)
+                        {
+                            pathLocated = true;
+                        }
                         continue;
                     }
                 }
@@ -106,6 +112,54 @@
                 }
             }
             return paths;
+        }
+
+        public struct Record
+        {
+            public string Key;
+            public string Type;
+            public string Value;
+        }
+
+        public Dictionary<string, string> GetAllKeys(string path)
+        {
+            var keyValues = new Dictionary<string, string>();
+
+            bool pathLocated = false;
+
+            foreach (string line in lines)
+            {
+                if (!pathLocated)
+                {
+                    if (!line.StartsWith($"[{path}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (line.Substring(1, line.Length - 2) == path)
+                        {
+                            pathLocated = true;
+                        }
+                        continue;
+                    }
+                }
+
+                if (line.StartsWith("["))
+                {
+                    break; // Exit the loop when a new section is encountered
+                }
+
+                string[] parts = line.Split(new char[] { '=' }, 2);
+                string _key = parts[0].Trim();
+                if (!string.IsNullOrWhiteSpace(_key))
+                {
+                    string value = parts.Length > 1 ? parts[1].Trim() : null;
+                    keyValues[_key] = value;
+                }
+            }
+
+            return keyValues;
         }
     }
 }
