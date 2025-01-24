@@ -94,5 +94,18 @@
 
             return pathLocated;
         }
+
+        public List<string> GetAllPath()
+        {
+            List<string> paths = new();
+            foreach (string line in lines)
+            {
+                if (line.StartsWith("["))
+                {
+                    paths.Add(line.Substring(1, line.Length - 2));
+                }
+            }
+            return paths;
+        }
     }
 }

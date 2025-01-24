@@ -26,6 +26,7 @@ namespace AutopilotHelper.Utilities
                 }
             }
         }
+        public RegFileUtil Reg => _Reg;
         private MDMFileUtil _MDMDiag;
         private RegFileUtil _Reg;
 

@@ -34,6 +34,8 @@
             closeToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             openWorkspaceFolderToolStripMenuItem = new ToolStripMenuItem();
+            toolsToolStripMenuItem = new ToolStripMenuItem();
+            eventViewerToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             tabControl1 = new TabControl();
@@ -62,8 +64,7 @@
             ProcessedPoliciesWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
             ProcessedAppsTab = new TabPage();
             ProcessedAppsWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
-            toolsToolStripMenuItem = new ToolStripMenuItem();
-            eventViewerToolStripMenuItem = new ToolStripMenuItem();
+            registryViewerToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
@@ -119,6 +120,20 @@
             openWorkspaceFolderToolStripMenuItem.Size = new Size(196, 22);
             openWorkspaceFolderToolStripMenuItem.Text = "Open workspace folder";
             openWorkspaceFolderToolStripMenuItem.Click += openWorkspaceFolderToolStripMenuItem_Click;
+            // 
+            // toolsToolStripMenuItem
+            // 
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eventViewerToolStripMenuItem, registryViewerToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(47, 20);
+            toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // eventViewerToolStripMenuItem
+            // 
+            eventViewerToolStripMenuItem.Name = "eventViewerToolStripMenuItem";
+            eventViewerToolStripMenuItem.Size = new Size(180, 22);
+            eventViewerToolStripMenuItem.Text = "Event Viewer";
+            eventViewerToolStripMenuItem.Click += eventViewerToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -407,19 +422,12 @@
             ProcessedAppsWebView.TabIndex = 0;
             ProcessedAppsWebView.ZoomFactor = 1D;
             // 
-            // toolsToolStripMenuItem
+            // registryViewerToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { eventViewerToolStripMenuItem });
-            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            toolsToolStripMenuItem.Size = new Size(47, 20);
-            toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // eventViewerToolStripMenuItem
-            // 
-            eventViewerToolStripMenuItem.Name = "eventViewerToolStripMenuItem";
-            eventViewerToolStripMenuItem.Size = new Size(180, 22);
-            eventViewerToolStripMenuItem.Text = "Event Viewer";
-            eventViewerToolStripMenuItem.Click += eventViewerToolStripMenuItem_Click;
+            registryViewerToolStripMenuItem.Name = "registryViewerToolStripMenuItem";
+            registryViewerToolStripMenuItem.Size = new Size(180, 22);
+            registryViewerToolStripMenuItem.Text = "Registry Viewer";
+            registryViewerToolStripMenuItem.Click += registryViewerToolStripMenuItem_Click;
             // 
             // MDMAnalysisWindow
             // 
@@ -495,5 +503,6 @@
         private Panel panel2;
         private ToolStripMenuItem toolsToolStripMenuItem;
         private ToolStripMenuItem eventViewerToolStripMenuItem;
+        private ToolStripMenuItem registryViewerToolStripMenuItem;
     }
 }

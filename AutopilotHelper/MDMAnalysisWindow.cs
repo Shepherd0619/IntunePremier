@@ -200,7 +200,13 @@ namespace AutopilotHelper
         private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new EventViewerForm(_diagFile);
-            form.ShowDialog();
+            form.Show(this);
+        }
+
+        private void registryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new RegViewerForm(_autopilotUtil.Reg);
+            form.Show(this);
         }
     }
 }
