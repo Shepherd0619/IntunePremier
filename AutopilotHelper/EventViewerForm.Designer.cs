@@ -73,6 +73,7 @@
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.FixedPanel = FixedPanel.Panel1;
             splitContainer1.Location = new Point(0, 24);
             splitContainer1.Name = "splitContainer1";
             // 
@@ -85,7 +86,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(splitContainer2);
             splitContainer1.Size = new Size(800, 426);
-            splitContainer1.SplitterDistance = 194;
+            splitContainer1.SplitterDistance = 262;
             splitContainer1.TabIndex = 0;
             // 
             // EvtxListBox
@@ -96,7 +97,7 @@
             EvtxListBox.ItemHeight = 15;
             EvtxListBox.Location = new Point(14, 29);
             EvtxListBox.Name = "EvtxListBox";
-            EvtxListBox.Size = new Size(165, 379);
+            EvtxListBox.Size = new Size(233, 379);
             EvtxListBox.TabIndex = 1;
             EvtxListBox.DoubleClick += EvtxListBox_DoubleClick;
             // 
@@ -126,7 +127,7 @@
             // 
             splitContainer2.Panel2.Controls.Add(tabControl1);
             splitContainer2.Panel2.RightToLeft = RightToLeft.No;
-            splitContainer2.Size = new Size(602, 426);
+            splitContainer2.Size = new Size(534, 426);
             splitContainer2.SplitterDistance = 213;
             splitContainer2.TabIndex = 0;
             // 
@@ -137,7 +138,7 @@
             LogListView.Location = new Point(13, 29);
             LogListView.MultiSelect = false;
             LogListView.Name = "LogListView";
-            LogListView.Size = new Size(577, 173);
+            LogListView.Size = new Size(509, 173);
             LogListView.TabIndex = 1;
             LogListView.UseCompatibleStateImageBehavior = false;
             LogListView.View = View.Details;
@@ -183,7 +184,7 @@
             tabControl1.Location = new Point(13, 16);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(577, 181);
+            tabControl1.Size = new Size(509, 181);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -192,7 +193,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(569, 153);
+            tabPage1.Size = new Size(501, 153);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Details";
             tabPage1.UseVisualStyleBackColor = true;
@@ -204,7 +205,7 @@
             LogLineDetailsTextBox.Name = "LogLineDetailsTextBox";
             LogLineDetailsTextBox.ReadOnly = true;
             LogLineDetailsTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
-            LogLineDetailsTextBox.Size = new Size(563, 147);
+            LogLineDetailsTextBox.Size = new Size(495, 147);
             LogLineDetailsTextBox.TabIndex = 0;
             LogLineDetailsTextBox.Text = "";
             // 
@@ -285,7 +286,7 @@
             // 
             filtersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setFilterToolStripMenuItem, clearFilterToolStripMenuItem });
             filtersToolStripMenuItem.Name = "filtersToolStripMenuItem";
-            filtersToolStripMenuItem.Size = new Size(180, 22);
+            filtersToolStripMenuItem.Size = new Size(162, 22);
             filtersToolStripMenuItem.Text = "Filters";
             // 
             // setFilterToolStripMenuItem
@@ -304,7 +305,7 @@
             // 
             searchDescriptionToolStripMenuItem.Name = "searchDescriptionToolStripMenuItem";
             searchDescriptionToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            searchDescriptionToolStripMenuItem.Size = new Size(180, 22);
+            searchDescriptionToolStripMenuItem.Size = new Size(162, 22);
             searchDescriptionToolStripMenuItem.Text = "Find next";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
             // 

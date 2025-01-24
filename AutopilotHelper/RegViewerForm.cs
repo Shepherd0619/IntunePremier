@@ -112,5 +112,10 @@ namespace AutopilotHelper
                 listView1.Items.Add(listViewItem);
             }
         }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
