@@ -57,13 +57,17 @@
             label8 = new Label();
             label2 = new Label();
             ProcessedPoliciesTab = new TabPage();
+            policies_tabControl = new TabControl();
+            tabPage1 = new TabPage();
+            policies_detailTab_HideButton = new Button();
+            policiesDetailTextBox = new TextBox();
+            policies_downCheckBox = new CheckBox();
             policies_CaseSensitiveCheckBox = new CheckBox();
             policiesSearchBox = new TextBox();
             policiesListView = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
-            policies_downCheckBox = new CheckBox();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
@@ -73,6 +77,8 @@
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ProcessedPoliciesTab.SuspendLayout();
+            policies_tabControl.SuspendLayout();
+            tabPage1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -331,6 +337,7 @@
             // 
             // ProcessedPoliciesTab
             // 
+            ProcessedPoliciesTab.Controls.Add(policies_tabControl);
             ProcessedPoliciesTab.Controls.Add(policies_downCheckBox);
             ProcessedPoliciesTab.Controls.Add(policies_CaseSensitiveCheckBox);
             ProcessedPoliciesTab.Controls.Add(policiesSearchBox);
@@ -341,6 +348,65 @@
             ProcessedPoliciesTab.TabIndex = 3;
             ProcessedPoliciesTab.Text = "Processed Policies";
             ProcessedPoliciesTab.UseVisualStyleBackColor = true;
+            // 
+            // policies_tabControl
+            // 
+            policies_tabControl.Alignment = TabAlignment.Bottom;
+            policies_tabControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            policies_tabControl.Controls.Add(tabPage1);
+            policies_tabControl.Location = new Point(8, 319);
+            policies_tabControl.Name = "policies_tabControl";
+            policies_tabControl.SelectedIndex = 0;
+            policies_tabControl.Size = new Size(764, 144);
+            policies_tabControl.TabIndex = 4;
+            policies_tabControl.Visible = false;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(policies_detailTab_HideButton);
+            tabPage1.Controls.Add(policiesDetailTextBox);
+            tabPage1.Location = new Point(4, 4);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(756, 116);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Details";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // policies_detailTab_HideButton
+            // 
+            policies_detailTab_HideButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            policies_detailTab_HideButton.Location = new Point(690, 3);
+            policies_detailTab_HideButton.Name = "policies_detailTab_HideButton";
+            policies_detailTab_HideButton.Size = new Size(43, 23);
+            policies_detailTab_HideButton.TabIndex = 1;
+            policies_detailTab_HideButton.Text = "Hide";
+            policies_detailTab_HideButton.UseVisualStyleBackColor = true;
+            policies_detailTab_HideButton.Click += policies_detailTab_HideButton_Click;
+            // 
+            // policiesDetailTextBox
+            // 
+            policiesDetailTextBox.Dock = DockStyle.Fill;
+            policiesDetailTextBox.Location = new Point(3, 3);
+            policiesDetailTextBox.Multiline = true;
+            policiesDetailTextBox.Name = "policiesDetailTextBox";
+            policiesDetailTextBox.ReadOnly = true;
+            policiesDetailTextBox.ScrollBars = ScrollBars.Vertical;
+            policiesDetailTextBox.Size = new Size(750, 110);
+            policiesDetailTextBox.TabIndex = 0;
+            // 
+            // policies_downCheckBox
+            // 
+            policies_downCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            policies_downCheckBox.AutoSize = true;
+            policies_downCheckBox.Checked = true;
+            policies_downCheckBox.CheckState = CheckState.Checked;
+            policies_downCheckBox.Location = new Point(626, 2);
+            policies_downCheckBox.Name = "policies_downCheckBox";
+            policies_downCheckBox.Size = new Size(57, 19);
+            policies_downCheckBox.TabIndex = 3;
+            policies_downCheckBox.Text = "Down";
+            policies_downCheckBox.UseVisualStyleBackColor = true;
             // 
             // policies_CaseSensitiveCheckBox
             // 
@@ -367,13 +433,14 @@
             // 
             policiesListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             policiesListView.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
-            policiesListView.Location = new Point(0, 21);
+            policiesListView.Location = new Point(0, 22);
             policiesListView.MultiSelect = false;
             policiesListView.Name = "policiesListView";
-            policiesListView.Size = new Size(792, 461);
+            policiesListView.Size = new Size(792, 460);
             policiesListView.TabIndex = 0;
             policiesListView.UseCompatibleStateImageBehavior = false;
             policiesListView.View = View.Details;
+            policiesListView.Click += policiesListView_Click;
             // 
             // columnHeader1
             // 
@@ -388,19 +455,6 @@
             // 
             columnHeader3.Text = "ExpectedValue";
             columnHeader3.Width = 600;
-            // 
-            // policies_downCheckBox
-            // 
-            policies_downCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            policies_downCheckBox.AutoSize = true;
-            policies_downCheckBox.Checked = true;
-            policies_downCheckBox.CheckState = CheckState.Checked;
-            policies_downCheckBox.Location = new Point(626, 2);
-            policies_downCheckBox.Name = "policies_downCheckBox";
-            policies_downCheckBox.Size = new Size(57, 19);
-            policies_downCheckBox.TabIndex = 3;
-            policies_downCheckBox.Text = "Down";
-            policies_downCheckBox.UseVisualStyleBackColor = true;
             // 
             // MDMAnalysisWindow
             // 
@@ -432,6 +486,9 @@
             panel1.PerformLayout();
             ProcessedPoliciesTab.ResumeLayout(false);
             ProcessedPoliciesTab.PerformLayout();
+            policies_tabControl.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -474,5 +531,9 @@
         private TextBox policiesSearchBox;
         private CheckBox policies_CaseSensitiveCheckBox;
         private CheckBox policies_downCheckBox;
+        private TabControl policies_tabControl;
+        private TabPage tabPage1;
+        private TextBox policiesDetailTextBox;
+        private Button policies_detailTab_HideButton;
     }
 }

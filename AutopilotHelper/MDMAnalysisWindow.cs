@@ -3,6 +3,7 @@ using AutopilotHelper.Utilities;
 using DarkModeForms;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Text;
 
 namespace AutopilotHelper
 {
@@ -208,11 +209,11 @@ namespace AutopilotHelper
 
         private void policiesSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyValue != 13) return;
+            if (e.KeyValue != 13) return;
 
             ListViewItem selected;
 
-            if(policiesListView.SelectedItems.Count > 0)
+            if (policiesListView.SelectedItems.Count > 0)
             {
                 selected = policiesListView.SelectedItems[0];
             }
@@ -229,6 +230,27 @@ namespace AutopilotHelper
             {
                 ListViewUtil.FindNextKeyword(keyword, 2, policies_downCheckBox.Checked, policies_CaseSensitiveCheckBox.Checked, policiesListView);
             }
+        }
+
+        private void policiesListView_Click(object sender, EventArgs e)
+        {
+            policies_tabControl.Visible = true;
+
+            var item = policiesListView.Items[policiesListView.SelectedIndices[0]];
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"ID: {item.SubItems[0].Text}");
+            sb.AppendLine();
+            sb.AppendLine($"NodeUri: {item.SubItems[1].Text}");
+            sb.AppendLine();
+            sb.AppendLine($"ExpectedValue: {item.SubItems[2].Text}");
+
+            policiesDetailTextBox.Text = sb.ToString();
+        }
+
+        private void policies_detailTab_HideButton_Click(object sender, EventArgs e)
+        {
+            policies_tabControl.Visible = false;
         }
     }
 }
