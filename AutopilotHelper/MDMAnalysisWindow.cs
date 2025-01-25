@@ -205,5 +205,30 @@ namespace AutopilotHelper
             var form = new RegViewerForm(_autopilotUtil.Reg);
             form.Show(this);
         }
+
+        private void policiesSearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyValue != 13) return;
+
+            ListViewItem selected;
+
+            if(policiesListView.SelectedItems.Count > 0)
+            {
+                selected = policiesListView.SelectedItems[0];
+            }
+            else
+            {
+                selected = null;
+            }
+
+            var keyword = policiesSearchBox.Text;
+
+            ListViewUtil.FindNextKeyword(keyword, 1, policies_downCheckBox.Checked, policies_CaseSensitiveCheckBox.Checked, policiesListView);
+
+            if (policiesListView.SelectedItems.Count <= 0 || selected == policiesListView.SelectedItems[0])
+            {
+                ListViewUtil.FindNextKeyword(keyword, 2, policies_downCheckBox.Checked, policies_CaseSensitiveCheckBox.Checked, policiesListView);
+            }
+        }
     }
 }
