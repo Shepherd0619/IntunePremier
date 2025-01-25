@@ -97,7 +97,7 @@ namespace AutopilotHelper
             }
 
             var path = selectedNode.FullPath.Substring(("Registry\\").Length);
-
+            textBox1.Text = path;
             var keys = _reg.GetAllKeys(path);
 
             listView1.Items.Clear();
@@ -116,6 +116,49 @@ namespace AutopilotHelper
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue != 13) return;
+
+            var path = textBox1.Text;
+
+            var items = path.Split("\\");
+
+            TreeNode currentNode = treeView1.Nodes[0];
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                var result = currentNode.Nodes.Find(items[i], false);
+
+                if(result == null || result.Length <= 0)
+                {
+                    MessageBox.Show("Path not found.", "WARN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    if (treeView1.SelectedNode != null)
+                    {
+                        if (treeView1.SelectedNode.FullPath.StartsWith("Registry\\"))
+                        {
+                            textBox1.Text = treeView1.SelectedNode.FullPath.Substring(("Registry\\").Length);
+                        }
+                        else
+                        {
+                            textBox1.Text = string.Empty;
+                        }
+                    }
+                    else
+                    {
+                        textBox1.Text = string.Empty;
+                    }
+
+                    break;
+                }
+
+                currentNode = result[0];
+            }
+
+            treeView1.SelectedNode = currentNode;
         }
     }
 }
