@@ -36,6 +36,7 @@
             openWorkspaceFolderToolStripMenuItem = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
             eventViewerToolStripMenuItem = new ToolStripMenuItem();
+            registryViewerToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             tabControl1 = new TabControl();
@@ -59,12 +60,11 @@
             devicePreparationCheckedListBox = new CheckedListBox();
             label8 = new Label();
             label2 = new Label();
-            OOBETab = new TabPage();
             ProcessedPoliciesTab = new TabPage();
-            ProcessedPoliciesWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
-            ProcessedAppsTab = new TabPage();
-            ProcessedAppsWebView = new Microsoft.Web.WebView2.WinForms.WebView2();
-            registryViewerToolStripMenuItem = new ToolStripMenuItem();
+            policiesListView = new ListView();
+            columnHeader1 = new ColumnHeader();
+            columnHeader2 = new ColumnHeader();
+            columnHeader3 = new ColumnHeader();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
@@ -74,9 +74,6 @@
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ProcessedPoliciesTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ProcessedPoliciesWebView).BeginInit();
-            ProcessedAppsTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ProcessedAppsWebView).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -131,9 +128,16 @@
             // eventViewerToolStripMenuItem
             // 
             eventViewerToolStripMenuItem.Name = "eventViewerToolStripMenuItem";
-            eventViewerToolStripMenuItem.Size = new Size(180, 22);
+            eventViewerToolStripMenuItem.Size = new Size(154, 22);
             eventViewerToolStripMenuItem.Text = "Event Viewer";
             eventViewerToolStripMenuItem.Click += eventViewerToolStripMenuItem_Click;
+            // 
+            // registryViewerToolStripMenuItem
+            // 
+            registryViewerToolStripMenuItem.Name = "registryViewerToolStripMenuItem";
+            registryViewerToolStripMenuItem.Size = new Size(154, 22);
+            registryViewerToolStripMenuItem.Text = "Registry Viewer";
+            registryViewerToolStripMenuItem.Click += registryViewerToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -154,9 +158,7 @@
             tabControl1.Controls.Add(AutopilotDiagTab);
             tabControl1.Controls.Add(ProfileTab);
             tabControl1.Controls.Add(EspPage);
-            tabControl1.Controls.Add(OOBETab);
             tabControl1.Controls.Add(ProcessedPoliciesTab);
-            tabControl1.Controls.Add(ProcessedAppsTab);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 24);
             tabControl1.Name = "tabControl1";
@@ -368,19 +370,9 @@
             label2.TabIndex = 0;
             label2.Text = "Setting up for work or school";
             // 
-            // OOBETab
-            // 
-            OOBETab.Location = new Point(4, 24);
-            OOBETab.Name = "OOBETab";
-            OOBETab.Padding = new Padding(3);
-            OOBETab.Size = new Size(792, 482);
-            OOBETab.TabIndex = 1;
-            OOBETab.Text = "OOBE";
-            OOBETab.UseVisualStyleBackColor = true;
-            // 
             // ProcessedPoliciesTab
             // 
-            ProcessedPoliciesTab.Controls.Add(ProcessedPoliciesWebView);
+            ProcessedPoliciesTab.Controls.Add(policiesListView);
             ProcessedPoliciesTab.Location = new Point(4, 24);
             ProcessedPoliciesTab.Name = "ProcessedPoliciesTab";
             ProcessedPoliciesTab.Size = new Size(792, 482);
@@ -388,46 +380,30 @@
             ProcessedPoliciesTab.Text = "Processed Policies";
             ProcessedPoliciesTab.UseVisualStyleBackColor = true;
             // 
-            // ProcessedPoliciesWebView
+            // policiesListView
             // 
-            ProcessedPoliciesWebView.AllowExternalDrop = true;
-            ProcessedPoliciesWebView.CreationProperties = null;
-            ProcessedPoliciesWebView.DefaultBackgroundColor = Color.White;
-            ProcessedPoliciesWebView.Dock = DockStyle.Fill;
-            ProcessedPoliciesWebView.Location = new Point(0, 0);
-            ProcessedPoliciesWebView.Name = "ProcessedPoliciesWebView";
-            ProcessedPoliciesWebView.Size = new Size(792, 482);
-            ProcessedPoliciesWebView.TabIndex = 0;
-            ProcessedPoliciesWebView.ZoomFactor = 1D;
+            policiesListView.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
+            policiesListView.Dock = DockStyle.Fill;
+            policiesListView.Location = new Point(0, 0);
+            policiesListView.Name = "policiesListView";
+            policiesListView.Size = new Size(792, 482);
+            policiesListView.TabIndex = 0;
+            policiesListView.UseCompatibleStateImageBehavior = false;
+            policiesListView.View = View.Details;
             // 
-            // ProcessedAppsTab
+            // columnHeader1
             // 
-            ProcessedAppsTab.Controls.Add(ProcessedAppsWebView);
-            ProcessedAppsTab.Location = new Point(4, 24);
-            ProcessedAppsTab.Name = "ProcessedAppsTab";
-            ProcessedAppsTab.Size = new Size(792, 482);
-            ProcessedAppsTab.TabIndex = 4;
-            ProcessedAppsTab.Text = "Processed Apps";
-            ProcessedAppsTab.UseVisualStyleBackColor = true;
+            columnHeader1.Text = "ID";
             // 
-            // ProcessedAppsWebView
+            // columnHeader2
             // 
-            ProcessedAppsWebView.AllowExternalDrop = true;
-            ProcessedAppsWebView.CreationProperties = null;
-            ProcessedAppsWebView.DefaultBackgroundColor = Color.White;
-            ProcessedAppsWebView.Dock = DockStyle.Fill;
-            ProcessedAppsWebView.Location = new Point(0, 0);
-            ProcessedAppsWebView.Name = "ProcessedAppsWebView";
-            ProcessedAppsWebView.Size = new Size(792, 482);
-            ProcessedAppsWebView.TabIndex = 0;
-            ProcessedAppsWebView.ZoomFactor = 1D;
+            columnHeader2.Text = "NodeUri";
+            columnHeader2.Width = 600;
             // 
-            // registryViewerToolStripMenuItem
+            // columnHeader3
             // 
-            registryViewerToolStripMenuItem.Name = "registryViewerToolStripMenuItem";
-            registryViewerToolStripMenuItem.Size = new Size(180, 22);
-            registryViewerToolStripMenuItem.Text = "Registry Viewer";
-            registryViewerToolStripMenuItem.Click += registryViewerToolStripMenuItem_Click;
+            columnHeader3.Text = "ExpectedValue";
+            columnHeader3.Width = 120;
             // 
             // MDMAnalysisWindow
             // 
@@ -458,9 +434,6 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ProcessedPoliciesTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ProcessedPoliciesWebView).EndInit();
-            ProcessedAppsTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ProcessedAppsWebView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -472,7 +445,6 @@
         private ToolStripMenuItem helpToolStripMenuItem;
         private TabControl tabControl1;
         private TabPage ProfileTab;
-        private TabPage OOBETab;
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
         private ProgressBar progressBar1;
@@ -484,11 +456,8 @@
         private RichTextBox autopilotDiagTextBox1;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private TabPage ProcessedPoliciesTab;
-        private Microsoft.Web.WebView2.WinForms.WebView2 ProcessedPoliciesWebView;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem openWorkspaceFolderToolStripMenuItem;
-        private TabPage ProcessedAppsTab;
-        private Microsoft.Web.WebView2.WinForms.WebView2 ProcessedAppsWebView;
         private TabPage EspPage;
         private Label label2;
         private Label label7;
@@ -504,5 +473,9 @@
         private ToolStripMenuItem toolsToolStripMenuItem;
         private ToolStripMenuItem eventViewerToolStripMenuItem;
         private ToolStripMenuItem registryViewerToolStripMenuItem;
+        private ListView policiesListView;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
     }
 }

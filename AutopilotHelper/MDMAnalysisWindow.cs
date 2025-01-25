@@ -62,13 +62,10 @@ namespace AutopilotHelper
                 // Do nothing
             }
 
+            policiesListView.Items.Clear();
+            _autopilotUtil.PopulateProcessedPoliciesListView(policiesListView);
+
             autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
-
-            await ProcessedPoliciesWebView.EnsureCoreWebView2Async();
-
-            ProcessedPoliciesWebView.NavigateToString(_autopilotUtil.GetHtmlFormattedProcessedPolicies());
-
-            await ProcessedAppsWebView.EnsureCoreWebView2Async();
         }
 
         public void InitializeESPTabPage(AutopilotSettings settings)

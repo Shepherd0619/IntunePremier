@@ -1,5 +1,6 @@
 ﻿using AutopilotHelper.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -521,6 +522,26 @@ namespace AutopilotHelper.Utilities
 
             return HtmlReportUtil.GenerateHtmlReport("Processed Policies", "*Based on MdmDiagReport_RegistryDump.reg",
                 new string[] { "ID", "NodeUri", "ExpectedValue" }, value.ToArray(), 1);
+        }
+
+        public void PopulateProcessedPoliciesListView(ListView owner)
+        {
+            if (_NodeCaches == null)
+                GetProcessedPolicies();
+
+            if (_NodeCaches == null)
+                return;
+
+            owner.Items.Clear();
+            for (int i = 0; i < _NodeCaches.Count; i++)
+            {
+                var item = new ListViewItem();
+                item.Text = _NodeCaches[i].id.ToString();
+                item.SubItems.Add(_NodeCaches[i].NodeUri);
+                item.SubItems.Add(_NodeCaches[i].ExpectedValue);
+
+                owner.Items.Add(item);
+            }
         }
 
         public string GetProcessedApps()
