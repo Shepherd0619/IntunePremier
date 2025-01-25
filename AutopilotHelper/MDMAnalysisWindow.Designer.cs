@@ -42,12 +42,8 @@
             tabControl1 = new TabControl();
             AutopilotDiagTab = new TabPage();
             autopilotDiagTextBox1 = new RichTextBox();
-            ProfileTab = new TabPage();
-            label5 = new Label();
+            ApProfileTab = new TabPage();
             AutopilotProfileStatusTextBox = new TextBox();
-            label4 = new Label();
-            label1 = new Label();
-            progressBar1 = new ProgressBar();
             EspPage = new TabPage();
             panel3 = new Panel();
             label7 = new Label();
@@ -68,7 +64,7 @@
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
-            ProfileTab.SuspendLayout();
+            ApProfileTab.SuspendLayout();
             EspPage.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -156,7 +152,7 @@
             // tabControl1
             // 
             tabControl1.Controls.Add(AutopilotDiagTab);
-            tabControl1.Controls.Add(ProfileTab);
+            tabControl1.Controls.Add(ApProfileTab);
             tabControl1.Controls.Add(EspPage);
             tabControl1.Controls.Add(ProcessedPoliciesTab);
             tabControl1.Dock = DockStyle.Fill;
@@ -187,68 +183,28 @@
             autopilotDiagTextBox1.TabIndex = 0;
             autopilotDiagTextBox1.Text = "";
             // 
-            // ProfileTab
+            // ApProfileTab
             // 
-            ProfileTab.Controls.Add(label5);
-            ProfileTab.Controls.Add(AutopilotProfileStatusTextBox);
-            ProfileTab.Controls.Add(label4);
-            ProfileTab.Controls.Add(label1);
-            ProfileTab.Controls.Add(progressBar1);
-            ProfileTab.Location = new Point(4, 24);
-            ProfileTab.Name = "ProfileTab";
-            ProfileTab.Padding = new Padding(3);
-            ProfileTab.Size = new Size(792, 482);
-            ProfileTab.TabIndex = 0;
-            ProfileTab.Text = "Profile";
-            ProfileTab.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(8, 12);
-            label5.Name = "label5";
-            label5.Size = new Size(191, 15);
-            label5.TabIndex = 6;
-            label5.Text = "* Based on end user's pespective.";
+            ApProfileTab.Controls.Add(AutopilotProfileStatusTextBox);
+            ApProfileTab.Location = new Point(4, 24);
+            ApProfileTab.Name = "ApProfileTab";
+            ApProfileTab.Padding = new Padding(3);
+            ApProfileTab.Size = new Size(792, 482);
+            ApProfileTab.TabIndex = 0;
+            ApProfileTab.Text = "AP Profile";
+            ApProfileTab.UseVisualStyleBackColor = true;
             // 
             // AutopilotProfileStatusTextBox
             // 
-            AutopilotProfileStatusTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            AutopilotProfileStatusTextBox.Location = new Point(8, 169);
+            AutopilotProfileStatusTextBox.Dock = DockStyle.Fill;
+            AutopilotProfileStatusTextBox.Location = new Point(3, 3);
             AutopilotProfileStatusTextBox.Multiline = true;
             AutopilotProfileStatusTextBox.Name = "AutopilotProfileStatusTextBox";
             AutopilotProfileStatusTextBox.ReadOnly = true;
             AutopilotProfileStatusTextBox.ScrollBars = ScrollBars.Vertical;
             AutopilotProfileStatusTextBox.ShortcutsEnabled = false;
-            AutopilotProfileStatusTextBox.Size = new Size(774, 221);
+            AutopilotProfileStatusTextBox.Size = new Size(786, 476);
             AutopilotProfileStatusTextBox.TabIndex = 5;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(6, 151);
-            label4.Name = "label4";
-            label4.Size = new Size(129, 15);
-            label4.TabIndex = 4;
-            label4.Text = "Autopilot Profile Status";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(8, 38);
-            label1.Name = "label1";
-            label1.Size = new Size(92, 15);
-            label1.TabIndex = 1;
-            label1.Text = "Overall Progress";
-            // 
-            // progressBar1
-            // 
-            progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar1.Location = new Point(6, 56);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(776, 23);
-            progressBar1.TabIndex = 0;
             // 
             // EspPage
             // 
@@ -423,8 +379,8 @@
             menuStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
             AutopilotDiagTab.ResumeLayout(false);
-            ProfileTab.ResumeLayout(false);
-            ProfileTab.PerformLayout();
+            ApProfileTab.ResumeLayout(false);
+            ApProfileTab.PerformLayout();
             EspPage.ResumeLayout(false);
             EspPage.PerformLayout();
             panel3.ResumeLayout(false);
@@ -444,14 +400,10 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private TabControl tabControl1;
-        private TabPage ProfileTab;
+        private TabPage ApProfileTab;
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem closeToolStripMenuItem;
-        private ProgressBar progressBar1;
-        private Label label1;
         private TextBox AutopilotProfileStatusTextBox;
-        private Label label4;
-        private Label label5;
         private TabPage AutopilotDiagTab;
         private RichTextBox autopilotDiagTextBox1;
         private ToolStripMenuItem aboutToolStripMenuItem;
