@@ -1,6 +1,5 @@
 ﻿using AutopilotHelper.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -468,60 +467,6 @@ namespace AutopilotHelper.Utilities
             _NodeCaches = nodes;
 
             return sb.ToString();
-        }
-
-        public string GetHtmlFormattedProcessedPolicies()
-        {
-            if (_NodeCaches == null)
-                GetProcessedPolicies();
-
-            if (_NodeCaches == null)
-                return string.Empty;
-
-            /*
-            var sb = new StringBuilder();
-            
-            sb.AppendLine("<h1>Processed Policies</h1");
-            sb.AppendLine("<p>*Based on <i>MdmDiagReport_RegistryDump.reg</i> .</p>");
-
-            sb.AppendLine("<style>");
-
-            // grid 布局
-            sb.AppendLine("table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }");
-            sb.AppendLine("th, td { padding: 10px; border: 0.5px solid #ddd; text-align: left; }");
-            sb.AppendLine("th { background-color: #04AA6D; color: white;}");
-            sb.AppendLine("tr:hover {background-color: coral;}");
-
-            // 添加媒体查询
-            sb.AppendLine("@media (max-width: 768px) { table { grid-template-columns: repeat(2, 1fr); } }");
-            sb.AppendLine("@media (max-width: 480px) { table { grid-template-columns: repeat(1, 1fr); } }");
-
-            sb.AppendLine("</style>");
-
-            for (int i = 0; i < _NodeCaches.Count; i++)
-            {
-                if (i == 0)
-                {
-                    sb.AppendLine("<table>");
-                    sb.AppendLine("<tr><th>ID</th><th>Node Uri</th><th>Expected Value</th></tr>");
-                }
-                sb.AppendLine($"<tr><td>{_NodeCaches[i].id}</td><td>{_NodeCaches[i].NodeUri}</td><td>{_NodeCaches[i].ExpectedValue}</td></tr>");
-                if (i < _NodeCaches.Count - 1)
-                    sb.AppendLine();
-            }
-            sb.AppendLine("</table>");
-            */
-
-            var value = new List<string>();
-            for (int i = 0; i < _NodeCaches.Count; i++)
-            {
-                value.Add(_NodeCaches[i].id.ToString());
-                value.Add(_NodeCaches[i].NodeUri);
-                value.Add(_NodeCaches[i].ExpectedValue);
-            }
-
-            return HtmlReportUtil.GenerateHtmlReport("Processed Policies", "*Based on MdmDiagReport_RegistryDump.reg",
-                new string[] { "ID", "NodeUri", "ExpectedValue" }, value.ToArray(), 1);
         }
 
         public void PopulateProcessedPoliciesListView(ListView owner)
