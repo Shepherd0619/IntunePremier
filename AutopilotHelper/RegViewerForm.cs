@@ -132,7 +132,7 @@ namespace AutopilotHelper
             {
                 var result = currentNode.Nodes.Find(items[i], false);
 
-                if(result == null || result.Length <= 0)
+                if (result == null || result.Length <= 0)
                 {
                     MessageBox.Show("Path not found.", "WARN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -159,6 +159,25 @@ namespace AutopilotHelper
             }
 
             treeView1.SelectedNode = currentNode;
+        }
+
+        private void keyValueDetailsTab_HideBtn_Click(object sender, EventArgs e)
+        {
+            keyValueDetailsTab.Visible = false;
+        }
+
+        private void listView1_Click(object sender, EventArgs e)
+        {
+            keyValueDetailsTab.Visible = true;
+
+            var item = listView1.Items[listView1.SelectedIndices[0]];
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"Key: {item.SubItems[0].Text}");
+            sb.AppendLine();
+            sb.AppendLine($"Value: {item.SubItems[1].Text}");
+
+            keyValueDetailsTextBox.Text = sb.ToString();
         }
     }
 }

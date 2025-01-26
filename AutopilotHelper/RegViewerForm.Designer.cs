@@ -33,6 +33,10 @@
             TreeNode treeNode3 = new TreeNode("Registry", new TreeNode[] { treeNode2 });
             splitContainer1 = new SplitContainer();
             treeView1 = new TreeView();
+            keyValueDetailsTab = new TabControl();
+            tabPage1 = new TabPage();
+            keyValueDetailsTab_HideBtn = new Button();
+            keyValueDetailsTextBox = new TextBox();
             listView1 = new ListView();
             KeyCol = new ColumnHeader();
             ValueCol = new ColumnHeader();
@@ -46,6 +50,8 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            keyValueDetailsTab.SuspendLayout();
+            tabPage1.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,6 +68,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(keyValueDetailsTab);
             splitContainer1.Panel2.Controls.Add(listView1);
             splitContainer1.Size = new Size(800, 402);
             splitContainer1.SplitterDistance = 266;
@@ -83,6 +90,52 @@
             treeView1.TabIndex = 0;
             treeView1.NodeMouseClick += treeView1_NodeMouseClick;
             // 
+            // keyValueDetailsTab
+            // 
+            keyValueDetailsTab.Alignment = TabAlignment.Bottom;
+            keyValueDetailsTab.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            keyValueDetailsTab.Controls.Add(tabPage1);
+            keyValueDetailsTab.Location = new Point(3, 290);
+            keyValueDetailsTab.Name = "keyValueDetailsTab";
+            keyValueDetailsTab.SelectedIndex = 0;
+            keyValueDetailsTab.Size = new Size(515, 100);
+            keyValueDetailsTab.TabIndex = 1;
+            keyValueDetailsTab.Visible = false;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(keyValueDetailsTab_HideBtn);
+            tabPage1.Controls.Add(keyValueDetailsTextBox);
+            tabPage1.Location = new Point(4, 4);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(507, 72);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Details";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // keyValueDetailsTab_HideBtn
+            // 
+            keyValueDetailsTab_HideBtn.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            keyValueDetailsTab_HideBtn.Location = new Point(437, 2);
+            keyValueDetailsTab_HideBtn.Name = "keyValueDetailsTab_HideBtn";
+            keyValueDetailsTab_HideBtn.Size = new Size(46, 23);
+            keyValueDetailsTab_HideBtn.TabIndex = 1;
+            keyValueDetailsTab_HideBtn.Text = "Hide";
+            keyValueDetailsTab_HideBtn.UseVisualStyleBackColor = true;
+            keyValueDetailsTab_HideBtn.Click += keyValueDetailsTab_HideBtn_Click;
+            // 
+            // keyValueDetailsTextBox
+            // 
+            keyValueDetailsTextBox.Dock = DockStyle.Fill;
+            keyValueDetailsTextBox.Location = new Point(3, 3);
+            keyValueDetailsTextBox.Multiline = true;
+            keyValueDetailsTextBox.Name = "keyValueDetailsTextBox";
+            keyValueDetailsTextBox.ReadOnly = true;
+            keyValueDetailsTextBox.ScrollBars = ScrollBars.Vertical;
+            keyValueDetailsTextBox.Size = new Size(501, 66);
+            keyValueDetailsTextBox.TabIndex = 0;
+            // 
             // listView1
             // 
             listView1.Columns.AddRange(new ColumnHeader[] { KeyCol, ValueCol });
@@ -94,6 +147,7 @@
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
+            listView1.Click += listView1_Click;
             // 
             // KeyCol
             // 
@@ -165,6 +219,9 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            keyValueDetailsTab.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -184,5 +241,9 @@
         private ToolStripMenuItem searchToolStripMenuItem;
         private ToolStripMenuItem findNextToolStripMenuItem;
         private TextBox textBox1;
+        private TabControl keyValueDetailsTab;
+        private TabPage tabPage1;
+        private TextBox keyValueDetailsTextBox;
+        private Button keyValueDetailsTab_HideBtn;
     }
 }
