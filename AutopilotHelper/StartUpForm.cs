@@ -61,7 +61,7 @@ namespace AutopilotHelper
             analysisWindows.Add(mainForm, openFileDialog1.FileName);
 
             if (!Program.Settings.RecentDiagFiles.Contains(openFileDialog1.FileName))
-                Program.Settings.RecentDiagFiles.Add(openFileDialog1.FileName);
+                Program.Settings.RecentDiagFiles.Insert(0, openFileDialog1.FileName);
             else
             {
                 Program.Settings.RecentDiagFiles.Remove(openFileDialog1.FileName);
