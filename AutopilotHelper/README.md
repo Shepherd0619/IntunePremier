@@ -6,7 +6,8 @@
 
 - **Visualize MDM Logs**: A user-friendly interface for reviewing MDM logs.
 - **Faster Event Viewer**: Quickly search and filter evtx logs to identify issues.
-- **Visualize OOBE Stage**: Easy to know which stage of OOBE is failing.
+- **Visualize MDM Registry**: Make it easier to identify enrollment status, policy manager, etc just like how you do with local machine's Registry Editor.
+- **Visualize ESP Stage**: Easy to know which stage of ESP is failing.
 - **Ease of Use**: Extract, analyze, and visualize data without any setup required.
 
 ## Requirements
