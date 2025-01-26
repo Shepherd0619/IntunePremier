@@ -115,7 +115,7 @@ namespace AutopilotHelper.Utilities
             {
                 var result = base.CompareDateTime(x, y);
 
-                if(result == 0)
+                if (result == 0)
                 {
                     var item1 = (ListViewItem)x;
                     var item2 = (ListViewItem)y;

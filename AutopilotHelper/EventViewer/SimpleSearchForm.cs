@@ -122,7 +122,7 @@ namespace AutopilotHelper.EventViewer
             }
 
             MessageBox.Show("No more matches found!\n\n" +
-                "If you currently selected item in log view, it means there is no match according to given direction.", 
+                "If you currently selected item in log view, it means there is no match according to given direction.",
                 "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

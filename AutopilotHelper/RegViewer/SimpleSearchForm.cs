@@ -1,16 +1,6 @@
 ﻿using AutopilotHelper.Utilities;
 using DarkModeForms;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace AutopilotHelper.RegViewer
 {
@@ -216,7 +206,7 @@ namespace AutopilotHelper.RegViewer
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if(loadingForm != null)
+            if (loadingForm != null)
             {
                 loadingForm.Close();
             }
