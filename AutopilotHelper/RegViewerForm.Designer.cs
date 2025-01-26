@@ -192,8 +192,9 @@
             // findNextToolStripMenuItem
             // 
             findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
-            findNextToolStripMenuItem.Size = new Size(122, 22);
+            findNextToolStripMenuItem.Size = new Size(180, 22);
             findNextToolStripMenuItem.Text = "Find next";
+            findNextToolStripMenuItem.Click += findNextToolStripMenuItem_Click;
             // 
             // textBox1
             // 
@@ -231,8 +232,8 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private TreeView treeView1;
-        private ListView listView1;
+        public TreeView treeView1;
+        public ListView listView1;
         private ColumnHeader KeyCol;
         private ColumnHeader ValueCol;
         private MenuStrip menuStrip1;

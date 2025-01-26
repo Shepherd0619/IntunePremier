@@ -1,4 +1,5 @@
-﻿using AutopilotHelper.Utilities;
+﻿using AutopilotHelper.RegViewer;
+using AutopilotHelper.Utilities;
 using DarkModeForms;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace AutopilotHelper
 {
     public partial class RegViewerForm : Form
     {
+        public RegFileUtil Reg => _reg;
         private RegFileUtil _reg;
 
         public RegViewerForm()
@@ -101,6 +103,13 @@ namespace AutopilotHelper
             var keys = _reg.GetAllKeys(path);
 
             listView1.Items.Clear();
+            PopulateListView(keys);
+        }
+
+        public void PopulateListView(Dictionary<string, string> keys)
+        {
+            listView1.Items.Clear();
+
             foreach (var item in keys)
             {
                 var listViewItem = new ListViewItem();
@@ -178,6 +187,13 @@ namespace AutopilotHelper
             sb.AppendLine($"Value: {item.SubItems[1].Text}");
 
             keyValueDetailsTextBox.Text = sb.ToString();
+        }
+
+        private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new SimpleSearchForm(this);
+
+            form.Show(this);
         }
     }
 }

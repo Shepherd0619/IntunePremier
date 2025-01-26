@@ -8,7 +8,7 @@ namespace AutopilotHelper.Utilities
 {
     internal class ListViewUtil
     {
-        public static void FindNextKeyword(string keyword, int searchCol, bool searchDown, bool caseSensitive, ListView listView, bool popup = false)
+        public static bool FindNextKeyword(string keyword, int searchCol, bool searchDown, bool caseSensitive, ListView listView, bool popup = false)
         {
             StringComparison comparison;
 
@@ -65,7 +65,7 @@ namespace AutopilotHelper.Utilities
                         item.Selected = true;
                         item.Focused = true;
                         item.EnsureVisible();
-                        return;
+                        return true;
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace AutopilotHelper.Utilities
                         item.Selected = true;
                         item.Focused = true;
                         item.EnsureVisible();
-                        return;
+                        return true;
                     }
                 }
             }
@@ -93,6 +93,8 @@ namespace AutopilotHelper.Utilities
                     "If you currently selected item in list view, it means there is no match according to given direction.",
                     "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
+            return false;
         }
     }
 }
