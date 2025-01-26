@@ -33,7 +33,7 @@ Currently we only accept bug fixes and minor improvements. If you would like to 
 
 ## License
 
-This project is licensed under the BSD Clause 3 License.
+This project is licensed under the BSD 3-Clause License.
 
 ---
 

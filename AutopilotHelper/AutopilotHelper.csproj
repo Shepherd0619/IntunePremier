@@ -9,9 +9,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Platforms>AnyCPU</Platforms>
     <Copyright>© 2024 Shepherd Zhu</Copyright>
-    <PackageProjectUrl>https://shepherd0619.github.io/</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Shepherd0619/IntunePremier</PackageProjectUrl>
 	  <Authors>Shepherd Zhu (v-ziruizhu)</Authors>
-	  <Description>This program is provided as open source project. For licensing, please check BSD 3 Clause.</Description>
+	  <Description>This program is provided as open source project. For licensing, please check BSD 3-Clause License.</Description>
 	  <PackageIcon>appicon.png</PackageIcon>
   </PropertyGroup>
 
