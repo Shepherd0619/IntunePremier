@@ -38,6 +38,7 @@
             caseSensitiveCheckBox = new CheckBox();
             onlyFindInTheCurrentPathCheckBox = new CheckBox();
             label1 = new Label();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -134,6 +135,11 @@
             label1.TabIndex = 6;
             label1.Text = resources.GetString("label1.Text");
             // 
+            // backgroundWorker1
+            // 
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+            // 
             // SimpleSearchForm
             // 
             AcceptButton = button1;
@@ -171,5 +177,6 @@
         private CheckBox caseSensitiveCheckBox;
         private CheckBox onlyFindInTheCurrentPathCheckBox;
         private Label label1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

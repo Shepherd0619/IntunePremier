@@ -20,6 +20,8 @@ namespace AutopilotHelper.RegViewer
 
         private Dictionary<string, List<TreeNode>> searchedNodes = new();
 
+        private LoadingForm loadingForm;
+
         public SimpleSearchForm()
         {
             InitializeComponent();
@@ -60,28 +62,26 @@ namespace AutopilotHelper.RegViewer
                 return;
             }
 
-            if (onlyFindInTheCurrentPathCheckBox.Checked) 
+            if (onlyFindInTheCurrentPathCheckBox.Checked)
             {
                 MessageBox.Show("No more matches found!\n\n" +
                    "If you currently selected item in list view, it means there is no match according to given direction.",
                    "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                return; 
+                return;
             }
 
-            if(searchedNodes.TryAdd(textBox1.Text, new()))
+            if (searchedNodes.TryAdd(textBox1.Text, new()))
             {
-                // If nothing in current path, will check all other path.
-                IterateThroughChildNodes(_regViewerForm.treeView1.Nodes[0]);
+                backgroundWorker1.RunWorkerAsync();
 
-                if (searchedNodes[textBox1.Text].Count == 0)
+                if (loadingForm != null)
                 {
-                    MessageBox.Show("No matches found in the entire registry!",
-                        "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    loadingForm.Close();
                 }
 
-                NavigateToNode(searchedNodes[textBox1.Text][0]);
+                loadingForm = new LoadingForm();
+                loadingForm.ShowDialog(_regViewerForm);
             }
             else
             {
@@ -96,7 +96,7 @@ namespace AutopilotHelper.RegViewer
 
                 var index = searchedNodes[textBox1.Text].IndexOf(selectedNode);
                 int nextIndex = -1;
-                
+
                 if (index == -1)
                 {
                     nextIndex = 0;
@@ -108,6 +108,12 @@ namespace AutopilotHelper.RegViewer
 
                 NavigateToNode(searchedNodes[textBox1.Text][nextIndex]);
             }
+        }
+
+        private async void InitialSearch()
+        {
+            // If nothing in current path, will check all other path.
+            await IterateThroughChildNodesAsync(_regViewerForm.treeView1.Nodes[0]);
         }
 
         private void NavigateToNode(TreeNode child)
@@ -150,7 +156,7 @@ namespace AutopilotHelper.RegViewer
 
                 foreach (var pair in keys)
                 {
-                    if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) || 
+                    if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) ||
                         (lookAtValueCheckBox.Checked && pair.Value != null && pair.Value.Contains(textBox1.Text, comparison)))
                     {
                         if (searchedNodes[textBox1.Text].Contains(child)) continue;
@@ -164,6 +170,65 @@ namespace AutopilotHelper.RegViewer
                 // Recursively call a method to iterate through all sub-child nodes of the current child node.
                 IterateThroughChildNodes(child);
             }
+        }
+
+        private async Task IterateThroughChildNodesAsync(TreeNode parentNode)
+        {
+            StringComparison comparison;
+
+            if (caseSensitiveCheckBox.Checked)
+            {
+                comparison = StringComparison.Ordinal;
+            }
+            else
+            {
+                comparison = StringComparison.OrdinalIgnoreCase;
+            }
+
+            foreach (TreeNode child in parentNode.Nodes)
+            {
+                // Do something with each child node, e.g., display text or modify properties.
+                var path = child.FullPath.Substring(("Registry\\").Length);
+                var keys = _regViewerForm.Reg.GetAllKeys(path);
+
+                foreach (var pair in keys)
+                {
+                    if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) ||
+                        (lookAtValueCheckBox.Checked && pair.Value != null && pair.Value.Contains(textBox1.Text, comparison)))
+                    {
+                        if (searchedNodes[textBox1.Text].Contains(child)) continue;
+
+                        searchedNodes[textBox1.Text].Add(child);
+
+                        return;
+                    }
+                }
+
+                // Recursively call a method to iterate through all sub-child nodes of the current child node.
+                await IterateThroughChildNodesAsync(child);
+            }
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            InitialSearch();
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if(loadingForm != null)
+            {
+                loadingForm.Close();
+            }
+
+            if (searchedNodes[textBox1.Text].Count == 0)
+            {
+                MessageBox.Show("No matches found in the entire registry!",
+                    "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            NavigateToNode(searchedNodes[textBox1.Text][0]);
         }
     }
 }
