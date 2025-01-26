@@ -192,6 +192,7 @@
             // findNextToolStripMenuItem
             // 
             findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
+            findNextToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
             findNextToolStripMenuItem.Size = new Size(180, 22);
             findNextToolStripMenuItem.Text = "Find next";
             findNextToolStripMenuItem.Click += findNextToolStripMenuItem_Click;
