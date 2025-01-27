@@ -166,54 +166,60 @@ namespace AutopilotHelper.Utilities
             #endregion
 
             #region OobeConfig
+            try
+            {
+                int? configValue = Convert.ToInt32
+                    (_Reg.GetValue(autopilotRegPath,
+                    "CloudAssignedOobeConfig").Split(new char[] { ':' }, 2)[1].Trim(), 16);
 
-            int? configValue = Convert.ToInt32
-                (_Reg.GetValue(autopilotRegPath,
-                "CloudAssignedOobeConfig").Split(new char[] { ':' }, 2)[1].Trim(), 16);
+                if (configValue == null) return sb.ToString();
 
-            if (configValue == null) return sb.ToString();
+                sb.AppendLine("OobeConfig:               " + configValue);
 
-            sb.AppendLine("OobeConfig:               " + configValue);
+                string[] skipKeyboardMask = new string[] { "1", "0" };
+                int skipKeyboardBit = 10;
+                sb.AppendLine(" Skip keyboard:           " + ((configValue & (1 << skipKeyboardBit)) != 0 ? "Yes   " : "No    ") + skipKeyboardMask[0] + " - - - - - - - - - -");
 
-            string[] skipKeyboardMask = new string[] { "1", "0" };
-            int skipKeyboardBit = 10;
-            sb.AppendLine(" Skip keyboard:           " + ((configValue & (1 << skipKeyboardBit)) != 0 ? "Yes   " : "No    ") + skipKeyboardMask[0] + " - - - - - - - - - -");
+                string[] enablePatchDownloadMask = new string[] { "-1", "-0" };
+                int enablePatchDownloadBit = 9;
+                sb.AppendLine(" Enable patch download:   " + ((configValue & (1 << enablePatchDownloadBit)) != 0 ? "Yes   - " : "No    - ") + enablePatchDownloadMask[0] + " - - - - - - - -");
 
-            string[] enablePatchDownloadMask = new string[] { "-1", "-0" };
-            int enablePatchDownloadBit = 9;
-            sb.AppendLine(" Enable patch download:   " + ((configValue & (1 << enablePatchDownloadBit)) != 0 ? "Yes   - " : "No    - ") + enablePatchDownloadMask[0] + " - - - - - - - -");
+                string[] skipWindowsUpgradeUXMask = new string[] { "-1", "-0" };
+                int skipWindowsUpgradeUXBit = 8;
+                sb.AppendLine(" Skip Windows upgrade UX: " + ((configValue & (1 << skipWindowsUpgradeUXBit)) != 0 ? "Yes   - - " : "No    - - ") + skipWindowsUpgradeUXMask[0] + " - - - -");
 
-            string[] skipWindowsUpgradeUXMask = new string[] { "-1", "-0" };
-            int skipWindowsUpgradeUXBit = 8;
-            sb.AppendLine(" Skip Windows upgrade UX: " + ((configValue & (1 << skipWindowsUpgradeUXBit)) != 0 ? "Yes   - - " : "No    - - ") + skipWindowsUpgradeUXMask[0] + " - - - -");
+                string[] aadTpmRequiredMask = new string[] { "-1", "-0" };
+                int aadTpmRequiredBit = 7;
+                sb.AppendLine(" AAD TPM Required:        " + ((configValue & (1 << aadTpmRequiredBit)) != 0 ? "Yes   - - - " : "No    - - - ") + aadTpmRequiredMask[0] + " - - -");
 
-            string[] aadTpmRequiredMask = new string[] { "-1", "-0" };
-            int aadTpmRequiredBit = 7;
-            sb.AppendLine(" AAD TPM Required:        " + ((configValue & (1 << aadTpmRequiredBit)) != 0 ? "Yes   - - - " : "No    - - - ") + aadTpmRequiredMask[0] + " - - -");
+                string[] aadDeviceAuthMask = new string[] { "-1", "-0" };
+                int aadDeviceAuthBit = 6;
+                sb.AppendLine(" AAD device auth:         " + ((configValue & (1 << aadDeviceAuthBit)) != 0 ? "Yes   - - - - " : "No    - - - - ") + aadDeviceAuthMask[0] + " -");
 
-            string[] aadDeviceAuthMask = new string[] { "-1", "-0" };
-            int aadDeviceAuthBit = 6;
-            sb.AppendLine(" AAD device auth:         " + ((configValue & (1 << aadDeviceAuthBit)) != 0 ? "Yes   - - - - " : "No    - - - - ") + aadDeviceAuthMask[0] + " -");
+                string[] tpmAttestationMask = new string[] { "-1", "-0" };
+                int tpmAttestationBit = 5;
+                sb.AppendLine(" TPM attestation:         " + ((configValue & (1 << tpmAttestationBit)) != 0 ? "Yes   - - - - - " : "No    - - - - - ") + tpmAttestationMask[0] + " -");
 
-            string[] tpmAttestationMask = new string[] { "-1", "-0" };
-            int tpmAttestationBit = 5;
-            sb.AppendLine(" TPM attestation:         " + ((configValue & (1 << tpmAttestationBit)) != 0 ? "Yes   - - - - - " : "No    - - - - - ") + tpmAttestationMask[0] + " -");
+                string[] skipEulaMask = new string[] { "-1", "-0" };
+                int skipEulaBit = 4;
+                sb.AppendLine(" Skip EULA:               " + ((configValue & (1 << skipEulaBit)) != 0 ? "Yes   - - - - - - " : "No    - - - - - - ") + skipEulaMask[0]);
 
-            string[] skipEulaMask = new string[] { "-1", "-0" };
-            int skipEulaBit = 4;
-            sb.AppendLine(" Skip EULA:               " + ((configValue & (1 << skipEulaBit)) != 0 ? "Yes   - - - - - - " : "No    - - - - - - ") + skipEulaMask[0]);
+                string[] skipOemRegistrationMask = new string[] { "-1", "-0" };
+                int skipOemRegistrationBit = 3;
+                sb.AppendLine(" Skip OEM registration:   " + ((configValue & (1 << skipOemRegistrationBit)) != 0 ? "Yes   - - - - - - - " : "No    - - - - - - - ") + skipOemRegistrationMask[0]);
 
-            string[] skipOemRegistrationMask = new string[] { "-1", "-0" };
-            int skipOemRegistrationBit = 3;
-            sb.AppendLine(" Skip OEM registration:   " + ((configValue & (1 << skipOemRegistrationBit)) != 0 ? "Yes   - - - - - - - " : "No    - - - - - - - ") + skipOemRegistrationMask[0]);
+                string[] skipExpressSettingsMask = new string[] { "-1", "-0" };
+                int skipExpressSettingsBit = 2;
+                sb.AppendLine(" Skip express settings:   " + ((configValue & (1 << skipExpressSettingsBit)) != 0 ? "Yes   - - - - - - - - " : "No    - - - - - - - - ") + skipExpressSettingsMask[0]);
 
-            string[] skipExpressSettingsMask = new string[] { "-1", "-0" };
-            int skipExpressSettingsBit = 2;
-            sb.AppendLine(" Skip express settings:   " + ((configValue & (1 << skipExpressSettingsBit)) != 0 ? "Yes   - - - - - - - - " : "No    - - - - - - - - ") + skipExpressSettingsMask[0]);
-
-            string[] disallowAdminMask = new string[] { "-1", "-0" };
-            int disallowAdminBit = 1;
-            sb.AppendLine(" Disallow admin:          " + ((configValue & (1 << disallowAdminBit)) != 0 ? "Yes   - - - - - - - - - " : "No    - - - - - - - - - ") + disallowAdminMask[0]);
+                string[] disallowAdminMask = new string[] { "-1", "-0" };
+                int disallowAdminBit = 1;
+                sb.AppendLine(" Disallow admin:          " + ((configValue & (1 << disallowAdminBit)) != 0 ? "Yes   - - - - - - - - - " : "No    - - - - - - - - - ") + disallowAdminMask[0]);
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine($"Unable to fetch OOBE config from registry!\n\n{ex}");
+            }
             #endregion
 
             #region Autopilot Profile
