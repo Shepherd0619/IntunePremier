@@ -131,7 +131,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(12, 125);
             label1.Name = "label1";
-            label1.Size = new Size(415, 45);
+            label1.Size = new Size(419, 60);
             label1.TabIndex = 6;
             label1.Text = resources.GetString("label1.Text");
             // 
@@ -146,7 +146,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = button2;
-            ClientSize = new Size(443, 179);
+            ClientSize = new Size(443, 197);
             Controls.Add(label1);
             Controls.Add(onlyFindInTheCurrentPathCheckBox);
             Controls.Add(caseSensitiveCheckBox);
