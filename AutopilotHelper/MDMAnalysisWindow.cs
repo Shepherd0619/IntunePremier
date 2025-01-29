@@ -228,7 +228,7 @@ namespace AutopilotHelper
 
             if (policiesListView.SelectedItems.Count <= 0 || selected == policiesListView.SelectedItems[0])
             {
-                ListViewUtil.FindNextKeyword(keyword, 2, policies_downCheckBox.Checked, policies_CaseSensitiveCheckBox.Checked, policiesListView);
+                ListViewUtil.FindNextKeyword(keyword, 2, policies_downCheckBox.Checked, policies_CaseSensitiveCheckBox.Checked, policiesListView, true);
             }
         }
 
