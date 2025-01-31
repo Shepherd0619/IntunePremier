@@ -46,9 +46,12 @@
             XmlTextBox = new RichTextBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            openExternalEvtxToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
             openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
             saveCurrentViewIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             saveAllEventsIntoCSVToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
@@ -56,6 +59,7 @@
             clearFilterToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
+            openFileDialog1 = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -215,7 +219,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(569, 153);
+            tabPage2.Size = new Size(501, 153);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "XML View";
             tabPage2.UseVisualStyleBackColor = true;
@@ -227,7 +231,7 @@
             XmlTextBox.Name = "XmlTextBox";
             XmlTextBox.ReadOnly = true;
             XmlTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
-            XmlTextBox.Size = new Size(563, 147);
+            XmlTextBox.Size = new Size(495, 147);
             XmlTextBox.TabIndex = 1;
             XmlTextBox.Text = "";
             // 
@@ -242,10 +246,22 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openInSystemEventViewerToolStripMenuItem, saveCurrentViewIntoCSVToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openExternalEvtxToolStripMenuItem, toolStripSeparator1, openInSystemEventViewerToolStripMenuItem, saveCurrentViewIntoCSVToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, toolStripSeparator2, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
+            // 
+            // openExternalEvtxToolStripMenuItem
+            // 
+            openExternalEvtxToolStripMenuItem.Name = "openExternalEvtxToolStripMenuItem";
+            openExternalEvtxToolStripMenuItem.Size = new Size(290, 22);
+            openExternalEvtxToolStripMenuItem.Text = "Open external evtx";
+            openExternalEvtxToolStripMenuItem.Click += openExternalEvtxToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(287, 6);
             // 
             // openInSystemEventViewerToolStripMenuItem
             // 
@@ -267,6 +283,11 @@
             saveAllEventsIntoCSVToolStripMenuItem.Size = new Size(290, 22);
             saveAllEventsIntoCSVToolStripMenuItem.Text = "Save all events into CSV";
             saveAllEventsIntoCSVToolStripMenuItem.Click += saveAllEventsIntoCSVToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(287, 6);
             // 
             // exitToolStripMenuItem
             // 
@@ -312,6 +333,10 @@
             // saveFileDialog1
             // 
             saveFileDialog1.Filter = "CSV file|*.csv";
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.Filter = "Event Viewer File|*.evtx";
             // 
             // EventViewerForm
             // 
@@ -373,5 +398,9 @@
         private ToolStripMenuItem saveAllEventsIntoCSVToolStripMenuItem;
         private SaveFileDialog saveFileDialog1;
         private ToolStripMenuItem saveCurrentViewIntoCSVToolStripMenuItem;
+        private ToolStripMenuItem openExternalEvtxToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparator2;
+        private OpenFileDialog openFileDialog1;
     }
 }

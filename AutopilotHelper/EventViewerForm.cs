@@ -48,7 +48,7 @@ namespace AutopilotHelper
             {
                 foreach (string file in Directory.EnumerateFiles(path, "*.evtx", SearchOption.AllDirectories))
                 {
-                    EvtxFiles.Add(file);
+                    EvtxFiles.Add(PathUtil.FixSeparator(file));
                 }
             }
             catch (Exception ex)
@@ -72,11 +72,26 @@ namespace AutopilotHelper
 
             var path = EvtxFiles[index];
 
-            if (string.IsNullOrEmpty(path)) return;
+            OpenEvtx(path);
+        }
+
+        public bool OpenEvtx(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return false;
 
             _CurrentFile = new EventViewerFile(path);
 
             RenderLogList();
+
+            var fixedPath = PathUtil.FixSeparator(path);
+
+            if (!EvtxFiles.Contains(fixedPath))
+            {
+                EvtxFiles.Add(fixedPath);
+                EvtxListBox.Items.Add($"[EXT] {Path.GetFileName(fixedPath)} ({fixedPath})");
+            }
+
+            return true;
         }
 
         private void RenderLogList()
@@ -243,6 +258,16 @@ namespace AutopilotHelper
                 process.StartInfo.UseShellExecute = true;
                 process.Start();
             }
+        }
+
+        private void openExternalEvtxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            var fileName = openFileDialog1.FileName;
+
+            if (string.IsNullOrEmpty(fileName)) return;
+
+            OpenEvtx(fileName);
         }
     }
 }
