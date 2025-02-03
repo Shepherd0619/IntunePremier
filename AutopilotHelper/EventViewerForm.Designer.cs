@@ -55,8 +55,6 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
-            setFilterToolStripMenuItem = new ToolStripMenuItem();
-            clearFilterToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
             openFileDialog1 = new OpenFileDialog();
@@ -305,28 +303,16 @@
             // 
             // filtersToolStripMenuItem
             // 
-            filtersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setFilterToolStripMenuItem, clearFilterToolStripMenuItem });
             filtersToolStripMenuItem.Name = "filtersToolStripMenuItem";
-            filtersToolStripMenuItem.Size = new Size(162, 22);
+            filtersToolStripMenuItem.Size = new Size(180, 22);
             filtersToolStripMenuItem.Text = "Filters";
-            // 
-            // setFilterToolStripMenuItem
-            // 
-            setFilterToolStripMenuItem.Name = "setFilterToolStripMenuItem";
-            setFilterToolStripMenuItem.Size = new Size(101, 22);
-            setFilterToolStripMenuItem.Text = "Set";
-            // 
-            // clearFilterToolStripMenuItem
-            // 
-            clearFilterToolStripMenuItem.Name = "clearFilterToolStripMenuItem";
-            clearFilterToolStripMenuItem.Size = new Size(101, 22);
-            clearFilterToolStripMenuItem.Text = "Clear";
+            filtersToolStripMenuItem.Click += filtersToolStripMenuItem_Click;
             // 
             // searchDescriptionToolStripMenuItem
             // 
             searchDescriptionToolStripMenuItem.Name = "searchDescriptionToolStripMenuItem";
             searchDescriptionToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            searchDescriptionToolStripMenuItem.Size = new Size(162, 22);
+            searchDescriptionToolStripMenuItem.Size = new Size(180, 22);
             searchDescriptionToolStripMenuItem.Text = "Find next";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
             // 
@@ -386,8 +372,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem searchToolStripMenuItem;
         private ToolStripMenuItem filtersToolStripMenuItem;
-        private ToolStripMenuItem setFilterToolStripMenuItem;
-        private ToolStripMenuItem clearFilterToolStripMenuItem;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem openInSystemEventViewerToolStripMenuItem;
         private RichTextBox LogLineDetailsTextBox;

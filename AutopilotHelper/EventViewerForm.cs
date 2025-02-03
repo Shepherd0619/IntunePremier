@@ -15,6 +15,29 @@ namespace AutopilotHelper
         private EventViewerFile _CurrentFile;
         private int sortColumn;
 
+        #region Filter
+        public FilterInfo? Filter => _Filter;
+        private FilterInfo? _Filter;
+
+        public struct FilterInfo
+        {
+            public int[] Id;
+            public string[] LevelDisplayName;
+            public string[] Keywords;
+            public bool CaseSensitive;
+        }
+
+        public void SetFilter(FilterInfo info)
+        {
+
+        }
+
+        public void ClearFilter()
+        {
+
+        }
+        #endregion
+
         public EventViewerForm()
         {
             InitializeComponent();
@@ -268,6 +291,13 @@ namespace AutopilotHelper
             if (string.IsNullOrEmpty(fileName)) return;
 
             OpenEvtx(fileName);
+        }
+
+        private void filtersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FilterForm(this, LogListView);
+
+            form.ShowDialog(this);
         }
     }
 }
