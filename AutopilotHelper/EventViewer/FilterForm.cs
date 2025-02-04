@@ -32,14 +32,38 @@ namespace AutopilotHelper.EventViewer
             this.logListView = logListView;
             this.form = form;
 
-            // Load current filter and output to textbox etc.
-
             var dm = new DarkModeCS(this)
             {
                 ColorMode = DarkModeCS.DisplayMode.SystemDefault
             };
 
             InitializeComponent();
+
+            if (form.Filter != null)
+            {
+                // Load current filter and output to textbox etc.
+                EventViewerForm.FilterInfo filter = (EventViewerForm.FilterInfo)form.Filter;
+
+                if (filter.Id != null && filter.Id.Length > 0)
+                {
+                    textBox1.Text = string.Join(",", filter.Id);
+                }
+
+                if (filter.LevelDisplayName != null)
+                {
+                    foreach (var item in filter.LevelDisplayName)
+                    {
+                        checkedListBox1.SetItemChecked(checkedListBox1.Items.IndexOf(item), true);
+                    }
+                }
+
+                if (filter.Keywords != null && filter.Keywords.Length > 0)
+                {
+                    textBox2.Text = string.Join(",", filter.Keywords);
+                }
+
+                checkBox1.Checked = filter.CaseSensitive;
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)

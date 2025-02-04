@@ -62,6 +62,8 @@ namespace AutopilotHelper
         {
             if(CurrentFile == null) return;
 
+            _Filter = null;
+
             RenderLogList();
         }
         #endregion
