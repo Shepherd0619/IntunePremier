@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AutopilotHelper": {
+      "commandName": "Project"
+    },
+    "Event Viewer": {
+      "commandName": "Project",
+      "commandLineArgs": "--event-viewer"
+    }
+  }
+}

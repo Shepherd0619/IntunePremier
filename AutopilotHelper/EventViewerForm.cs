@@ -15,6 +15,76 @@ namespace AutopilotHelper
         private EventViewerFile _CurrentFile;
         private int sortColumn;
 
+        #region Filter
+        public FilterInfo? Filter => _Filter;
+        private FilterInfo? _Filter;
+
+        public struct FilterInfo
+        {
+            public int[] Id;
+            public string[] LevelDisplayName;
+            public string[] Keywords;
+            public bool CaseSensitive;
+
+            public override string ToString()
+            {
+                return $"Id: {string.Join(",", Id)}\nLevelDisplayName: {string.Join(",", LevelDisplayName)}\nKeywords: {string.Join(",", Keywords)}\nCaseSensitive: {CaseSensitive}";
+            }
+        }
+
+        public void SetFilter(FilterInfo info)
+        {
+            if (CurrentFile == null) return;
+
+            _Filter = info;
+
+            var list = CurrentFile.records.ToList();
+
+            // Id
+            if (info.Id.Length > 0)
+            {
+                var idExclusion = info.Id.Where(id => id < 0).Select(id => Math.Abs(id)).ToArray();
+
+                var idInclusion = info.Id.Where(id => id >= 0).ToArray();
+
+                if (idExclusion.Length > 0)
+                {
+                    list.RemoveAll(search => idExclusion.Contains(search.Id));
+                }
+
+                if (idInclusion.Length > 0)
+                {
+                    list.RemoveAll(search => !idInclusion.Contains(search.Id));
+                }
+            }
+
+            // LevelDisplayName
+            if (info.LevelDisplayName.Length > 0)
+            {
+                list.RemoveAll(search => !info.LevelDisplayName.Contains(search.LevelDisplayName));
+            }
+
+            // Keywords
+            StringComparison comparison = info.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            if (info.Keywords.Length > 0)
+            {
+                list.RemoveAll(search => !info.Keywords.Any(keyword => !string.IsNullOrWhiteSpace(search.FormatDescription) && search.FormatDescription.Contains(keyword, comparison)));
+            }
+
+            RenderLogList(list);
+        }
+
+        public void ClearFilter()
+        {
+            if (CurrentFile == null) return;
+
+            _Filter = null;
+            FilterStatusLabel.Text = "Filter: None";
+
+            RenderLogList();
+        }
+        #endregion
+
         public EventViewerForm()
         {
             InitializeComponent();
@@ -48,7 +118,7 @@ namespace AutopilotHelper
             {
                 foreach (string file in Directory.EnumerateFiles(path, "*.evtx", SearchOption.AllDirectories))
                 {
-                    EvtxFiles.Add(file);
+                    EvtxFiles.Add(PathUtil.FixSeparator(file));
                 }
             }
             catch (Exception ex)
@@ -72,19 +142,45 @@ namespace AutopilotHelper
 
             var path = EvtxFiles[index];
 
-            if (string.IsNullOrEmpty(path)) return;
+            OpenEvtx(path);
+        }
+
+        public bool OpenEvtx(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                IOOperationProgressLabel.Text = "File not found!";
+                return false;
+            }
 
             _CurrentFile = new EventViewerFile(path);
 
             RenderLogList();
+
+            var fixedPath = PathUtil.FixSeparator(path);
+
+            if (!EvtxFiles.Contains(fixedPath))
+            {
+                EvtxFiles.Add(fixedPath);
+                EvtxListBox.Items.Add($"[EXT] {Path.GetFileName(fixedPath)} ({fixedPath})");
+            }
+
+            IOOperationProgressLabel.Text = "Open successfully!";
+
+            ClearFilter();
+
+            return true;
         }
 
         private void RenderLogList()
         {
+            RenderLogList(CurrentFile.records);
+        }
+
+        private void RenderLogList(List<EventViewerFile.Record> list)
+        {
             LogListView.ListViewItemSorter = null;
             LogListView.Items.Clear();
-
-            var list = CurrentFile.records;
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -103,6 +199,8 @@ namespace AutopilotHelper
             LogListView.ListViewItemSorter = comparer;
 
             LogListView.Sort();
+
+            IOOperationProgressLabel.Text = $"Total {list.Count} records.";
         }
 
         private void LogListView_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -174,6 +272,8 @@ namespace AutopilotHelper
 
             // 使用XDocument.ToString方法进行格式化输出
             XmlTextBox.Text = xdoc.ToString();
+
+            IOOperationProgressLabel.Text = $"Selected: {item.Index}";
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -243,6 +343,23 @@ namespace AutopilotHelper
                 process.StartInfo.UseShellExecute = true;
                 process.Start();
             }
+        }
+
+        private void openExternalEvtxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            var fileName = openFileDialog1.FileName;
+
+            if (string.IsNullOrEmpty(fileName)) return;
+
+            OpenEvtx(fileName);
+        }
+
+        private void filtersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FilterForm(this, LogListView);
+
+            form.ShowDialog(this);
         }
     }
 }
