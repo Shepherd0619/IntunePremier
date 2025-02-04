@@ -38,8 +38,19 @@ namespace AutopilotHelper
             // Id
             if (info.Id.Length > 0)
             {
-                // TODO: Exclude
-                list.RemoveAll(search => !info.Id.Contains(search.Id));
+                var idExclusion = info.Id.Where(id => id < 0).Select(id => Math.Abs(id)).ToArray();
+                
+                var idInclusion = info.Id.Where(id => id >= 0).ToArray();
+
+                if (idExclusion.Length > 0)
+                {
+                    list.RemoveAll(search => idExclusion.Contains(search.Id));
+                }
+
+                if(idInclusion.Length > 0)
+                {
+                    list.RemoveAll(search => !idInclusion.Contains(search.Id));
+                }
             }
 
             // LevelDisplayName
