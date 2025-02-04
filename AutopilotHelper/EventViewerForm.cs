@@ -79,6 +79,7 @@ namespace AutopilotHelper
             if (CurrentFile == null) return;
 
             _Filter = null;
+            FilterStatusLabel.Text = "Filter: None";
 
             RenderLogList();
         }
@@ -165,6 +166,8 @@ namespace AutopilotHelper
             }
 
             IOOperationProgressLabel.Text = "Open successfully!";
+
+            ClearFilter();
 
             return true;
         }

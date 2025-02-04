@@ -109,7 +109,6 @@ namespace AutopilotHelper.EventViewer
         private void button2_Click(object sender, EventArgs e)
         {
             form.ClearFilter();
-            form.FilterStatusLabel.Text = "Filter: None";
             this.Close();
         }
     }
