@@ -29,12 +29,40 @@ namespace AutopilotHelper
 
         public void SetFilter(FilterInfo info)
         {
+            if(CurrentFile == null) return;
 
+            _Filter = info;
+
+            var list = CurrentFile.records.ToList();
+
+            // Id
+            if (info.Id.Length > 0)
+            {
+                // TODO: Exclude
+                list.RemoveAll(search => !info.Id.Contains(search.Id));
+            }
+
+            // LevelDisplayName
+            if (info.LevelDisplayName.Length > 0)
+            {
+                list.RemoveAll(search => !info.LevelDisplayName.Contains(search.LevelDisplayName));
+            }
+
+            // Keywords
+            StringComparison comparison = info.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            if (info.Keywords.Length > 0)
+            {
+                list.RemoveAll(search => !info.Keywords.Any(keyword => !string.IsNullOrWhiteSpace(search.FormatDescription) && search.FormatDescription.Contains(keyword, comparison)));
+            }
+
+            RenderLogList(list);
         }
 
         public void ClearFilter()
         {
+            if(CurrentFile == null) return;
 
+            RenderLogList();
         }
         #endregion
 
@@ -119,10 +147,13 @@ namespace AutopilotHelper
 
         private void RenderLogList()
         {
+            RenderLogList(CurrentFile.records);
+        }
+
+        private void RenderLogList(List<EventViewerFile.Record> list)
+        {
             LogListView.ListViewItemSorter = null;
             LogListView.Items.Clear();
-
-            var list = CurrentFile.records;
 
             for (int i = 0; i < list.Count; i++)
             {

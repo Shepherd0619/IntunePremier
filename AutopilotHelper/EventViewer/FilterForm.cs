@@ -32,6 +32,8 @@ namespace AutopilotHelper.EventViewer
             this.logListView = logListView;
             this.form = form;
 
+            // Load current filter and output to textbox etc.
+
             var dm = new DarkModeCS(this)
             {
                 ColorMode = DarkModeCS.DisplayMode.SystemDefault
@@ -56,11 +58,16 @@ namespace AutopilotHelper.EventViewer
 
             try
             {
+                // Initialize filter variables with default values if textbox is empty
+                var id = string.IsNullOrEmpty(textBox1.Text) ? new int[] { } : textBox1.Text.Split(',').Select(x => int.Parse(x)).ToArray();
+                var keywords = string.IsNullOrEmpty(textBox2.Text) ? new string[] { } : textBox2.Text.Split(',');
+
+                // Create filter object
                 var filter = new EventViewerForm.FilterInfo
                 {
-                    Id = textBox1.Text.Split(',').Select(x => int.Parse(x)).ToArray(),
+                    Id = id,
                     LevelDisplayName = level.ToArray(),
-                    Keywords = textBox2.Text.Split(','),
+                    Keywords = keywords,
                     CaseSensitive = checkBox1.Checked
                 };
 
