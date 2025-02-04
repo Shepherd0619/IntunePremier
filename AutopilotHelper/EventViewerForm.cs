@@ -25,11 +25,16 @@ namespace AutopilotHelper
             public string[] LevelDisplayName;
             public string[] Keywords;
             public bool CaseSensitive;
+
+            public override string ToString()
+            {
+                return $"Id: {string.Join(",", Id)}\nLevelDisplayName: {string.Join(",", LevelDisplayName)}\nKeywords: {string.Join(",", Keywords)}\nCaseSensitive: {CaseSensitive}";
+            }
         }
 
         public void SetFilter(FilterInfo info)
         {
-            if(CurrentFile == null) return;
+            if (CurrentFile == null) return;
 
             _Filter = info;
 
@@ -39,7 +44,7 @@ namespace AutopilotHelper
             if (info.Id.Length > 0)
             {
                 var idExclusion = info.Id.Where(id => id < 0).Select(id => Math.Abs(id)).ToArray();
-                
+
                 var idInclusion = info.Id.Where(id => id >= 0).ToArray();
 
                 if (idExclusion.Length > 0)
@@ -47,7 +52,7 @@ namespace AutopilotHelper
                     list.RemoveAll(search => idExclusion.Contains(search.Id));
                 }
 
-                if(idInclusion.Length > 0)
+                if (idInclusion.Length > 0)
                 {
                     list.RemoveAll(search => !idInclusion.Contains(search.Id));
                 }
@@ -71,7 +76,7 @@ namespace AutopilotHelper
 
         public void ClearFilter()
         {
-            if(CurrentFile == null) return;
+            if (CurrentFile == null) return;
 
             _Filter = null;
 
@@ -141,7 +146,11 @@ namespace AutopilotHelper
 
         public bool OpenEvtx(string path)
         {
-            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return false;
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                IOOperationProgressLabel.Text = "File not found!";
+                return false;
+            }
 
             _CurrentFile = new EventViewerFile(path);
 
@@ -154,6 +163,8 @@ namespace AutopilotHelper
                 EvtxFiles.Add(fixedPath);
                 EvtxListBox.Items.Add($"[EXT] {Path.GetFileName(fixedPath)} ({fixedPath})");
             }
+
+            IOOperationProgressLabel.Text = "Open successfully!";
 
             return true;
         }
@@ -185,6 +196,8 @@ namespace AutopilotHelper
             LogListView.ListViewItemSorter = comparer;
 
             LogListView.Sort();
+
+            IOOperationProgressLabel.Text = $"Total {list.Count} records.";
         }
 
         private void LogListView_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -256,6 +269,8 @@ namespace AutopilotHelper
 
             // 使用XDocument.ToString方法进行格式化输出
             XmlTextBox.Text = xdoc.ToString();
+
+            IOOperationProgressLabel.Text = $"Selected: {item.Index}";
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

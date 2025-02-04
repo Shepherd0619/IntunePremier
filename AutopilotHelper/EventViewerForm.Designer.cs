@@ -422,6 +422,6 @@
         private OpenFileDialog openFileDialog1;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel IOOperationProgressLabel;
-        private ToolStripStatusLabel FilterStatusLabel;
+        public ToolStripStatusLabel FilterStatusLabel;
     }
 }

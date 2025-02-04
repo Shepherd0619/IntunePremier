@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -96,6 +97,7 @@ namespace AutopilotHelper.EventViewer
                 };
 
                 form.SetFilter(filter);
+                form.FilterStatusLabel.Text = $"Filter: {Regex.Replace(filter.ToString(), @"\r?\n", " ")}";
                 this.Close();
             }
             catch (Exception ex)
@@ -107,6 +109,7 @@ namespace AutopilotHelper.EventViewer
         private void button2_Click(object sender, EventArgs e)
         {
             form.ClearFilter();
+            form.FilterStatusLabel.Text = "Filter: None";
             this.Close();
         }
     }
