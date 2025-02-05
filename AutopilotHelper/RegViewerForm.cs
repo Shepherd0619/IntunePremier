@@ -10,6 +10,8 @@ namespace AutopilotHelper
         public RegFileUtil Reg => _reg;
         private RegFileUtil _reg;
 
+        public Dictionary<string, List<TreeNode>> SearchedNodes = new();
+
         public RegViewerForm()
         {
             InitializeComponent();
@@ -209,6 +211,8 @@ namespace AutopilotHelper
             var paths = _reg.GetAllPath();
 
             InitializeTreeView(paths);
+
+            SearchedNodes.Clear();
         }
     }
 }
