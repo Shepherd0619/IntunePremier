@@ -32,6 +32,12 @@ namespace AutopilotHelper
                     Application.Run(new EventViewerForm());
                     return;
                 }
+
+                if (args.Contains("--reg-viewer"))
+                {
+                    Application.Run(new RegViewerForm());
+                    return;
+                }
             }
 
             if (File.Exists("appsettings.json"))

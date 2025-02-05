@@ -6,6 +6,10 @@
     "Event Viewer": {
       "commandName": "Project",
       "commandLineArgs": "--event-viewer"
+    },
+    "Reg Viewer": {
+      "commandName": "Project",
+      "commandLineArgs": "--reg-viewer"
     }
   }
 }
