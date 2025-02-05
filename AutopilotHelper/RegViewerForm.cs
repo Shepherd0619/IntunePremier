@@ -13,6 +13,8 @@ namespace AutopilotHelper
         public class SearchedNodeInfo
         {
             public bool CaseSensitive;
+            public bool LookForKey;
+            public bool LookForValue;
             public readonly List<TreeNode> Nodes = new();
         }
         public Dictionary<string, SearchedNodeInfo> SearchedNodes = new();

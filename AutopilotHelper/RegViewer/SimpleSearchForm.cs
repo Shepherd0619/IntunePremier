@@ -70,9 +70,11 @@ namespace AutopilotHelper.RegViewer
             var searchInfo = new RegViewerForm.SearchedNodeInfo()
             {
                 CaseSensitive = caseSensitiveCheckBox.Checked,
+                LookForKey = lookAtKeyCheckBox.Checked,
+                LookForValue = lookAtValueCheckBox.Checked,
             };
 
-            if (_regViewerForm.SearchedNodes.TryAdd(textBox1.Text, new()))
+            if (_regViewerForm.SearchedNodes.TryAdd(textBox1.Text, searchInfo))
             {
                 backgroundWorker1.RunWorkerAsync();
 
@@ -86,7 +88,9 @@ namespace AutopilotHelper.RegViewer
             }
             else
             {
-                if(searchInfo.CaseSensitive != _regViewerForm.SearchedNodes[textBox1.Text].CaseSensitive)
+                var cache = _regViewerForm.SearchedNodes[textBox1.Text];
+                if (searchInfo.CaseSensitive != cache.CaseSensitive || searchInfo.LookForKey != cache.LookForKey 
+                    || searchInfo.LookForValue != cache.LookForValue)
                 {
                     _regViewerForm.SearchedNodes[textBox1.Text] = searchInfo;
                     backgroundWorker1.RunWorkerAsync();
