@@ -19,6 +19,12 @@
             lines = regContent.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
+        public RegFileUtil(string filePath)
+        {
+            regContent = File.ReadAllText(filePath);
+            lines = regContent.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
         /// <summary>
         /// Read registry key value pair.
         /// </summary>

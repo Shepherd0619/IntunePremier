@@ -83,6 +83,11 @@ namespace AutopilotHelper
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (_reg == null)
+            {
+                return;
+            }
+
             var selectedNode = e.Node;
 
             if (selectedNode == null || selectedNode == treeView1.TopNode)
@@ -186,6 +191,24 @@ namespace AutopilotHelper
             var form = new SimpleSearchForm(this);
 
             form.Show(this);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+
+            var path = openFileDialog1.FileName;
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            _reg = new RegFileUtil(path);
+
+            var paths = _reg.GetAllPath();
+
+            InitializeTreeView(paths);
         }
     }
 }

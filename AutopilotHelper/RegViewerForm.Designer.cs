@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TreeNode treeNode1 = new TreeNode("Node2");
-            TreeNode treeNode2 = new TreeNode("HKEY_LOCAL_MACHINE", new TreeNode[] { treeNode1 });
-            TreeNode treeNode3 = new TreeNode("Registry", new TreeNode[] { treeNode2 });
+            TreeNode treeNode2 = new TreeNode("Registry");
             splitContainer1 = new SplitContainer();
             treeView1 = new TreeView();
             keyValueDetailsTab = new TabControl();
@@ -42,10 +40,12 @@
             ValueCol = new ColumnHeader();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
             closeToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
             findNextToolStripMenuItem = new ToolStripMenuItem();
             textBox1 = new TextBox();
+            openFileDialog1 = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -79,13 +79,9 @@
             treeView1.Dock = DockStyle.Fill;
             treeView1.Location = new Point(0, 0);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "Node2";
-            treeNode2.Name = "Node1";
-            treeNode2.Text = "HKEY_LOCAL_MACHINE";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Registry";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3 });
+            treeNode2.Name = "Node0";
+            treeNode2.Text = "Registry";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode2 });
             treeView1.Size = new Size(266, 402);
             treeView1.TabIndex = 0;
             treeView1.NodeMouseClick += treeView1_NodeMouseClick;
@@ -170,10 +166,17 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { closeToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, closeToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(180, 22);
+            openToolStripMenuItem.Text = "Open";
+            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // closeToolStripMenuItem
             // 
@@ -193,7 +196,7 @@
             // 
             findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
             findNextToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            findNextToolStripMenuItem.Size = new Size(180, 22);
+            findNextToolStripMenuItem.Size = new Size(162, 22);
             findNextToolStripMenuItem.Text = "Find next";
             findNextToolStripMenuItem.Click += findNextToolStripMenuItem_Click;
             // 
@@ -205,6 +208,11 @@
             textBox1.Size = new Size(800, 23);
             textBox1.TabIndex = 2;
             textBox1.KeyDown += textBox1_KeyDown;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            openFileDialog1.Filter = "REG file|*.reg";
             // 
             // RegViewerForm
             // 
@@ -247,5 +255,7 @@
         private TabPage tabPage1;
         private TextBox keyValueDetailsTextBox;
         private Button keyValueDetailsTab_HideBtn;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private OpenFileDialog openFileDialog1;
     }
 }
