@@ -30,16 +30,13 @@ namespace AutopilotHelper
         public RegViewerForm(RegFileUtil reg)
         {
             InitializeComponent();
-            _reg = reg;
-
-            var paths = _reg.GetAllPath();
 
             var dm = new DarkModeCS(this)
             {
                 ColorMode = DarkModeCS.DisplayMode.SystemDefault
             };
 
-            InitializeTreeView(paths);
+            OpenReg(reg);
         }
 
         private void InitializeTreeView(List<string> paths)
@@ -206,17 +203,25 @@ namespace AutopilotHelper
 
             var path = openFileDialog1.FileName;
 
-            if (string.IsNullOrEmpty(path))
+            OpenReg(path);
+        }
+
+        public void OpenReg(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
             {
+                MessageBox.Show("Invalid file path.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            _reg = new RegFileUtil(path);
+            OpenReg(new RegFileUtil(path));
+        }
 
+        public void OpenReg(RegFileUtil file)
+        {
+            _reg = file;
             var paths = _reg.GetAllPath();
-
             InitializeTreeView(paths);
-
             SearchedNodes.Clear();
         }
     }

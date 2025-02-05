@@ -226,6 +226,14 @@ namespace AutopilotHelper.RegViewer
 
                         return;
                     }
+                    else if((!lookAtKeyCheckBox.Checked && !lookAtValueCheckBox.Checked) && child.Text.Contains(textBox1.Text, comparison))
+                    {
+                        if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Contains(child)) continue;
+
+                        _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Add(child);
+
+                        return;
+                    }
                 }
 
                 // Recursively call a method to iterate through all sub-child nodes of the current child node.
