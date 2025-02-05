@@ -10,7 +10,12 @@ namespace AutopilotHelper
         public RegFileUtil Reg => _reg;
         private RegFileUtil _reg;
 
-        public Dictionary<string, List<TreeNode>> SearchedNodes = new();
+        public class SearchedNodeInfo
+        {
+            public bool CaseSensitive;
+            public readonly List<TreeNode> Nodes = new();
+        }
+        public Dictionary<string, SearchedNodeInfo> SearchedNodes = new();
 
         public RegViewerForm()
         {

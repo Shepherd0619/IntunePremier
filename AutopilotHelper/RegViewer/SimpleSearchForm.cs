@@ -41,13 +41,19 @@ namespace AutopilotHelper.RegViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(_regViewerForm.Reg == null)
+            {
+                MessageBox.Show("Registry is not loaded yet!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // Search in the key value list view.
-            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, false, _regViewerForm.listView1, false))
+            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, caseSensitiveCheckBox.Checked, _regViewerForm.listView1, false))
             {
                 return;
             }
 
-            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, false, _regViewerForm.listView1, false))
+            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, caseSensitiveCheckBox.Checked, _regViewerForm.listView1, false))
             {
                 return;
             }
@@ -60,6 +66,11 @@ namespace AutopilotHelper.RegViewer
 
                 return;
             }
+
+            var searchInfo = new RegViewerForm.SearchedNodeInfo()
+            {
+                CaseSensitive = caseSensitiveCheckBox.Checked,
+            };
 
             if (_regViewerForm.SearchedNodes.TryAdd(textBox1.Text, new()))
             {
@@ -75,7 +86,23 @@ namespace AutopilotHelper.RegViewer
             }
             else
             {
-                if (_regViewerForm.SearchedNodes[textBox1.Text].Count == 0)
+                if(searchInfo.CaseSensitive != _regViewerForm.SearchedNodes[textBox1.Text].CaseSensitive)
+                {
+                    _regViewerForm.SearchedNodes[textBox1.Text] = searchInfo;
+                    backgroundWorker1.RunWorkerAsync();
+
+                    if (loadingForm != null)
+                    {
+                        loadingForm.Close();
+                    }
+
+                    loadingForm = new LoadingForm();
+                    loadingForm.ShowDialog(_regViewerForm);
+
+                    return;
+                }
+
+                if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count == 0)
                 {
                     MessageBox.Show("No matches found in the entire registry!",
                         "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -84,7 +111,7 @@ namespace AutopilotHelper.RegViewer
 
                 var selectedNode = _regViewerForm.treeView1.SelectedNode;
 
-                var index = _regViewerForm.SearchedNodes[textBox1.Text].IndexOf(selectedNode);
+                var index = _regViewerForm.SearchedNodes[textBox1.Text].Nodes.IndexOf(selectedNode);
                 int nextIndex = -1;
 
                 if (index == -1)
@@ -93,9 +120,9 @@ namespace AutopilotHelper.RegViewer
                 }
                 else
                 {
-                    nextIndex = Math.Min(index + 1, _regViewerForm.SearchedNodes[textBox1.Text].Count - 1);
+                    nextIndex = Math.Min(index + 1, _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count - 1);
 
-                    if(nextIndex == _regViewerForm.SearchedNodes[textBox1.Text].Count - 1)
+                    if(nextIndex == _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count - 1)
                     {
                         MessageBox.Show("No more matches found in the entire registry!",
                             "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -103,7 +130,7 @@ namespace AutopilotHelper.RegViewer
                     }
                 }
 
-                NavigateToNode(_regViewerForm.SearchedNodes[textBox1.Text][nextIndex]);
+                NavigateToNode(_regViewerForm.SearchedNodes[textBox1.Text].Nodes[nextIndex]);
             }
         }
 
@@ -122,11 +149,11 @@ namespace AutopilotHelper.RegViewer
 
             _regViewerForm.PopulateListView(keys);
 
-            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, false, _regViewerForm.listView1, false))
+            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, caseSensitiveCheckBox.Checked, _regViewerForm.listView1, false))
             {
                 return;
             }
-            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, false, _regViewerForm.listView1, false))
+            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, caseSensitiveCheckBox.Checked, _regViewerForm.listView1, false))
             {
                 return;
             }
@@ -156,9 +183,9 @@ namespace AutopilotHelper.RegViewer
                     if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) ||
                         (lookAtValueCheckBox.Checked && pair.Value != null && pair.Value.Contains(textBox1.Text, comparison)))
                     {
-                        if (_regViewerForm.SearchedNodes[textBox1.Text].Contains(child)) continue;
+                        if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Contains(child)) continue;
 
-                        _regViewerForm.SearchedNodes[textBox1.Text].Add(child);
+                        _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Add(child);
 
                         return;
                     }
@@ -193,9 +220,9 @@ namespace AutopilotHelper.RegViewer
                     if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) ||
                         (lookAtValueCheckBox.Checked && pair.Value != null && pair.Value.Contains(textBox1.Text, comparison)))
                     {
-                        if (_regViewerForm.SearchedNodes[textBox1.Text].Contains(child)) continue;
+                        if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Contains(child)) continue;
 
-                        _regViewerForm.SearchedNodes[textBox1.Text].Add(child);
+                        _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Add(child);
 
                         return;
                     }
@@ -218,14 +245,14 @@ namespace AutopilotHelper.RegViewer
                 loadingForm.Close();
             }
 
-            if (_regViewerForm.SearchedNodes[textBox1.Text].Count == 0)
+            if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count == 0)
             {
                 MessageBox.Show("No matches found in the entire registry!",
                     "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            NavigateToNode(_regViewerForm.SearchedNodes[textBox1.Text][0]);
+            NavigateToNode(_regViewerForm.SearchedNodes[textBox1.Text].Nodes[0]);
         }
     }
 }
