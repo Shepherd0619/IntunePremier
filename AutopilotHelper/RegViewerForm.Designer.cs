@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TreeNode treeNode2 = new TreeNode("Registry");
+            TreeNode treeNode1 = new TreeNode("Registry");
             splitContainer1 = new SplitContainer();
             treeView1 = new TreeView();
             keyValueDetailsTab = new TabControl();
@@ -79,9 +79,9 @@
             treeView1.Dock = DockStyle.Fill;
             treeView1.Location = new Point(0, 0);
             treeView1.Name = "treeView1";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Registry";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode2 });
+            treeNode1.Name = "Node0";
+            treeNode1.Text = "Registry";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode1 });
             treeView1.Size = new Size(266, 402);
             treeView1.TabIndex = 0;
             treeView1.NodeMouseClick += treeView1_NodeMouseClick;
@@ -174,7 +174,7 @@
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(180, 22);
+            openToolStripMenuItem.Size = new Size(103, 22);
             openToolStripMenuItem.Text = "Open";
             openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
@@ -211,7 +211,6 @@
             // 
             // openFileDialog1
             // 
-            openFileDialog1.FileName = "openFileDialog1";
             openFileDialog1.Filter = "REG file|*.reg";
             // 
             // RegViewerForm
