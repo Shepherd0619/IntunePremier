@@ -94,6 +94,13 @@ namespace AutopilotHelper.RegViewer
                 else
                 {
                     nextIndex = Math.Min(index + 1, searchedNodes[textBox1.Text].Count - 1);
+
+                    if(nextIndex == searchedNodes[textBox1.Text].Count - 1)
+                    {
+                        MessageBox.Show("No more matches found in the entire registry!",
+                            "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        nextIndex = 0;
+                    }
                 }
 
                 NavigateToNode(searchedNodes[textBox1.Text][nextIndex]);
@@ -115,11 +122,11 @@ namespace AutopilotHelper.RegViewer
 
             _regViewerForm.PopulateListView(keys);
 
-            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, false, _regViewerForm.listView1, true))
+            if (lookAtKeyCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 0, true, false, _regViewerForm.listView1, false))
             {
                 return;
             }
-            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, false, _regViewerForm.listView1, true))
+            if (lookAtValueCheckBox.Checked && ListViewUtil.FindNextKeyword(textBox1.Text, 1, true, false, _regViewerForm.listView1, false))
             {
                 return;
             }
