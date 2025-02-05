@@ -159,43 +159,6 @@ namespace AutopilotHelper.RegViewer
             }
         }
 
-        private void IterateThroughChildNodes(TreeNode parentNode)
-        {
-            StringComparison comparison;
-
-            if (caseSensitiveCheckBox.Checked)
-            {
-                comparison = StringComparison.Ordinal;
-            }
-            else
-            {
-                comparison = StringComparison.OrdinalIgnoreCase;
-            }
-
-            foreach (TreeNode child in parentNode.Nodes)
-            {
-                // Do something with each child node, e.g., display text or modify properties.
-                var path = child.FullPath.Substring(("Registry\\").Length);
-                var keys = _regViewerForm.Reg.GetAllKeys(path);
-
-                foreach (var pair in keys)
-                {
-                    if ((lookAtKeyCheckBox.Checked && pair.Key.Contains(textBox1.Text, comparison)) ||
-                        (lookAtValueCheckBox.Checked && pair.Value != null && pair.Value.Contains(textBox1.Text, comparison)))
-                    {
-                        if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Contains(child)) continue;
-
-                        _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Add(child);
-
-                        return;
-                    }
-                }
-
-                // Recursively call a method to iterate through all sub-child nodes of the current child node.
-                IterateThroughChildNodes(child);
-            }
-        }
-
         private async Task IterateThroughChildNodesAsync(TreeNode parentNode)
         {
             StringComparison comparison;
