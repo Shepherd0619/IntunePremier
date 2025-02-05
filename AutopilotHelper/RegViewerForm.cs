@@ -49,6 +49,8 @@ namespace AutopilotHelper
                 AddNodeToTree(root, item);
             }
 
+            root.Expand();
+
             treeView1.Nodes.Add(root);
         }
 
