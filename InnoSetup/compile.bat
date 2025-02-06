@@ -1,1 +1,1 @@
-"D:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\IntunePremier_Setup.iss
+"D:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\InnoSetup\IntunePremier_Setup.iss
