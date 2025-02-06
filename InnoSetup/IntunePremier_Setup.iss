@@ -58,6 +58,10 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Name: "{group}\Event Viewer"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--event-viewer"
 Name: "{autodesktop}\Event Viewer"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--event-viewer"
 
+; Reg Viewer
+Name: "{group}\Registry Viewer"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--reg-viewer"
+Name: "{autodesktop}\Registry Viewer"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--reg-viewer"
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 

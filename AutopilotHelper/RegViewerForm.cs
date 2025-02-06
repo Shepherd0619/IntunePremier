@@ -10,6 +10,15 @@ namespace AutopilotHelper
         public RegFileUtil Reg => _reg;
         private RegFileUtil _reg;
 
+        public class SearchedNodeInfo
+        {
+            public bool CaseSensitive;
+            public bool LookForKey;
+            public bool LookForValue;
+            public readonly List<TreeNode> Nodes = new();
+        }
+        public Dictionary<string, SearchedNodeInfo> SearchedNodes = new();
+
         public RegViewerForm()
         {
             InitializeComponent();
@@ -23,16 +32,13 @@ namespace AutopilotHelper
         public RegViewerForm(RegFileUtil reg)
         {
             InitializeComponent();
-            _reg = reg;
-
-            var paths = _reg.GetAllPath();
 
             var dm = new DarkModeCS(this)
             {
                 ColorMode = DarkModeCS.DisplayMode.SystemDefault
             };
 
-            InitializeTreeView(paths);
+            OpenReg(reg);
         }
 
         private void InitializeTreeView(List<string> paths)
@@ -44,6 +50,8 @@ namespace AutopilotHelper
             {
                 AddNodeToTree(root, item);
             }
+
+            root.Expand();
 
             treeView1.Nodes.Add(root);
         }
@@ -83,6 +91,11 @@ namespace AutopilotHelper
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            if (_reg == null)
+            {
+                return;
+            }
+
             var selectedNode = e.Node;
 
             if (selectedNode == null || selectedNode == treeView1.TopNode)
@@ -186,6 +199,34 @@ namespace AutopilotHelper
             var form = new SimpleSearchForm(this);
 
             form.Show(this);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+
+            var path = openFileDialog1.FileName;
+
+            OpenReg(path);
+        }
+
+        public void OpenReg(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                MessageBox.Show("Invalid file path.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            OpenReg(new RegFileUtil(path));
+        }
+
+        public void OpenReg(RegFileUtil file)
+        {
+            _reg = file;
+            var paths = _reg.GetAllPath();
+            InitializeTreeView(paths);
+            SearchedNodes.Clear();
         }
     }
 }
