@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Intune Premier"
-#define MyAppVersion "20250204"
+#define MyAppVersion "20250206 LTS"
 #define MyAppPublisher "Shepherd Zhu (v-ziruizhu)"
 #define MyAppURL "https://shepherd0619.github.io/"
 #define MyAppExeName "AutopilotHelper.exe"
