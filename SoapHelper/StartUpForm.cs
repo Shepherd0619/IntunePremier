@@ -161,9 +161,19 @@ namespace SoapHelper
             SoapGenerateBtn.Enabled = false;
             toolStripStatusLabel1.Text = "Generating SOAP JSON...";
 
-            var soap = await GenerateSoap(CurrentEmailThread);
+            try
+            {
+                var soap = await GenerateSoap(CurrentEmailThread);
 
-            richTextBox3.Text = JsonConvert.SerializeObject(soap);
+                richTextBox3.Text = JsonConvert.SerializeObject(soap);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error when generating SOAP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SoapGenerateBtn.Enabled = true;
+                toolStripStatusLabel1.Text = "SOAP JSON generation failed!";
+                return;
+            }
 
             SoapGenerateBtn.Enabled = true;
 
@@ -175,10 +185,19 @@ namespace SoapHelper
             EmailThreadJsonGenerateBtn.Enabled = false;
             toolStripStatusLabel1.Text = "Generating Email Thread JSON...";
 
-            var thread = await ParseEmailThread(richTextBox1.Text);
+            try
+            {
+                var thread = await ParseEmailThread(richTextBox1.Text);
 
-            CurrentEmailThread = thread;
-            richTextBox2.Text = JsonConvert.SerializeObject(thread);
+                CurrentEmailThread = thread;
+                richTextBox2.Text = JsonConvert.SerializeObject(thread);
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error when generating Email Thread", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EmailThreadJsonGenerateBtn.Enabled = true;
+                toolStripStatusLabel1.Text = "Email Thread JSON generation failed!";
+                return;
+            }
 
             EmailThreadJsonGenerateBtn.Enabled = true;
             SoapGenerateBtn.Enabled = true;
