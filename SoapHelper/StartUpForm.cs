@@ -6,13 +6,14 @@ using ChatGPT.Net;
 using System.Text;
 using SoapHelper.Models;
 using SoapHelper.Utilities;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SoapHelper
 {
     public partial class StartUpForm : Form
     {
         public const string HtmlContentType = "text/html; charset=utf-8";
-        
+
         public readonly ChatGpt ChatGpt = new ChatGpt(string.Empty, new ChatGPT.Net.DTO.ChatGPT.ChatGptOptions()
         {
             BaseUrl = "http://localhost:1234",
@@ -20,17 +21,19 @@ namespace SoapHelper
             MaxTokens = 4096,
         });
 
+        public EmailThread? CurrentEmailThread;
+
         public StartUpForm()
         {
             InitializeComponent();
         }
 
-        private async void openOutlookMSGToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openOutlookMSGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openMsgDialog1.ShowDialog();
             var fileName = openMsgDialog1.FileName;
 
-            if(string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
             {
                 return;
             }
@@ -44,7 +47,7 @@ namespace SoapHelper
             //}
 
             //reader.ExtractToFolder(fileName, tmpPath);
-           
+
             var html = new HtmlAgilityPack.HtmlDocument();
             html.LoadHtml(reader.ExtractMsgEmailBody(msg, MsgReader.ReaderHyperLinks.Both, HtmlContentType));
             var msgBody = html.DocumentNode.InnerText.Trim();
@@ -59,16 +62,12 @@ namespace SoapHelper
 
             var msgCC = msg.GetEmailRecipients(RecipientType.Cc, false, false);
 
-            var body = await ParseEmailThreadIntoJson(msgBody);
+            EmailThreadJsonGenerateBtn.Enabled = true;
 
-            richTextBox2.Text = JsonConvert.SerializeObject(body);
-
-            var soap = await GenerateSoap(body);
-
-            richTextBox3.Text = JsonConvert.SerializeObject(soap);
+            toolStripStatusLabel1.Text = "MSG file loaded.";
         }
 
-        private async Task<EmailThread?> ParseEmailThreadIntoJson(string msgBody)
+        private async Task<EmailThread?> ParseEmailThread(string msgBody)
         {
             var thread = new EmailThread()
             {
@@ -125,13 +124,60 @@ namespace SoapHelper
                 $"{exampleJson}\n" +
                 $"2. The Type attribute inside Communication has {EnumUtil.GetEnumValuesAsString(typeof(Soap.Communication.CommunicationEnum))}\n" +
                 $"3. The Status attribute inside Soap has {EnumUtil.GetEnumValuesAsString(typeof(Soap.StatusEnum))}\n" +
-                $"4. You should write SOAP based on support engineer's perspective.");
+                $"4. You should write SOAP from {textBox1.Text}'s perspective.");
 
             var json = await ChatGpt.Ask(JsonConvert.SerializeObject(thread), "soapGenerator");
 
             soap = JsonConvert.DeserializeObject<Soap>(json);
 
             return soap;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private async void SoapGenerateBtn_Click(object sender, EventArgs e)
+        {
+            if (CurrentEmailThread == null)
+            {
+                MessageBox.Show("Please generate Email Thread first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; 
+            }
+
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                MessageBox.Show("Please provide the name of the person who is writing the SOAP.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SoapGenerateBtn.Enabled = false;
+            toolStripStatusLabel1.Text = "Generating SOAP JSON...";
+
+            var soap = await GenerateSoap(CurrentEmailThread);
+
+            richTextBox3.Text = JsonConvert.SerializeObject(soap);
+
+            SoapGenerateBtn.Enabled = true;
+
+            toolStripStatusLabel1.Text = "SOAP JSON generated.";
+        }
+
+        private async void EmailThreadGenerateBtn_Click(object sender, EventArgs e)
+        {
+            EmailThreadJsonGenerateBtn.Enabled = false;
+            toolStripStatusLabel1.Text = "Generating Email Thread JSON...";
+
+            var thread = await ParseEmailThread(richTextBox1.Text);
+
+            CurrentEmailThread = thread;
+            richTextBox2.Text = JsonConvert.SerializeObject(thread);
+
+            EmailThreadJsonGenerateBtn.Enabled = true;
+            SoapGenerateBtn.Enabled = true;
+
+            toolStripStatusLabel1.Text = "Email Thread JSON generated.";
         }
     }
 }

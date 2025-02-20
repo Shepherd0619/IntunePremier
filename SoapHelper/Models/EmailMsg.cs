@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SoapHelper.Models
 {
-    internal class EmailMsg
+    public class EmailMsg
     {
         public string Subject { get; set; }
         public string Summary { get; set; }

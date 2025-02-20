@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SoapHelper.Models
 {
-    internal class EmailThread
+    public class EmailThread
     {
         public List<EmailMsg> Messages { get; set; }
     }
