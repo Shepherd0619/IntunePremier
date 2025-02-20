@@ -44,10 +44,13 @@
             richTextBox1 = new RichTextBox();
             tabPage2 = new TabPage();
             richTextBox2 = new RichTextBox();
+            tabPage3 = new TabPage();
+            richTextBox3 = new RichTextBox();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            tabPage3.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -109,6 +112,7 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 24);
             tabControl1.Name = "tabControl1";
@@ -160,6 +164,27 @@
             richTextBox2.TabIndex = 0;
             richTextBox2.Text = "";
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(richTextBox3);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Size = new Size(792, 398);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "SOAP";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox3
+            // 
+            richTextBox3.Dock = DockStyle.Fill;
+            richTextBox3.Location = new Point(0, 0);
+            richTextBox3.Name = "richTextBox3";
+            richTextBox3.ReadOnly = true;
+            richTextBox3.ScrollBars = RichTextBoxScrollBars.Vertical;
+            richTextBox3.Size = new Size(792, 398);
+            richTextBox3.TabIndex = 0;
+            richTextBox3.Text = "";
+            // 
             // StartUpForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -175,6 +200,7 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -197,5 +223,7 @@
         private RichTextBox richTextBox1;
         private TabPage tabPage2;
         private RichTextBox richTextBox2;
+        private TabPage tabPage3;
+        private RichTextBox richTextBox3;
     }
 }

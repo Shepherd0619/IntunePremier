@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ChatGPT.Net;
 using System.Text;
 using SoapHelper.Models;
+using SoapHelper.Utilities;
 
 namespace SoapHelper
 {
@@ -61,6 +62,10 @@ namespace SoapHelper
             var body = await ParseEmailThreadIntoJson(msgBody);
 
             richTextBox2.Text = JsonConvert.SerializeObject(body);
+
+            var soap = await GenerateSoap(body);
+
+            richTextBox3.Text = JsonConvert.SerializeObject(soap);
         }
 
         private async Task<EmailThread?> ParseEmailThreadIntoJson(string msgBody)
@@ -72,9 +77,10 @@ namespace SoapHelper
                     new EmailMsg()
                     {
                         Subject = "Subject",
-                        Topic = "Topic",
+                        //Topic = "Topic",
+                        Summary = "Summary",
                         Sender = "Sender",
-                        Body = "Body",
+                        //Body = "Body",
                         To = new List<string>() { "To" },
                         CC = new List<string>() { "CC" },
                     }
@@ -82,8 +88,8 @@ namespace SoapHelper
             };
 
             var exampleJson = JsonConvert.SerializeObject(thread);
-
-            ChatGpt.SetConversationSystemMessage("jsonParser", "You are JSON Parser. You should turn my plain text message into plain JSON body text by the provided JSON example and no Markdown.\n" +
+            ChatGpt.ResetConversation("jsonParser");
+            ChatGpt.SetConversationSystemMessage("jsonParser", "You are JSON Parser. You should turn my email thread into plain JSON body text by the provided JSON example and no Markdown.\n" +
                 $"{exampleJson}");
 
             var json = await ChatGpt.Ask(msgBody, "jsonParser");
@@ -91,6 +97,41 @@ namespace SoapHelper
             thread = JsonConvert.DeserializeObject<EmailThread>(json);
 
             return thread;
+        }
+
+        private async Task<Soap?> GenerateSoap(EmailThread thread)
+        {
+            var soap = new Soap()
+            {
+                Title = "Title",
+                Description = "Description",
+                NextAction = "NextAction",
+                Status = Soap.StatusEnum.None,
+                Items = new List<Soap.BaseSoapItem>()
+                {
+                    new Soap.Communication()
+                    {
+                        DateTime = DateTime.Now,
+                        Description = "Description",
+                        Type = Soap.Communication.CommunicationEnum.None
+                    }
+                }
+            };
+
+            var exampleJson = JsonConvert.SerializeObject(soap);
+            ChatGpt.ResetConversation("soapGenerator");
+            ChatGpt.SetConversationSystemMessage("soapGenerator", "You are JSON Parser.\n" +
+                "1. You should turn my email thread JSON body into SOAP JSON body by the provided JSON example and no Markdown.\n" +
+                $"{exampleJson}\n" +
+                $"2. The Type attribute inside Communication has {EnumUtil.GetEnumValuesAsString(typeof(Soap.Communication.CommunicationEnum))}\n" +
+                $"3. The Status attribute inside Soap has {EnumUtil.GetEnumValuesAsString(typeof(Soap.StatusEnum))}\n" +
+                $"4. You should write SOAP based on support engineer's perspective.");
+
+            var json = await ChatGpt.Ask(JsonConvert.SerializeObject(thread), "soapGenerator");
+
+            soap = JsonConvert.DeserializeObject<Soap>(json);
+
+            return soap;
         }
     }
 }
