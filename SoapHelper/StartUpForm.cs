@@ -7,6 +7,7 @@ using System.Text;
 using SoapHelper.Models;
 using SoapHelper.Utilities;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using DarkModeForms;
 
 namespace SoapHelper
 {
@@ -25,6 +26,11 @@ namespace SoapHelper
 
         public StartUpForm()
         {
+            var dm = new DarkModeCS(this)
+            {
+                ColorMode = DarkModeCS.DisplayMode.SystemDefault
+            };
+
             InitializeComponent();
         }
 
@@ -143,7 +149,7 @@ namespace SoapHelper
             if (CurrentEmailThread == null)
             {
                 MessageBox.Show("Please generate Email Thread first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return; 
+                return;
             }
 
             if (string.IsNullOrWhiteSpace(textBox1.Text))
@@ -178,6 +184,12 @@ namespace SoapHelper
             SoapGenerateBtn.Enabled = true;
 
             toolStripStatusLabel1.Text = "Email Thread JSON generated.";
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new AboutBox();
+            form.ShowDialog();
         }
     }
 }

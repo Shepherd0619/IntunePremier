@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <Copyright>© 2024 Shepherd Zhu</Copyright>
+	  <PackageProjectUrl>https://github.com/Shepherd0619/IntunePremier</PackageProjectUrl>
+	  <Authors>Shepherd Zhu (v-ziruizhu)</Authors>
+	  <Description>This program is provided as open source project. For licensing, please check BSD 3-Clause License.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +23,15 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Utilities\DarkMode\FlatComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Utilities\DarkMode\FlatProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Utilities\DarkMode\FlatTabControl.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
 
