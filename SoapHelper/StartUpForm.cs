@@ -8,12 +8,20 @@ using SoapHelper.Models;
 using SoapHelper.Utilities;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using DarkModeForms;
+using ChatGPT.Net.DTO.ChatGPT;
 
 namespace SoapHelper
 {
     public partial class StartUpForm : Form
     {
         public const string HtmlContentType = "text/html; charset=utf-8";
+
+        public ChatGptOptions GptOptions = new ChatGPT.Net.DTO.ChatGPT.ChatGptOptions()
+        {
+            BaseUrl = "http://localhost:1234",
+            Model = "qwen",
+            MaxTokens = 4096,
+        };
 
         public readonly ChatGpt ChatGpt = new ChatGpt(string.Empty, new ChatGPT.Net.DTO.ChatGPT.ChatGptOptions()
         {
@@ -104,6 +112,76 @@ namespace SoapHelper
             return thread;
         }
 
+        private async Task<EmailThread?> ParseEmailThread(List<string> msgBody)
+        {
+            var thread = new EmailThread();
+
+            var exampleJson = JsonConvert.SerializeObject(new EmailMsg()
+            {
+                Subject = "Subject",
+                //Topic = "Topic",
+                Summary = "Summary",
+                Sender = "Sender",
+                //Body = "Body",
+                To = new List<string>() { "To" },
+                CC = new List<string>() { "CC" },
+            });
+
+            //var conversation = new ChatGptConversation()
+            //{
+            //    Id = "jsonParser",
+            //    Messages = new List<ChatGptMessage>()
+            //    {
+            //        new ChatGptMessage()
+            //        {
+            //            Role = ChatGptConst.Role.System,
+            //            Content = "You are JSON Parser. You should turn all my messages into plain JSON body text by the provided JSON example and no Markdown.\n" +
+            //                $"{exampleJson}"
+            //        }
+            //    }
+            //};
+
+            //foreach (var item in msgBody)
+            //{
+            //    conversation.Messages.Add(new ChatGptMessage()
+            //    {
+            //        Role = ChatGptConst.Role.User,
+            //        Content = item
+            //    });
+            //}
+
+            //var response = await ChatGpt.SendMessage(new ChatGptRequest
+            //{
+            //    Messages = conversation.Messages,
+            //    Model = GptOptions.Model,
+            //    Stream = false,
+            //    Temperature = GptOptions.Temperature,
+            //    TopP = GptOptions.TopP,
+            //    FrequencyPenalty = GptOptions.FrequencyPenalty,
+            //    PresencePenalty = GptOptions.PresencePenalty,
+            //    Stop = GptOptions.Stop,
+            //    MaxTokens = GptOptions.MaxTokens
+            //});
+
+            ChatGpt.ResetConversation("jsonParser");
+            ChatGpt.SetConversationSystemMessage("jsonParser", "You are JSON Parser. You should turn my messages into plain JSON body text by the provided JSON example and no Markdown.\n" +
+                $"{exampleJson}");
+
+            var messages = new List<EmailMsg>();
+            foreach (var item in msgBody)
+            {
+                var msg = await ChatGpt.Ask(item, "jsonParser").ContinueWith(t => JsonConvert.DeserializeObject<EmailMsg>(t.Result));
+
+                if (msg == null || string.IsNullOrWhiteSpace(msg.Summary)) continue;
+
+                messages.Add(msg);
+            }
+
+            thread.Messages = messages;
+
+            return thread;
+        }
+
         private async Task<Soap?> GenerateSoap(EmailThread thread)
         {
             var soap = new Soap()
@@ -185,9 +263,11 @@ namespace SoapHelper
             EmailThreadJsonGenerateBtn.Enabled = false;
             toolStripStatusLabel1.Text = "Generating Email Thread JSON...";
 
+            var msgTextList = StringUtil.SplitStringIntoChunks(richTextBox1.Text, 4096);
+
             try
             {
-                var thread = await ParseEmailThread(richTextBox1.Text);
+                var thread = await ParseEmailThread(msgTextList);
 
                 CurrentEmailThread = thread;
                 richTextBox2.Text = JsonConvert.SerializeObject(thread);
