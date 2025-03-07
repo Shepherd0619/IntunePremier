@@ -12,32 +12,32 @@ namespace AutopilotHelper.Controllers
     {
         public static ChatGpt Api { get; set; }
 
-        public static async Task<bool> RegeneratePreviousMsg(this ChatGpt api, string conversationId)
+        public static async Task<string> RegeneratePreviousMsg(this ChatGpt api, string conversationId)
         {
             var conversation = api.GetConversation(conversationId);
             if(conversation == null)
             {
-                return false;
+                return string.Empty;
             }
 
             var messages = conversation.Messages;
             if(messages == null || messages.Count <= 0)
             {
-                return false;
+                return string.Empty;
             }
 
             var lastMessage = messages.Last();
 
             if(lastMessage == null || lastMessage.Role != ChatGPTConst.Role.System)
             {
-                return false;
+                return string.Empty;
             }
 
             messages.Remove(lastMessage);
 
+            api.SetConversation(conversationId, conversation);
 
-
-            return true;
+            return await api.Ask(conversation.Messages[0].Content, conversationId);
         }
     }
 }
