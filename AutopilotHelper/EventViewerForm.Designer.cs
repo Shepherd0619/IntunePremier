@@ -51,6 +51,7 @@
             openInSystemEventViewerToolStripMenuItem = new ToolStripMenuItem();
             saveCurrentViewIntoCSVToolStripMenuItem = new ToolStripMenuItem();
             saveAllEventsIntoCSVToolStripMenuItem = new ToolStripMenuItem();
+            openChatBotForCurrentEvtxToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
             searchToolStripMenuItem = new ToolStripMenuItem();
@@ -250,7 +251,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openExternalEvtxToolStripMenuItem, toolStripSeparator1, openInSystemEventViewerToolStripMenuItem, saveCurrentViewIntoCSVToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, toolStripSeparator2, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openExternalEvtxToolStripMenuItem, toolStripSeparator1, openInSystemEventViewerToolStripMenuItem, saveCurrentViewIntoCSVToolStripMenuItem, saveAllEventsIntoCSVToolStripMenuItem, openChatBotForCurrentEvtxToolStripMenuItem, toolStripSeparator2, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -287,6 +288,12 @@
             saveAllEventsIntoCSVToolStripMenuItem.Size = new Size(290, 22);
             saveAllEventsIntoCSVToolStripMenuItem.Text = "Save all events into CSV";
             saveAllEventsIntoCSVToolStripMenuItem.Click += saveAllEventsIntoCSVToolStripMenuItem_Click;
+            // 
+            // openChatBotForCurrentEvtxToolStripMenuItem
+            // 
+            openChatBotForCurrentEvtxToolStripMenuItem.Name = "openChatBotForCurrentEvtxToolStripMenuItem";
+            openChatBotForCurrentEvtxToolStripMenuItem.Size = new Size(290, 22);
+            openChatBotForCurrentEvtxToolStripMenuItem.Text = "Open Chat Bot for current evtx";
             // 
             // toolStripSeparator2
             // 
@@ -423,5 +430,6 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel IOOperationProgressLabel;
         public ToolStripStatusLabel FilterStatusLabel;
+        private ToolStripMenuItem openChatBotForCurrentEvtxToolStripMenuItem;
     }
 }
