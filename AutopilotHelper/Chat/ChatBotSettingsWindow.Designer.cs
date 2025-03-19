@@ -1,4 +1,4 @@
-﻿namespace AutopilotHelper.ChatBotWindow
+﻿namespace AutopilotHelper.Chat
 {
     partial class ChatBotSettingsWindow
     {
