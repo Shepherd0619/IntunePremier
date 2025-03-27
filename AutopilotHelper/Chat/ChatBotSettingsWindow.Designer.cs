@@ -126,6 +126,7 @@
             button2.TabIndex = 15;
             button2.Text = "Quit without saving";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -183,6 +184,7 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "ChatBotSettingsWindow";
             Text = "ChatBotSettingsWindow";
+            FormClosing += ChatBotSettingsWindow_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

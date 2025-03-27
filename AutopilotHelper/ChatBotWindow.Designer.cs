@@ -85,6 +85,7 @@
             button1.TabIndex = 1;
             button1.Text = "SEND";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // richTextBox2
             // 
@@ -114,13 +115,13 @@
             // resetToolStripMenuItem
             // 
             resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            resetToolStripMenuItem.Size = new Size(180, 22);
+            resetToolStripMenuItem.Size = new Size(102, 22);
             resetToolStripMenuItem.Text = "Reset";
             // 
             // clearToolStripMenuItem
             // 
             clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            clearToolStripMenuItem.Size = new Size(180, 22);
+            clearToolStripMenuItem.Size = new Size(102, 22);
             clearToolStripMenuItem.Text = "Clear";
             // 
             // aPIToolStripMenuItem
@@ -133,8 +134,9 @@
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(180, 22);
+            settingsToolStripMenuItem.Size = new Size(116, 22);
             settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // ChatBotWindow
             // 

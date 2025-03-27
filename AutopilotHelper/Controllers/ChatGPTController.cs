@@ -5,12 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using AutopilotHelper.Const;
 using ChatGPT.Net;
+using ChatGPT.Net.DTO.ChatGPT;
 
 namespace AutopilotHelper.Controllers
 {
     public static class ChatGPTController
     {
-        public static ChatGpt Api { get; set; }
+        public static ChatGpt Api {
+            get
+            {
+                if(_Api == null)
+                {
+                    InitializeApi();
+                }
+
+                return _Api;
+            }
+        }
+        private static ChatGpt _Api;
+        public static ChatGptOptions Options { get; private set; }
 
         public static async Task<string> RegeneratePreviousMsg(this ChatGpt api, string conversationId)
         {
@@ -38,6 +51,19 @@ namespace AutopilotHelper.Controllers
             api.SetConversation(conversationId, conversation);
 
             return await api.Ask(conversation.Messages[0].Content, conversationId);
+        }
+
+        public static void InitializeApi()
+        {
+            // TODO: 需要换成用户设置
+
+            Options = new ChatGptOptions()
+            {
+                BaseUrl = "http://localhost:1234",
+                Model = "qwen"
+            };
+
+            _Api = new ChatGpt(string.Empty, Options);
         }
     }
 }

@@ -57,6 +57,8 @@
             searchToolStripMenuItem = new ToolStripMenuItem();
             filtersToolStripMenuItem = new ToolStripMenuItem();
             searchDescriptionToolStripMenuItem = new ToolStripMenuItem();
+            toolsToolStripMenuItem = new ToolStripMenuItem();
+            chatBotToolStripMenuItem = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
             openFileDialog1 = new OpenFileDialog();
             statusStrip1 = new StatusStrip();
@@ -242,7 +244,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, searchToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, searchToolStripMenuItem, toolsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -328,6 +330,20 @@
             searchDescriptionToolStripMenuItem.Size = new Size(162, 22);
             searchDescriptionToolStripMenuItem.Text = "Find next";
             searchDescriptionToolStripMenuItem.Click += searchDescriptionToolStripMenuItem_Click;
+            // 
+            // toolsToolStripMenuItem
+            // 
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { chatBotToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new Size(47, 20);
+            toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // chatBotToolStripMenuItem
+            // 
+            chatBotToolStripMenuItem.Name = "chatBotToolStripMenuItem";
+            chatBotToolStripMenuItem.Size = new Size(180, 22);
+            chatBotToolStripMenuItem.Text = "ChatBot";
+            chatBotToolStripMenuItem.Click += chatBotToolStripMenuItem_Click;
             // 
             // saveFileDialog1
             // 
@@ -431,5 +447,7 @@
         private ToolStripStatusLabel IOOperationProgressLabel;
         public ToolStripStatusLabel FilterStatusLabel;
         private ToolStripMenuItem openChatBotForCurrentEvtxToolStripMenuItem;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem chatBotToolStripMenuItem;
     }
 }

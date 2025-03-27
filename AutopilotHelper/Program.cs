@@ -7,7 +7,24 @@ namespace AutopilotHelper
     internal static class Program
     {
 
-        public static AppSettingsUtil? Settings;
+        public static AppSettingsUtil Settings
+        {
+            get
+            {
+                if(_settings == null)
+                {
+                    _settings = JsonConvert.DeserializeObject<AppSettingsUtil>(File.ReadAllText("appsettings.json"));
+                    if(_settings == null)
+                    {
+                        _settings = new AppSettingsUtil();
+                        _settings.Initialize();
+                    }
+                }
+
+                return _settings;
+            }
+        }
+        private static AppSettingsUtil _settings;
 
         /// <summary>
         ///  The main entry point for the application.
@@ -42,11 +59,11 @@ namespace AutopilotHelper
 
             if (File.Exists("appsettings.json"))
             {
-                Settings = JsonConvert.DeserializeObject<AppSettingsUtil>(File.ReadAllText("appsettings.json"));
+                _settings = JsonConvert.DeserializeObject<AppSettingsUtil>(File.ReadAllText("appsettings.json"));
             }
             else
             {
-                Settings = new AppSettingsUtil();
+                _settings = new AppSettingsUtil();
                 Settings.Initialize();
             }
 

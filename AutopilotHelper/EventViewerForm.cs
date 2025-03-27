@@ -361,5 +361,11 @@ namespace AutopilotHelper
 
             form.ShowDialog(this);
         }
+
+        private void chatBotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new ChatBotWindow();
+            form.Show(this);
+        }
     }
 }
