@@ -35,7 +35,7 @@ namespace AutopilotHelper
             ShowOpenMDMFileDiag();
         }
 
-        public bool ShowOpenMDMFileDiag()
+        public async Task<bool> ShowOpenMDMFileDiag()
         {
             openFileDialog1.ShowDialog(this);
 
@@ -43,16 +43,8 @@ namespace AutopilotHelper
 
             if (analysisWindows.Values.Contains(openFileDialog1.FileName)) return false;
 
-            MDMFileUtil util;
-            try
-            {
-                util = new(openFileDialog1.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to extract the file!\n\n{ex}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+            MDMFileUtil util = new(openFileDialog1.FileName);
+            await util.Extract();
 
             var mainForm = new MDMAnalysisWindow();
 
@@ -74,22 +66,14 @@ namespace AutopilotHelper
             return true;
         }
 
-        public bool OpenMDMDiagByPath(string path)
+        public async Task<bool> OpenMDMDiagByPath(string path)
         {
             if (!File.Exists(path)) return false;
 
             if (analysisWindows.Values.Contains(path)) return false;
 
-            MDMFileUtil util;
-            try
-            {
-                util = new(path);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to extract the file!\n\n{ex}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+            MDMFileUtil util = new(path);
+            await util.Extract();
 
             var mainForm = new MDMAnalysisWindow();
 
@@ -127,13 +111,13 @@ namespace AutopilotHelper
             RecentMDMDiagList.Items.Clear();
         }
 
-        private void RecentMDMDiagList_MouseDoubleClick(object sender, MouseEventArgs e)
+        private async void RecentMDMDiagList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var path = (string)RecentMDMDiagList.Items[RecentMDMDiagList.SelectedIndex];
 
             if (string.IsNullOrEmpty(path)) return;
 
-            if (!OpenMDMDiagByPath(path))
+            if (!await OpenMDMDiagByPath(path))
             {
                 MessageBox.Show($"File no longer exists.\n\n{path}", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 RecentMDMDiagList.Items.RemoveAt(RecentMDMDiagList.SelectedIndex);

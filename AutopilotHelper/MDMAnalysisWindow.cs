@@ -40,7 +40,7 @@ namespace AutopilotHelper
             };
         }
 
-        private async void MDMAnalysisWindow_Load(object sender, EventArgs e)
+        private void MDMAnalysisWindow_Load(object sender, EventArgs e)
         {
             var autopilotProfile = _autopilotUtil.GetLocalAutopilotProfileStatus();
             if (autopilotProfile == null)
@@ -52,7 +52,6 @@ namespace AutopilotHelper
                 AutopilotProfileStatusTextBox.Text = _autopilotUtil.GetLocalAutopilotProfileStatus()?.ToString()
                     .Replace("\n", Environment.NewLine);
             }
-            _autopilotUtil.GetCloudSessionHostRecords();
 
             try
             {
@@ -158,9 +157,9 @@ namespace AutopilotHelper
             about.ShowDialog();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!StartUpForm.Instance.ShowOpenMDMFileDiag()) return;
+            if (!await StartUpForm.Instance.ShowOpenMDMFileDiag()) return;
 
             this.Close();
         }

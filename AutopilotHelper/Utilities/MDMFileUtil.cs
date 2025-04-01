@@ -9,6 +9,7 @@ namespace AutopilotHelper.Utilities
         /// This path represents the zip file extract destination.
         /// </summary>
         public string TmpWorkspacePath = Path.Combine(Path.GetTempPath(), $"IntunePremier/TmpWorkspace/{Guid.NewGuid().ToString()}");
+        public readonly string FilePath;
 
         public MDMFileUtil(string filePath)
         {
@@ -17,31 +18,19 @@ namespace AutopilotHelper.Utilities
                 Directory.CreateDirectory(TmpWorkspacePath);
             }
 
-            //var cabinet = new CabInfo(cabFilePath);
+            FilePath = filePath;
+        }
 
-            //var files = cabinet.GetFiles();
-
-            //for (int i = 0; i < files.Count; i++)
-            //{
-            //    var stream = files[i].OpenRead();
-
-            //    using(var reader = new StreamReader(stream))
-            //    {
-            //        using (var writer = File.CreateText(Path.Combine(TmpWorkplacePath, files[i].Name)))
-            //        {
-            //            writer.Write(reader.ReadToEnd());
-            //        }
-            //    }
-            //}
-
-            var fileNameSplit = Path.GetFileName(filePath).Split('.');
+        public async Task Extract()
+        {
+            var fileNameSplit = Path.GetFileName(FilePath).Split('.');
             if (fileNameSplit[fileNameSplit.Length - 1].Equals("cab", StringComparison.OrdinalIgnoreCase))
             {
 
                 var process = new Process();
                 process.StartInfo = new();
                 process.StartInfo.FileName = "expand.exe";
-                process.StartInfo.Arguments = $"\"{filePath}\" -F:* \"{Path.Combine(TmpWorkspacePath)}\"";
+                process.StartInfo.Arguments = $"\"{FilePath}\" -F:* \"{Path.Combine(TmpWorkspacePath)}\"";
                 process.Start();
                 process.WaitForExit();
 
@@ -52,7 +41,7 @@ namespace AutopilotHelper.Utilities
             }
             else
             {
-                var fileStream = File.OpenRead(filePath);
+                var fileStream = File.OpenRead(FilePath);
                 using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read, true))
                 {
                     foreach (var entry in archive.Entries)
@@ -68,7 +57,7 @@ namespace AutopilotHelper.Utilities
                         }
 
                         // Extract the entry to the target path
-                        entry.ExtractToFile(fullPath);
+                        await Task.Run(() => entry.ExtractToFile(fullPath));
                     }
                 }
 

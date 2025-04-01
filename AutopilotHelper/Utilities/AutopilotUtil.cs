@@ -427,19 +427,19 @@ namespace AutopilotHelper.Utilities
 
             var nodes = new List<NodeCache>();
 
-            for (int i = 0; i < _Reg.Lines.Length; i++)
-            {
-                if (!_Reg.Lines[i].StartsWith
-                    ("[HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\"))
-                    continue;
+            var nodeCommonUrl = "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\";
+            var nodeCommonUrlLength = nodeCommonUrl.Length;
 
+            var result = Parallel.ForEach(_Reg.Lines, line =>
+            {
+                if (!line.StartsWith("[HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\"))
+                    return;
                 var node = new NodeCache();
-                var path = _Reg.Lines[i];
+                var path = line;
                 path = path.Substring(1, path.Length - 2);
                 node.id = int.Parse(
-                    path.Substring("HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length,
-                    path.Length - "HKEY_LOCAL_MACHINE\\software\\microsoft\\provisioning\\NodeCache\\CSP\\Device\\MS DM Server\\Nodes\\".Length));
-
+                    path.Substring(nodeCommonUrlLength,
+                    path.Length - nodeCommonUrlLength));
                 try
                 {
                     node.NodeUri = _Reg.GetValue(path, "NodeUri");
@@ -448,7 +448,6 @@ namespace AutopilotHelper.Utilities
                 {
                     // Do nothing
                 }
-
                 try
                 {
                     node.ExpectedValue = _Reg.GetValue(path, "ExpectedValue");
@@ -457,9 +456,13 @@ namespace AutopilotHelper.Utilities
                 {
                     // Do nothing
                 }
-
                 nodes.Add(node);
-            }
+            });
+
+            nodes.Sort(delegate(NodeCache item1, NodeCache item2)
+            {
+                return item1.id.CompareTo(item2.id);
+            });
 
             sb.AppendLine("POLICIES PROCESSED");
 
