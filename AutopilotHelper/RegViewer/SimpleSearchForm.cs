@@ -41,7 +41,7 @@ namespace AutopilotHelper.RegViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(_regViewerForm.Reg == null)
+            if (_regViewerForm.Reg == null)
             {
                 MessageBox.Show("Registry is not loaded yet!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -89,7 +89,7 @@ namespace AutopilotHelper.RegViewer
             else
             {
                 var cache = _regViewerForm.SearchedNodes[textBox1.Text];
-                if (searchInfo.CaseSensitive != cache.CaseSensitive || searchInfo.LookForKey != cache.LookForKey 
+                if (searchInfo.CaseSensitive != cache.CaseSensitive || searchInfo.LookForKey != cache.LookForKey
                     || searchInfo.LookForValue != cache.LookForValue)
                 {
                     _regViewerForm.SearchedNodes[textBox1.Text] = searchInfo;
@@ -126,7 +126,7 @@ namespace AutopilotHelper.RegViewer
                 {
                     nextIndex = Math.Min(index + 1, _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count - 1);
 
-                    if(nextIndex == _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count - 1)
+                    if (nextIndex == _regViewerForm.SearchedNodes[textBox1.Text].Nodes.Count - 1)
                     {
                         MessageBox.Show("No more matches found in the entire registry!",
                             "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -193,7 +193,7 @@ namespace AutopilotHelper.RegViewer
 
                         return;
                     }
-                    else if((!lookAtKeyCheckBox.Checked && !lookAtValueCheckBox.Checked) && child.Text.Contains(textBox1.Text, comparison))
+                    else if ((!lookAtKeyCheckBox.Checked && !lookAtValueCheckBox.Checked) && child.Text.Contains(textBox1.Text, comparison))
                     {
                         if (_regViewerForm.SearchedNodes[textBox1.Text].Nodes.Contains(child)) continue;
 

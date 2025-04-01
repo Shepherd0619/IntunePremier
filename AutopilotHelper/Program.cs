@@ -19,7 +19,7 @@ namespace AutopilotHelper
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            if(args.Length > 0)
+            if (args.Length > 0)
             {
                 if (args.Contains("--reset-settings"))
                 {
@@ -27,7 +27,7 @@ namespace AutopilotHelper
                     MessageBox.Show("Settings reset!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                if(args.Contains("--event-viewer"))
+                if (args.Contains("--event-viewer"))
                 {
                     Application.Run(new EventViewerForm());
                     return;
