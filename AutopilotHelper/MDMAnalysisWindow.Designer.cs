@@ -497,12 +497,14 @@
             // cspBackgroundWorker
             // 
             cspBackgroundWorker.WorkerReportsProgress = true;
+            cspBackgroundWorker.WorkerSupportsCancellation = true;
             cspBackgroundWorker.DoWork += cspBackgroundWorker_DoWork;
             cspBackgroundWorker.ProgressChanged += cspBackgroundWorker_ProgressChanged;
             cspBackgroundWorker.RunWorkerCompleted += cspBackgroundWorker_RunWorkerCompleted;
             // 
             // autopilotDiagBackgrounWorker
             // 
+            autopilotDiagBackgrounWorker.WorkerSupportsCancellation = true;
             autopilotDiagBackgrounWorker.DoWork += autopilotDiagBackgrounWorker_DoWork;
             autopilotDiagBackgrounWorker.RunWorkerCompleted += autopilotDiagBackgrounWorker_RunWorkerCompleted;
             // 

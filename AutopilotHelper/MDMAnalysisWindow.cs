@@ -152,6 +152,16 @@ namespace AutopilotHelper
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.Hide();
+
+            cspBackgroundWorker.CancelAsync();
+            autopilotDiagBackgrounWorker.CancelAsync();
+
+            while (cspBackgroundWorker.IsBusy || autopilotDiagBackgrounWorker.IsBusy)
+            {
+                Application.DoEvents();
+            }
+
             Directory.Delete(_diagFile?.TmpWorkspacePath, true);
             StartUpForm.Instance.analysisWindows.Remove(this);
 
@@ -264,12 +274,15 @@ namespace AutopilotHelper
 
         private void cspBackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            if(cspBackgroundWorker.CancellationPending) { e.Cancel = true; return; }
+
             if (_autopilotUtil.NodeCaches == null)
                 _autopilotUtil.GetProcessedPolicies();
 
             cspBackgroundWorker.ReportProgress(-1);
             for (int i = 0; i < _autopilotUtil.NodeCaches.Count; i++)
             {
+                if (cspBackgroundWorker.CancellationPending) { e.Cancel = true; return; }
                 cspBackgroundWorker.ReportProgress(i);
                 Thread.Sleep(10);
             }
@@ -304,6 +317,12 @@ namespace AutopilotHelper
 
         private void autopilotDiagBackgrounWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            if (autopilotDiagBackgrounWorker.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             autopilotDiagText = _autopilotUtil.GetGeneralDiagnosticsReport();
         }
 
