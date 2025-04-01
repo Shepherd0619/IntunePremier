@@ -478,26 +478,6 @@ namespace AutopilotHelper.Utilities
             return sb.ToString();
         }
 
-        public void PopulateProcessedPoliciesListView(ListView owner)
-        {
-            if (_NodeCaches == null)
-                GetProcessedPolicies();
-
-            if (_NodeCaches == null)
-                return;
-
-            owner.Items.Clear();
-            for (int i = 0; i < _NodeCaches.Count; i++)
-            {
-                var item = new ListViewItem();
-                item.Text = _NodeCaches[i].id.ToString();
-                item.SubItems.Add(_NodeCaches[i].NodeUri);
-                item.SubItems.Add(_NodeCaches[i].ExpectedValue);
-
-                owner.Items.Add(item);
-            }
-        }
-
         public string GetProcessedApps()
         {
             var sb = new StringBuilder();
