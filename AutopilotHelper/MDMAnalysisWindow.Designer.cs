@@ -369,9 +369,8 @@
             // 
             // cspStripStatusLabel
             // 
-            cspStripStatusLabel.AutoSize = false;
             cspStripStatusLabel.Name = "cspStripStatusLabel";
-            cspStripStatusLabel.Size = new Size(200, 17);
+            cspStripStatusLabel.Size = new Size(117, 17);
             cspStripStatusLabel.Text = "CSP PROGRESS TEXT";
             cspStripStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
