@@ -30,6 +30,12 @@ namespace AutopilotHelper
         public AutopilotUtil AutopilotUtil => _autopilotUtil;
         private AutopilotUtil _autopilotUtil;
 
+        private string autopilotDiagText;
+
+        private readonly List<ListViewItem> cspListViewItems = new();
+
+        private bool isLoadingCSP = false;
+
         public MDMAnalysisWindow()
         {
             InitializeComponent();
@@ -40,7 +46,7 @@ namespace AutopilotHelper
             };
         }
 
-        private async void MDMAnalysisWindow_Load(object sender, EventArgs e)
+        private void MDMAnalysisWindow_Load(object sender, EventArgs e)
         {
             var autopilotProfile = _autopilotUtil.GetLocalAutopilotProfileStatus();
             if (autopilotProfile == null)
@@ -52,7 +58,6 @@ namespace AutopilotHelper
                 AutopilotProfileStatusTextBox.Text = _autopilotUtil.GetLocalAutopilotProfileStatus()?.ToString()
                     .Replace("\n", Environment.NewLine);
             }
-            _autopilotUtil.GetCloudSessionHostRecords();
 
             try
             {
@@ -63,10 +68,12 @@ namespace AutopilotHelper
                 // Do nothing
             }
 
-            policiesListView.Items.Clear();
-            _autopilotUtil.PopulateProcessedPoliciesListView(policiesListView);
-
-            autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
+            isLoadingCSP = true;
+            cspStripStatusLabel.Text = "Opening registry...";
+            cspBackgroundWorker.RunWorkerAsync();
+            autopilotDiagTextBox1.Text = "Please wait as we are generating report for you......";
+            autopilotDiagBackgrounWorker.RunWorkerAsync();
+            //autopilotDiagTextBox1.Text = _autopilotUtil.GetGeneralDiagnosticsReport();
         }
 
         public void InitializeESPTabPage(AutopilotSettings settings)
@@ -145,6 +152,16 @@ namespace AutopilotHelper
 
         private void MDMAnalysisWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.Hide();
+
+            cspBackgroundWorker.CancelAsync();
+            autopilotDiagBackgrounWorker.CancelAsync();
+
+            while (cspBackgroundWorker.IsBusy || autopilotDiagBackgrounWorker.IsBusy)
+            {
+                Application.DoEvents();
+            }
+
             Directory.Delete(_diagFile?.TmpWorkspacePath, true);
             StartUpForm.Instance.analysisWindows.Remove(this);
 
@@ -158,9 +175,9 @@ namespace AutopilotHelper
             about.ShowDialog();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!StartUpForm.Instance.ShowOpenMDMFileDiag()) return;
+            if (!await StartUpForm.Instance.ShowOpenMDMFileDiag()) return;
 
             this.Close();
         }
@@ -211,6 +228,8 @@ namespace AutopilotHelper
         {
             if (e.KeyValue != 13) return;
 
+            if (isLoadingCSP) return;
+
             ListViewItem selected;
 
             if (policiesListView.SelectedItems.Count > 0)
@@ -251,6 +270,65 @@ namespace AutopilotHelper
         private void policies_detailTab_HideButton_Click(object sender, EventArgs e)
         {
             policies_tabControl.Visible = false;
+        }
+
+        private void cspBackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            if(cspBackgroundWorker.CancellationPending) { e.Cancel = true; return; }
+
+            if (_autopilotUtil.NodeCaches == null)
+                _autopilotUtil.GetProcessedPolicies();
+
+            cspBackgroundWorker.ReportProgress(-1);
+            for (int i = 0; i < _autopilotUtil.NodeCaches.Count; i++)
+            {
+                if (cspBackgroundWorker.CancellationPending) { e.Cancel = true; return; }
+                cspBackgroundWorker.ReportProgress(i);
+                Thread.Sleep(10);
+            }
+        }
+
+        private void cspBackgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == -1)
+            {
+                policiesListView.Items.Clear();
+                return;
+            }
+
+            var item = new ListViewItem();
+            item.Text = _autopilotUtil.NodeCaches[e.ProgressPercentage].id.ToString();
+            item.SubItems.Add(_autopilotUtil.NodeCaches[e.ProgressPercentage].NodeUri);
+            item.SubItems.Add(_autopilotUtil.NodeCaches[e.ProgressPercentage].ExpectedValue);
+
+            cspListViewItems.Add(item);
+
+            cspStripProgressBar.Maximum = _autopilotUtil.NodeCaches.Count - 1;
+            cspStripProgressBar.Value = e.ProgressPercentage;
+            cspStripStatusLabel.Text = $"Loading CSPs... ({e.ProgressPercentage + 1}/{_autopilotUtil.NodeCaches.Count})";
+        }
+
+        private void cspBackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            cspListViewItems.ForEach(item => policiesListView.Items.Add(item));
+            cspStripStatusLabel.Text = "CSPs loaded.";
+            isLoadingCSP = false;
+        }
+
+        private void autopilotDiagBackgrounWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            if (autopilotDiagBackgrounWorker.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            autopilotDiagText = _autopilotUtil.GetGeneralDiagnosticsReport();
+        }
+
+        private void autopilotDiagBackgrounWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            autopilotDiagTextBox1.Text = autopilotDiagText;
         }
     }
 }

@@ -57,6 +57,10 @@
             label8 = new Label();
             label2 = new Label();
             ProcessedPoliciesTab = new TabPage();
+            cspStatusStrip = new StatusStrip();
+            cspStripStatusLabel = new ToolStripStatusLabel();
+            cspStripProgressBar = new ToolStripProgressBar();
+            label1 = new Label();
             policies_tabControl = new TabControl();
             tabPage1 = new TabPage();
             policies_detailTab_HideButton = new Button();
@@ -68,6 +72,8 @@
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
+            cspBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            autopilotDiagBackgrounWorker = new System.ComponentModel.BackgroundWorker();
             menuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             AutopilotDiagTab.SuspendLayout();
@@ -77,6 +83,7 @@
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ProcessedPoliciesTab.SuspendLayout();
+            cspStatusStrip.SuspendLayout();
             policies_tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
             SuspendLayout();
@@ -337,6 +344,8 @@
             // 
             // ProcessedPoliciesTab
             // 
+            ProcessedPoliciesTab.Controls.Add(cspStatusStrip);
+            ProcessedPoliciesTab.Controls.Add(label1);
             ProcessedPoliciesTab.Controls.Add(policies_tabControl);
             ProcessedPoliciesTab.Controls.Add(policies_downCheckBox);
             ProcessedPoliciesTab.Controls.Add(policies_CaseSensitiveCheckBox);
@@ -349,12 +358,42 @@
             ProcessedPoliciesTab.Text = "Processed Policies";
             ProcessedPoliciesTab.UseVisualStyleBackColor = true;
             // 
+            // cspStatusStrip
+            // 
+            cspStatusStrip.Items.AddRange(new ToolStripItem[] { cspStripStatusLabel, cspStripProgressBar });
+            cspStatusStrip.Location = new Point(0, 460);
+            cspStatusStrip.Name = "cspStatusStrip";
+            cspStatusStrip.Size = new Size(792, 22);
+            cspStatusStrip.TabIndex = 6;
+            cspStatusStrip.Text = "cspStatusStrip";
+            // 
+            // cspStripStatusLabel
+            // 
+            cspStripStatusLabel.Name = "cspStripStatusLabel";
+            cspStripStatusLabel.Size = new Size(117, 17);
+            cspStripStatusLabel.Text = "CSP PROGRESS TEXT";
+            cspStripStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // cspStripProgressBar
+            // 
+            cspStripProgressBar.Name = "cspStripProgressBar";
+            cspStripProgressBar.Size = new Size(100, 16);
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 8);
+            label1.Name = "label1";
+            label1.Size = new Size(265, 15);
+            label1.TabIndex = 5;
+            label1.Text = "Search CSP URI or content here and press ENTER:";
+            // 
             // policies_tabControl
             // 
             policies_tabControl.Alignment = TabAlignment.Bottom;
             policies_tabControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             policies_tabControl.Controls.Add(tabPage1);
-            policies_tabControl.Location = new Point(8, 319);
+            policies_tabControl.Location = new Point(8, 313);
             policies_tabControl.Name = "policies_tabControl";
             policies_tabControl.SelectedIndex = 0;
             policies_tabControl.Size = new Size(764, 144);
@@ -401,7 +440,7 @@
             policies_downCheckBox.AutoSize = true;
             policies_downCheckBox.Checked = true;
             policies_downCheckBox.CheckState = CheckState.Checked;
-            policies_downCheckBox.Location = new Point(626, 2);
+            policies_downCheckBox.Location = new Point(629, 28);
             policies_downCheckBox.Name = "policies_downCheckBox";
             policies_downCheckBox.Size = new Size(57, 19);
             policies_downCheckBox.TabIndex = 3;
@@ -412,7 +451,7 @@
             // 
             policies_CaseSensitiveCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             policies_CaseSensitiveCheckBox.AutoSize = true;
-            policies_CaseSensitiveCheckBox.Location = new Point(689, 2);
+            policies_CaseSensitiveCheckBox.Location = new Point(692, 28);
             policies_CaseSensitiveCheckBox.Name = "policies_CaseSensitiveCheckBox";
             policies_CaseSensitiveCheckBox.Size = new Size(100, 19);
             policies_CaseSensitiveCheckBox.TabIndex = 2;
@@ -422,21 +461,20 @@
             // policiesSearchBox
             // 
             policiesSearchBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            policiesSearchBox.Location = new Point(0, 0);
+            policiesSearchBox.Location = new Point(3, 26);
             policiesSearchBox.Name = "policiesSearchBox";
             policiesSearchBox.Size = new Size(620, 23);
             policiesSearchBox.TabIndex = 1;
-            policiesSearchBox.Text = "Type keyword here and press ENTER to find next......";
             policiesSearchBox.KeyDown += policiesSearchBox_KeyDown;
             // 
             // policiesListView
             // 
             policiesListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             policiesListView.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
-            policiesListView.Location = new Point(0, 22);
+            policiesListView.Location = new Point(0, 55);
             policiesListView.MultiSelect = false;
             policiesListView.Name = "policiesListView";
-            policiesListView.Size = new Size(792, 460);
+            policiesListView.Size = new Size(792, 408);
             policiesListView.TabIndex = 0;
             policiesListView.UseCompatibleStateImageBehavior = false;
             policiesListView.View = View.Details;
@@ -455,6 +493,20 @@
             // 
             columnHeader3.Text = "ExpectedValue";
             columnHeader3.Width = 600;
+            // 
+            // cspBackgroundWorker
+            // 
+            cspBackgroundWorker.WorkerReportsProgress = true;
+            cspBackgroundWorker.WorkerSupportsCancellation = true;
+            cspBackgroundWorker.DoWork += cspBackgroundWorker_DoWork;
+            cspBackgroundWorker.ProgressChanged += cspBackgroundWorker_ProgressChanged;
+            cspBackgroundWorker.RunWorkerCompleted += cspBackgroundWorker_RunWorkerCompleted;
+            // 
+            // autopilotDiagBackgrounWorker
+            // 
+            autopilotDiagBackgrounWorker.WorkerSupportsCancellation = true;
+            autopilotDiagBackgrounWorker.DoWork += autopilotDiagBackgrounWorker_DoWork;
+            autopilotDiagBackgrounWorker.RunWorkerCompleted += autopilotDiagBackgrounWorker_RunWorkerCompleted;
             // 
             // MDMAnalysisWindow
             // 
@@ -486,6 +538,8 @@
             panel1.PerformLayout();
             ProcessedPoliciesTab.ResumeLayout(false);
             ProcessedPoliciesTab.PerformLayout();
+            cspStatusStrip.ResumeLayout(false);
+            cspStatusStrip.PerformLayout();
             policies_tabControl.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
@@ -535,5 +589,11 @@
         private TabPage tabPage1;
         private TextBox policiesDetailTextBox;
         private Button policies_detailTab_HideButton;
+        private System.ComponentModel.BackgroundWorker cspBackgroundWorker;
+        private System.ComponentModel.BackgroundWorker autopilotDiagBackgrounWorker;
+        private Label label1;
+        private StatusStrip cspStatusStrip;
+        private ToolStripStatusLabel cspStripStatusLabel;
+        private ToolStripProgressBar cspStripProgressBar;
     }
 }

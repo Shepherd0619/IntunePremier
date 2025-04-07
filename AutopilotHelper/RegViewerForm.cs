@@ -212,7 +212,12 @@ namespace AutopilotHelper
 
         public void OpenReg(string path)
         {
-            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            if (!File.Exists(path))
             {
                 MessageBox.Show("Invalid file path.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
