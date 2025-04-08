@@ -37,61 +37,90 @@ namespace AutopilotHelper
 
         public async Task<bool> ShowOpenMDMFileDiag()
         {
-            openFileDialog1.ShowDialog(this);
-
-            if (!File.Exists(openFileDialog1.FileName)) return false;
-
-            if (analysisWindows.Values.Contains(openFileDialog1.FileName)) return false;
-
-            MDMFileUtil util = new(openFileDialog1.FileName);
-            await util.Extract();
-
-            var mainForm = new MDMAnalysisWindow();
-
-            mainForm.CurrentDiagFile = util;
-            mainForm.Show();
-            analysisWindows.Add(mainForm, openFileDialog1.FileName);
-
-            if (!Program.Settings.RecentDiagFiles.Contains(openFileDialog1.FileName))
-                Program.Settings.RecentDiagFiles.Insert(0, openFileDialog1.FileName);
-            else
+            try
             {
-                Program.Settings.RecentDiagFiles.Remove(openFileDialog1.FileName);
-                Program.Settings.RecentDiagFiles.Insert(0, openFileDialog1.FileName);
+                openFileDialog1.ShowDialog(this);
+
+                if (!File.Exists(openFileDialog1.FileName))
+                    return false;
+
+                if (analysisWindows.Values.Contains(openFileDialog1.FileName))
+                    return false;
+
+                var util = await CreateAndExtractMDMFileUtilAsync(openFileDialog1.FileName);
+                await ShowMDMAnalysisWindowAsync(util, openFileDialog1.FileName);
+
+                UpdateRecentDiagFiles(openFileDialog1.FileName);
+                this.Hide();
+                openFileDialog1.FileName = string.Empty;
+
+                return true;
             }
-
-            this.Hide();
-            openFileDialog1.FileName = string.Empty;
-
-            return true;
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately (e.g., log it or show a message to the user)
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         public async Task<bool> OpenMDMDiagByPath(string path)
         {
-            if (!File.Exists(path)) return false;
+            try
+            {
+                if (!File.Exists(path))
+                    return false;
 
-            if (analysisWindows.Values.Contains(path)) return false;
+                if (analysisWindows.Values.Contains(path))
+                    return false;
 
-            MDMFileUtil util = new(path);
+                var util = await CreateAndExtractMDMFileUtilAsync(path);
+                await ShowMDMAnalysisWindowAsync(util, path);
+
+                UpdateRecentDiagFiles(path);
+
+                this.Hide();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private async Task<MDMFileUtil> CreateAndExtractMDMFileUtilAsync(string filePath)
+        {
+            var util = new MDMFileUtil(filePath);
             await util.Extract();
+            return util;
+        }
 
-            var mainForm = new MDMAnalysisWindow();
-
-            mainForm.CurrentDiagFile = util;
+        private async Task ShowMDMAnalysisWindowAsync(MDMFileUtil util, string path)
+        {
+            var mainForm = new MDMAnalysisWindow
+            {
+                CurrentDiagFile = util,
+                // Initialize other properties if necessary
+            };
             mainForm.Show();
-            analysisWindows.Add(mainForm, path);
 
-            if (!Program.Settings.RecentDiagFiles.Contains(path))
-                Program.Settings.RecentDiagFiles.Add(path);
+            analysisWindows.Add(mainForm, path);
+        }
+
+        private void UpdateRecentDiagFiles(string filePath)
+        {
+            if (!Program.Settings.RecentDiagFiles.Contains(filePath))
+            {
+                Program.Settings.RecentDiagFiles.Insert(0, filePath);
+            }
             else
             {
-                Program.Settings.RecentDiagFiles.Remove(path);
-                Program.Settings.RecentDiagFiles.Insert(0, path);
+                Program.Settings.RecentDiagFiles.Remove(filePath);
+                Program.Settings.RecentDiagFiles.Insert(0, filePath);
             }
-
-            this.Hide();
-
-            return true;
         }
 
         private void AboutMeButton_Click(object sender, EventArgs e)
