@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Getting Started - Intune Premier</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Getting Started";
+        var mkdocs_page_input_path = "get-started.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Intune Premier
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Getting Started</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#download-and-install">Download and Install</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#startup-screen">Startup Screen</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-file-extension-filter">1. File extension filter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-cab-extract">2. CAB Extract</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-supported-mdm-diagnostics-file">3. Supported MDM diagnostics file</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mdm-diagnostics-analysis-window-aka-main-window">MDM Diagnostics Analysis Window (aka Main Window)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#diagnostics-tab">Diagnostics tab</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ap-profile-tab">AP Profile tab</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#esp-tab">ESP tab</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#temporary-workspace-folder">Temporary Workspace Folder</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#processed-policies">Processed Policies</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#context-menu">Context Menu</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#event-viewer">Event Viewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reg-viewer">Reg Viewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#need-more-help">Need more help?</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Intune Premier</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="getting-started">Getting Started</h1>
+<p>In this section, we will demonstrate the usage by scenarios.</p>
+<p>But before starts talking about the user interface of it, you need to know how to download and install Autopilot Helper correctly.</p>
+<h2 id="download-and-install">Download and Install</h2>
+<p>To download AutopilotHelper, you may head to <a href="https://github.com/Shepherd0619/IntunePremier/releases">GitHub</a>.</p>
+<p>Once you land to Release page, you will noticed multiple releases with different tags and titles.</p>
+<p>Normally, you will only need the release whose title or tag contains keyword "LTS". It means it's long term support release which should be stable enough to use for production environment.</p>
+<p><img alt="alt text" src="../img/github-release-with-lts-keyword-highlighted.png" /></p>
+<p>For each release, we include both EXE installer and ZIP.
+We recommend you using EXE installer instead as it will help creating the shortcut for different purposes such as opening Reg Viewer only.</p>
+<p>Once you have downloaded the installer, double click on it to launch and follow on-screen instruction.</p>
+<p>After successful installation, you should be able to notice shortcuts created by installer in your desktop and Start Menu.</p>
+<p>For the Start Menu, they should include the following:
+<img alt="alt text" src="../img/shortcuts-in-start-menu.png" /></p>
+<p>For "Intune Premier", it will launch AutopilotHelper.exe without any parameters, and the end user experience should be:</p>
+<p><img alt="alt text" src="../img/IMG_2298.PNG" /></p>
+<p>For "Event Viewer" and "Registry Viewer", it will launch the main executable with corresponding parameters.</p>
+<p>If you are using ZIP instead, you may need to create shortcuts manually or using Run/CMD to launch those tools.</p>
+<pre><code>AutopilotHelper.exe --event-viewer
+AutopilotHelper.exe --reg-viewer
+</code></pre>
+<p>And the end user experience should be:</p>
+<p><img alt="alt text" src="../img/d6020eb5-1cd2-4088-ac9a-e87e89f049ef.PNG" />
+<img alt="alt text" src="../img/802448dc-a5b6-4fd8-935b-8086140b1306.PNG" /></p>
+<h2 id="startup-screen">Startup Screen</h2>
+<p>In this part of user interface, you can do the following tasks:</p>
+<ul>
+<li>Open MDM diagnostics</li>
+<li>Collect MDM diagnostics</li>
+<li>Quickly access the recent opened MDM diagnostics.</li>
+</ul>
+<p><img alt="alt text" src="../img/IMG_2298.PNG" /></p>
+<p>We believe this should not be a huge problem for understanding the user interface. But here are couple things you may need to pay attention to:</p>
+<h3 id="1-file-extension-filter">1. File extension filter</h3>
+<p>When you click on "Open MDM Diag", there should be a dialog pop up to let you point out the diagnostics located in your storage. By default, the filter is CAB.</p>
+<p>If you wish to open ZIP, remember clicking the dropdown highlighted and switching to ZIP.</p>
+<p><img alt="alt text" src="../img/open-mdmdiag-dialog-file-extension-filter.png" /></p>
+<h3 id="2-cab-extract">2. CAB Extract</h3>
+<p>By default, the program will use Windows built-in command line application called "expand.exe" to do the job. So you will notice there is <strong>a terminal window pop up and will disappear soon once the job is done.</strong></p>
+<pre><code class="language-csharp">var process = new Process();
+process.StartInfo = new();
+process.StartInfo.FileName = &quot;expand.exe&quot;;
+process.StartInfo.Arguments = $&quot;\&quot;{FilePath}\&quot; -F:* \&quot;{Path.Combine(TmpWorkspacePath)}\&quot;&quot;;
+process.Start();
+process.WaitForExit();
+
+if (process.ExitCode != 0)
+{
+    throw new Exception($&quot;expand exit code is {process.ExitCode}&quot;);
+}
+</code></pre>
+<blockquote>
+<p>[!IMPORTANT]
+Please try not interrupting its process such as click on the content of terminal window which may cause the application pause and you have to press ENTER to continue.</p>
+</blockquote>
+<h3 id="3-supported-mdm-diagnostics-file">3. Supported MDM diagnostics file</h3>
+<ul>
+<li>zip/cab file generated by using the following command</li>
+</ul>
+<pre><code>mdmdiagnosticstool.exe -area &quot;DeviceEnrollment;DeviceProvisioning;Autopilot&quot; -zip &quot;c:\users\public\documents\MDMDiagReport.zip&quot;
+</code></pre>
+<ul>
+<li>diagnostics collected from Intune Admin Center.
+<img alt="alt text" src="../img/collect-diag-from-intune-portal.png" /></li>
+<li><a href="https://github.com/markstan/intuneonedatacollector">One Data Collector</a> (<strong>TBA</strong>, aka To Be Annouced)</li>
+</ul>
+<h2 id="mdm-diagnostics-analysis-window-aka-main-window">MDM Diagnostics Analysis Window (aka Main Window)</h2>
+<p>After you open the MDM diagnostics successfully, the end user should see the following window as soon as possible:</p>
+<p><img alt="alt text" src="../img/mdm-analysis-window.png" /></p>
+<p>Some tabs like "Processed Policies" may take time to load, please allow them some time.</p>
+<h3 id="diagnostics-tab">Diagnostics tab</h3>
+<p>This tab will show the result similar to PowerShell script "Get-AutopilotDiagnostics". The project rewrote the script into C#.</p>
+<p>The reason for doing so is:
+1. More graceful exception handling.
+2. Improve the way to locate the latest Windows ADK for decoding hardware hash.</p>
+<p>Comparing to the script, here are missing features and we are planning to release them soon:
+1. Observed timeline.</p>
+<h3 id="ap-profile-tab">AP Profile tab</h3>
+<p>This tab will show the formatted text from "AutopilotDDSZTDFile.json".</p>
+<h3 id="esp-tab">ESP tab</h3>
+<p>This tab will read the ESP tracking status from "MdmDiagReport_RegistryDump.reg" and render them on WinForm in a familar way like OOBE.</p>
+<h3 id="temporary-workspace-folder">Temporary Workspace Folder</h3>
+<p>The folder is located in <code>C:\Users\YourUserName\AppData\Local\Temp\IntunePremier\TmpWorkspace</code></p>
+<p>You may also quickly navigate to the folder by the following:</p>
+<p><img alt="alt text" src="../img/open-workspace-folder.png" /></p>
+<p>Once the window get closed, it will automatically clear the temporary folder used for extracting the diagnostic.</p>
+<p><img alt="alt text" src="../img/esp-tab.png" /></p>
+<p>If you are using 3rd party software like Qihoo 360 Total Security, they should be able to clear the folder too.</p>
+<p>(PS: I believe <em>Windows Settings -&gt; System -&gt; Storage</em> can also do that. )</p>
+<blockquote>
+<p>[!NOTE]<br />
+If you notice one or two ESP stages shows empty, it is probably normal as target PC may not reach that stage.</p>
+<p>If all three stages shows empty, it probably means the program has issue with reading ESP status from registry dump (like registry key does not exist, or even the registry dump does not exist), or the target PC is not an Autopilot device.</p>
+</blockquote>
+<h3 id="processed-policies">Processed Policies</h3>
+<p>This tab will allow you to observe all CSP exist on target device. It should includes not only the policies pushed from Intune Admin Center, but also device information, etc.</p>
+<p><img alt="alt text" src="../img/processed-policies-tab.png" /></p>
+<p>To search a CSP, please use the input field above the list view. You can start type a keyword and press ENTER to find next.</p>
+<p>It will look for CSP URI first. If there is no hit, it will starts looking for value instead.</p>
+<h3 id="context-menu">Context Menu</h3>
+<p>You may notice a menu strip near the top of window. It will allow you to access the folder where the diagnostics is extracted into, and also open the Reg Viewer and Event Viewer for you.</p>
+<h2 id="event-viewer">Event Viewer</h2>
+<p>The event viewer will allow you to open evtx file in a lightweight way, comparing to the one comes with Windows operating system.</p>
+<p>The only reason I design this thing is to eliminate most of the time spent on waiting to open the Shell-Core evtx file when doing Autopilot troubleshooting.</p>
+<p>To ensure consistent user interface experience, I tried making the WinForm similar to the one comes with Windows. You can use Ctrl+F to open Find Next, you can also set Filter via context menu on the top just like traditional event viewer do.</p>
+<p><img alt="alt text" src="../img/event-viewer.png" />
+<img alt="alt text" src="../img/filter-window-evtx.png" />
+<img alt="alt text" src="../img/find-next-evtx.png" /></p>
+<p>By default, the list view on the left will display all evtx files present in MDM diagnostics unless you launch the Event Viewer externally.</p>
+<p>You can also open external evtx file via context menu. All evtx files opened in this way will be also listed in the list view but with "[EXT]" at the beginning.</p>
+<blockquote>
+<p>[!TIP]
+By default, the Find Next will only look for the formatted, human readable description which is the forth column.</p>
+</blockquote>
+<h2 id="reg-viewer">Reg Viewer</h2>
+<p>This tool will help you review the registry dump just like regedit. In regedit days, we are unable to do something like that but to use text editor.</p>
+<p>And now you can review the registry keys with a simple and nice tree view. You can also type the registry path in the address bar to locate.</p>
+<p>The rest should be the same as regedit. Ctrl+F to find next also works in this tool.</p>
+<p><img alt="alt text" src="../img/reg-viewer.png" /></p>
+<p>Find Next in this tool may take relatively long time comparing to others. In here, we will keep cache of search result for the keyword you type. If you try changing the keyword, it will initiate indexing again.</p>
+<p>For more information, please refer to the text message shown in the Find Next dialog.</p>
+<p><img alt="alt text" src="../img/find-next-reg.png" /></p>
+<h2 id="need-more-help">Need more help?</h2>
+<p>Please raise a ticket in <a href="https://github.com/Shepherd0619/IntunePremier/issues">Issues</a> with clear, simple title and description.</p>
+<p>You may also <a href="mailto:shepherd0619@outlook.com">leave an email</a> with "[Autopilot Helper]" at the beginning of subject line.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
