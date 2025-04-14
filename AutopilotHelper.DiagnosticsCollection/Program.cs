@@ -81,11 +81,16 @@ namespace AutopilotHelper.DiagnosticsCollection
             {
                 Console.WriteLine($"Failed to collect Firewall settings!\n\n{ex.ToString()}");
             }
+
+            Console.WriteLine();
+            Console.WriteLine("All operation completed successfully.\nPress any key to open output folder.");
+            Console.ReadKey();
+            OpenTmpFolder();
         }
 
         static int CollectMDMDiag()
         {
-            var path = @$"{TmpFolder}\\MDMDiagReport.zip";
+            var path = @$"{TmpFolder}\MDMDiagReport.zip";
 
             if (File.Exists(path))
             {
@@ -162,6 +167,16 @@ namespace AutopilotHelper.DiagnosticsCollection
             {
                 Console.WriteLine(e.Data);
             }
+        }
+
+        private static void OpenTmpFolder()
+        {
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = "explorer.exe";
+            startInfo.Arguments = TmpFolder;
+            startInfo.UseShellExecute = true;
+
+            var process = Process.Start(startInfo);
         }
     }
 }
