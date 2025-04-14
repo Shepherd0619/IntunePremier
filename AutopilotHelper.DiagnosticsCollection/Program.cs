@@ -21,6 +21,8 @@ namespace AutopilotHelper.DiagnosticsCollection
             Console.WriteLine();
             Console.WriteLine($"** All logs will be collected under {TmpFolder}. **");
             Console.WriteLine();
+            Console.WriteLine($"Administrator privilege: {UacHelper.IsProcessElevated}");
+            Console.WriteLine();
             Console.WriteLine("PRESS ANY KEY TO CONTINUE...");
             Console.ReadKey();
 
