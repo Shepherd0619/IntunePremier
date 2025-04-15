@@ -75,11 +75,44 @@ namespace AutopilotHelper.DiagnosticsCollection
 
             try
             {
-                CollectRegistry(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy");
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy", "FirewallSettings.reg");
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Failed to collect Firewall settings!\n\n{ex.ToString()}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("**********************************");
+            Console.WriteLine("STEP 3 - Collect Defender Settings");
+            Console.WriteLine("**********************************");
+            Console.WriteLine();
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender", "Defender_Policy.reg");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Failed to collect Defender Policy registry!\n\n{e}");
+            }
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Policy Manager", "Defender_MDM.reg");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Failed to collect Defender MDM policy registry!\n\n{e}");
+            }
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender", "Defender_Local.reg");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Failed to collect Defender local settings registry!\n\n{e}");
             }
 
             Console.WriteLine();
@@ -133,11 +166,11 @@ namespace AutopilotHelper.DiagnosticsCollection
             return process.ExitCode;
         }
 
-        static int CollectRegistry(string regPath)
+        static int CollectRegistry(string regPath, string fileName)
         {
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = "reg";
-            startInfo.Arguments = $"export \"{regPath}\" \"{TmpFolder}\\FirewallSettings.reg\" /y";
+            startInfo.Arguments = $"export \"{regPath}\" \"{TmpFolder}\\{fileName}\" /y";
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             startInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
@@ -153,10 +186,15 @@ namespace AutopilotHelper.DiagnosticsCollection
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
 
-            Console.WriteLine("reg.exe has started. Waiting for exit......");
+            Console.WriteLine($"reg.exe has started for collecting {regPath}. Waiting for exit......");
             Console.WriteLine();
 
             process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                Console.WriteLine($"WARNING: Registry collection for {regPath} may encounter some errors! You may need to verify:\n1. Whether registry path exists.\n2. Whether you run the tool with admin privilege.\n");
+            }
 
             return process.ExitCode;
         }
