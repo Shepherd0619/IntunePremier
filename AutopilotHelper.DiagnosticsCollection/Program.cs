@@ -21,26 +21,46 @@ namespace AutopilotHelper.DiagnosticsCollection
             Console.WriteLine();
             Console.WriteLine($"** All logs will be collected under {TmpFolder}. **");
             Console.WriteLine();
-            Console.WriteLine($"Administrator privilege: {UacHelper.IsProcessElevated}");
+            Console.WriteLine($"Administrator privilege: {UacHelper.IsProcessElevated}\n");
+            if(!UacHelper.IsProcessElevated)
+            {
+                Console.WriteLine("WARNING: The program probably does not have admin privilege. Some log collection steps may throw exception.");
+            }
             Console.WriteLine();
             Console.WriteLine("PRESS ANY KEY TO CONTINUE...");
             Console.ReadKey();
 
             Console.WriteLine();
 
-            if (Directory.GetFiles(TmpFolder).Length > 0)
+            if (Directory.Exists(TmpFolder))
             {
-                Console.WriteLine($"WARNING: There are files exist in the cache folder {TmpFolder}. Please make sure you have backup of them before continue as we will clean up the folder.");
-                Console.WriteLine("PRESS ANY KEY TO CONTINUE...");
-                Console.ReadKey();
+                if (Directory.GetFiles(TmpFolder).Length > 0)
+                {
+                    Console.WriteLine($"WARNING: There are files exist in the cache folder {TmpFolder}. Please make sure you have backup of them before continue as we will clean up the folder.");
+                    Console.WriteLine("PRESS ANY KEY TO CONTINUE...");
+                    Console.ReadKey();
+                    try
+                    {
+                        Directory.Delete(TmpFolder, true);
+                        Directory.CreateDirectory(TmpFolder);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to clean up the cache folder {TmpFolder}. Abort!\n\n{ex}");
+                        Environment.Exit(-1);
+                    }
+                }
+            }
+            else
+            {
                 try
                 {
-                    Directory.Delete(TmpFolder, true);
                     Directory.CreateDirectory(TmpFolder);
+                    Console.WriteLine($"Temporary folder created! {TmpFolder}");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to clean up the cache folder {TmpFolder}. Abort!\n\n{ex}");
+                    Console.WriteLine($"ERROR: Unable to create temporary folder {TmpFolder}. Abort!\n\n{ex}");
                     Environment.Exit(-1);
                 }
             }
