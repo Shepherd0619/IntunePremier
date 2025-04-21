@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Xml;
-using Microsoft.Win32;
 using Newtonsoft.Json;
+using WUApiLib;
+using AutopilotHelper.DiagnosticsCollection.Models;
 
 namespace AutopilotHelper.DiagnosticsCollection
 {
@@ -133,6 +133,76 @@ namespace AutopilotHelper.DiagnosticsCollection
             catch(Exception e)
             {
                 Console.WriteLine($"Failed to collect Defender local settings registry!\n\n{e}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("**********************************");
+            Console.WriteLine("STEP 4 - Collect Update Settings");
+            Console.WriteLine("**********************************");
+            Console.WriteLine();
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate", "WindowsUpdate.reg");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to collect Update registry!\n\n{e}");
+            }
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WufbDS", "WufbEnrollment.reg");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to collect Update registry!\n\n{e}");
+            }
+
+            Console.WriteLine("Collecting Windows Update services information......");
+            Console.WriteLine();
+            WUApiLib.IUpdateServiceManager updateServiceManager = new UpdateServiceManager();
+            List<UpdateService> serviceJsonList = new List<UpdateService>();
+
+            foreach (IUpdateService2 service in updateServiceManager.Services)
+            {
+                Console.WriteLine("Service Name: " + service.Name);
+                Console.WriteLine("AutoUpdate registered: " + service.IsRegisteredWithAU);
+                Console.WriteLine("URL:" + service.ServiceUrl);
+                Console.WriteLine("Is default AutoUpdate service: " + service.IsDefaultAUService);
+                serviceJsonList.Add(new UpdateService
+                {
+                    Name = service.Name,
+                    IsRegisteredWithAU = service.IsRegisteredWithAU,
+                    ServiceUrl = service.ServiceUrl,
+                    IsDefaultAUService = service.IsDefaultAUService
+                });
+                Console.WriteLine();
+            }
+
+            string jsonOutput = JsonConvert.SerializeObject(serviceJsonList, Newtonsoft.Json.Formatting.Indented);
+            try
+            {
+                File.WriteAllText($@"{TmpFolder}\UpdateService.json", jsonOutput);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to write UpdateService.json!\n\n" + e.ToString());
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("**********************************");
+            Console.WriteLine("STEP 5 - Collect IntuneManagementExtension Registry");
+            Console.WriteLine("**********************************");
+            Console.WriteLine();
+
+            try
+            {
+                CollectRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\MicrosoftIntuneManagementExtension", "IntuneManagementExtension.reg");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to collect IntuneManagementExtension registry!\n\n{e}");
             }
 
             Console.WriteLine();
