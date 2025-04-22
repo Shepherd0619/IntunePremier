@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using WUApiLib;
 using AutopilotHelper.DiagnosticsCollection.Models;
+using System.IO.Compression;
 
 namespace AutopilotHelper.DiagnosticsCollection
 {
@@ -206,6 +207,18 @@ namespace AutopilotHelper.DiagnosticsCollection
             }
 
             Console.WriteLine();
+            try
+            {
+                CreateAndFillZipFile(Path.Combine(TmpFolder, $"IntunePremierDiagnostics.zip"));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to compress the log files!\n\n" + e.ToString());
+            }
+
+            CleanUpRuntimeCache();
+
+            Console.WriteLine();
             Console.WriteLine("All operation completed successfully.\nPress any key to open output folder.");
             Console.ReadKey();
             OpenTmpFolder();
@@ -306,5 +319,45 @@ namespace AutopilotHelper.DiagnosticsCollection
 
             var process = Process.Start(startInfo);
         }
+
+        private static void CleanUpRuntimeCache()
+        {
+            var files = Directory.GetFiles(TmpFolder);
+            foreach(var file in files)
+            {
+                if(file.Equals(Path.Combine(TmpFolder, "IntunePremierDiagnostics.zip"), StringComparison.OrdinalIgnoreCase)) continue;
+
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete file {file}!\n\n{ex}");
+                }
+            }
+        }
+
+        #region ZIP
+        static void CreateAndFillZipFile(string outputPath)
+        {
+            Console.WriteLine($"Compressing log into zip {outputPath}......");
+
+            ZipArchive zip = new ZipArchive(new FileStream(outputPath, FileMode.Create), ZipArchiveMode.Update);
+
+            // 添加文件到ZIP并添加自定义属性
+            
+            var files = Directory.GetFiles(TmpFolder);
+
+            foreach(var file in files)
+            {
+                if (Path.GetFileName(file) == Path.GetFileName(outputPath)) continue;
+                Console.WriteLine("Adding file: " + file);
+                var entry = zip.CreateEntryFromFile(file, Path.GetFileName(file));
+            }
+
+            zip.Dispose();
+        }
+        #endregion
     }
 }
