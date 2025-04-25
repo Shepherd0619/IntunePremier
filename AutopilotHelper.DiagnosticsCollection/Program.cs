@@ -354,6 +354,7 @@ namespace AutopilotHelper.DiagnosticsCollection
                 if (Path.GetFileName(file) == Path.GetFileName(outputPath)) continue;
                 Console.WriteLine("Adding file: " + file);
                 var entry = zip.CreateEntryFromFile(file, Path.GetFileName(file));
+                entry.Comment = "INTUNE_PREMIER";
             }
 
             zip.Dispose();
