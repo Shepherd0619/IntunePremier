@@ -223,14 +223,21 @@ namespace AutopilotHelper.Utilities
             #endregion
 
             #region Autopilot Profile
-            if (autopilotLocalProfile.CloudAssignedDomainJoinMethod == 1)
+            if (autopilotLocalProfile == null)
             {
-                sb.AppendLine("Scenario: Hybrid Entra Join");
-                sb.AppendLine("Skip Local AD Connectivity Check: " + (autopilotLocalProfile.HybridJoinSkipDCConnectivityCheck == 1 ? "YES" : "NO"));
+                sb.AppendLine("ERROR: There is no local copy of Autopilot profile!");
             }
             else
             {
-                sb.AppendLine("Scenario: Entra Join");
+                if (autopilotLocalProfile.CloudAssignedDomainJoinMethod == 1)
+                {
+                    sb.AppendLine("Scenario: Hybrid Entra Join");
+                    sb.AppendLine("Skip Local AD Connectivity Check: " + (autopilotLocalProfile.HybridJoinSkipDCConnectivityCheck == 1 ? "YES" : "NO"));
+                }
+                else
+                {
+                    sb.AppendLine("Scenario: Entra Join");
+                }
             }
 
             sb.AppendLine();
