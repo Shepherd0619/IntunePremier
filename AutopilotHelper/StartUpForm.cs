@@ -93,7 +93,17 @@ namespace AutopilotHelper
 
         private async Task<MDMFileUtil> CreateAndExtractMDMFileUtilAsync(string filePath)
         {
-            var util = new MDMFileUtil(filePath);
+            MDMFileUtil util;
+
+            if (!CustomDiagUtil.IsThisACustomDiag(filePath))
+            {
+                util = new MDMFileUtil(filePath);
+            }
+            else
+            {
+                util = new CustomDiagUtil(filePath);
+            }
+
             await util.Extract();
             return util;
         }
