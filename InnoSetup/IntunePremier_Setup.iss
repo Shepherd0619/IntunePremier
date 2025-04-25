@@ -44,8 +44,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Jenkins_Workspace\IntunePremier\AutopilotHelper\bin\Debug\net6.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Jenkins_Workspace\IntunePremier\AutopilotHelper\bin\Debug\net6.0-windows\*"; DestDir:"{app}"; Flags: ignoreversion
+Source: "D:\Jenkins_Workspace\IntunePremier\AutopilotHelper\bin\Debug\net8.0-windows10.0.19041.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Jenkins_Workspace\IntunePremier\AutopilotHelper\bin\Debug\net8.0-windows10.0.19041.0\*"; DestDir:"{app}"; Flags: ignoreversion
+Source: "D:\Jenkins_Workspace\IntunePremier\AutopilotHelper.DiagnosticsCollection\bin\Debug\net8.0-windows10.0.19041.0\*"; DestDir:"{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
