@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -34,19 +35,27 @@ namespace AutopilotHelper.Utilities
 
         public static bool IsThisACustomDiag(string filePath)
         {
-            using (var zip = ZipFile.OpenRead(filePath))
+            try
             {
-                var files = zip.Entries;
-
-                for (int i = 0; i < files.Count; i++)
+                using (var zip = ZipFile.OpenRead(filePath))
                 {
-                    if (files[i].Comment != "INTUNE_PREMIER")
-                    {
-                        return false;
-                    }
-                }
+                    var files = zip.Entries;
 
-                return true;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        if (files[i].Comment != "INTUNE_PREMIER")
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error checking if file is a custom diag: {ex.Message}");
+                return false;
             }
         }
 
