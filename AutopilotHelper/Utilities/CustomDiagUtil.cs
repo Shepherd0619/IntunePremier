@@ -17,19 +17,13 @@ namespace AutopilotHelper.Utilities
 
         public override int CheckWhetherZipMeetPrerequisite()
         {
-            using (var zip = ZipFile.OpenRead(FilePath))
+            if (IsThisACustomDiag(FilePath))
             {
-                var files = zip.Entries;
-
-                for (int i = 0; i < files.Count; i++)
-                {
-                    if(files[i].Comment != "INTUNE_PREMIER")
-                    {
-                        return -1;
-                    }
-                }
-
                 return 0;
+            }
+            else
+            {
+                return -1;
             }
         }
 
